@@ -332,20 +332,20 @@ document.addEventListener("DOMContentLoaded", () => {
         let stars = [];
 
         function initTwinkleStars() {
-            const count = window.innerWidth < 768 ? 65 : 130;
+            const count = window.innerWidth < 768 ? 90 : 190;
             stars = [];
             for (let i = 0; i < count; i++) {
                 stars.push({
                     x: Math.random() * sWidth,
                     y: Math.random() * sHeight,
-                    baseAlpha: 0.25 + Math.random() * 0.55,
-                    twinkleSpeed: 0.7 + Math.random() * 2.2,
+                    baseAlpha: 0.5 + Math.random() * 0.45,
+                    twinkleSpeed: 0.8 + Math.random() * 2.5,
                     twinklePhase: Math.random() * Math.PI * 2,
-                    // 0: 1x1 micro-pixel, 1: 2x2 square, 2: 4-point cross, 3: diamond sparkle
-                    type: Math.random() < 0.6 ? 0 : (Math.random() < 0.82 ? 1 : (Math.random() < 0.95 ? 2 : 3)),
-                    // Warm gold (#E5BE85), Starlight bone (#FAF5E8), Pale diamond (#C8D7F0)
-                    color: Math.random() < 0.5 ? '229, 190, 133' : (Math.random() < 0.85 ? '250, 245, 232' : '200, 215, 240'),
-                    parallax: 0.04 + Math.random() * 0.08
+                    // 0: 2x2 square, 1: 3x3 cross, 2: 5x5 diamond star, 3: 7x7 vintage cross
+                    type: Math.random() < 0.45 ? 0 : (Math.random() < 0.75 ? 1 : (Math.random() < 0.92 ? 2 : 3)),
+                    // Warm gold (#E5BE85), Radiant Bone (#FFFDF8), Diamond Ice (#D8E5F8)
+                    color: Math.random() < 0.55 ? '229, 190, 133' : (Math.random() < 0.88 ? '255, 252, 244' : '210, 225, 250'),
+                    parallax: 0.05 + Math.random() * 0.09
                 });
             }
         }
@@ -354,17 +354,17 @@ document.addEventListener("DOMContentLoaded", () => {
         let shootingStars = [];
         let sparks = []; // Floating stardust embers shed by shooting stars
         let lastSpawnTime = performance.now();
-        let nextSpawnDelay = 2200; // First shooting star appears gracefully soon
+        let nextSpawnDelay = 800; // First shooting star appears within 1s
 
         function createShootingStar() {
-            // Slight downward angle: 18 to 24 degrees below horizontal
-            const angleDeg = 18 + Math.random() * 6;
+            // Slight downward angle: 18 to 23 degrees below horizontal
+            const angleDeg = 18 + Math.random() * 5;
             const angleRad = (angleDeg * Math.PI) / 180;
             // Serene, meditative glide (slow moving)
-            const speed = 1.9 + Math.random() * 0.9;
+            const speed = 2.2 + Math.random() * 0.8;
 
             // Spawn from upper-left quadrant
-            const startX = Math.random() * (sWidth * 0.5) - 60;
+            const startX = Math.random() * (sWidth * 0.45) - 80;
             const startY = Math.random() * (sHeight * 0.35) - 30;
 
             shootingStars.push({
@@ -372,14 +372,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 y: startY,
                 vx: Math.cos(angleRad) * speed,
                 vy: Math.sin(angleRad) * speed,
-                length: 65 + Math.random() * 35, // Pixelated tail length
-                thickness: Math.random() > 0.4 ? 2 : 3,
+                length: 110 + Math.random() * 50, // Rich pixelated tail length
+                thickness: 3, // Crisp pixel thickness
                 alpha: 0,
-                maxAlpha: 0.85 + Math.random() * 0.15,
+                maxAlpha: 0.95,
                 state: 'fade-in',
                 distanceTraveled: 0,
-                maxDistance: sWidth * 0.65 + Math.random() * (sWidth * 0.45),
-                color: Math.random() > 0.35 ? '229, 190, 133' : '250, 245, 232',
+                maxDistance: sWidth * 0.75 + Math.random() * (sWidth * 0.4),
+                color: Math.random() > 0.35 ? '229, 190, 133' : '255, 250, 240',
                 lastSparkDist: 0
             });
         }
@@ -399,7 +399,7 @@ document.addEventListener("DOMContentLoaded", () => {
             for (let i = 0; i < stars.length; i++) {
                 const star = stars[i];
                 const alphaMod = (Math.sin(now * 0.001 * star.twinkleSpeed + star.twinklePhase) + 1) * 0.5;
-                const alpha = Math.max(0.08, Math.min(1, star.baseAlpha * (0.35 + alphaMod * 0.75)));
+                const alpha = Math.max(0.18, Math.min(1, star.baseAlpha * (0.4 + alphaMod * 0.65)));
 
                 // Subtle parallax on scroll with screen wrapping
                 let drawX = Math.floor(star.x);
@@ -409,28 +409,34 @@ document.addEventListener("DOMContentLoaded", () => {
                 sCtx.fillStyle = `rgba(${star.color}, ${alpha.toFixed(3)})`;
 
                 if (star.type === 0) {
-                    // 1x1 micro pixel
-                    sCtx.fillRect(drawX, drawY, 1, 1);
-                } else if (star.type === 1) {
                     // 2x2 crisp pixel square
                     sCtx.fillRect(drawX, drawY, 2, 2);
-                } else if (star.type === 2) {
-                    // 4-point handmade cross (with subtle flaring at twinkle peak)
-                    const armLen = alphaMod > 0.75 ? 2 : 1;
-                    sCtx.fillRect(drawX, drawY, 1, 1);
-                    sCtx.fillStyle = `rgba(${star.color}, ${(alpha * 0.7).toFixed(3)})`;
-                    sCtx.fillRect(drawX, drawY - armLen, 1, armLen);
-                    sCtx.fillRect(drawX, drawY + 1, 1, armLen);
-                    sCtx.fillRect(drawX - armLen, drawY, armLen, 1);
-                    sCtx.fillRect(drawX + 1, drawY, armLen, 1);
-                } else {
-                    // Diamond sparkle (5x5 pixel cluster)
+                } else if (star.type === 1) {
+                    // 3x3 handmade cross
+                    const arm = alphaMod > 0.65 ? 2 : 1;
                     sCtx.fillRect(drawX, drawY, 2, 2);
-                    sCtx.fillStyle = `rgba(${star.color}, ${(alpha * 0.5).toFixed(3)})`;
-                    sCtx.fillRect(drawX, drawY - 2, 2, 1);
-                    sCtx.fillRect(drawX, drawY + 3, 2, 1);
-                    sCtx.fillRect(drawX - 2, drawY, 1, 2);
-                    sCtx.fillRect(drawX + 3, drawY, 1, 2);
+                    sCtx.fillStyle = `rgba(${star.color}, ${(alpha * 0.7).toFixed(3)})`;
+                    sCtx.fillRect(drawX, drawY - arm, 2, arm);
+                    sCtx.fillRect(drawX, drawY + 2, 2, arm);
+                    sCtx.fillRect(drawX - arm, drawY, arm, 2);
+                    sCtx.fillRect(drawX + 2, drawY, arm, 2);
+                } else if (star.type === 2) {
+                    // 5x5 diamond star
+                    sCtx.fillRect(drawX, drawY, 3, 3);
+                    sCtx.fillStyle = `rgba(${star.color}, ${(alpha * 0.6).toFixed(3)})`;
+                    sCtx.fillRect(drawX + 1, drawY - 2, 1, 2);
+                    sCtx.fillRect(drawX + 1, drawY + 3, 1, 2);
+                    sCtx.fillRect(drawX - 2, drawY + 1, 2, 1);
+                    sCtx.fillRect(drawX + 3, drawY + 1, 2, 1);
+                } else {
+                    // 7x7 vintage pixel cross sparkle
+                    const flare = alphaMod > 0.5 ? 3 : 2;
+                    sCtx.fillRect(drawX, drawY, 3, 3);
+                    sCtx.fillStyle = `rgba(${star.color}, ${(alpha * 0.65).toFixed(3)})`;
+                    sCtx.fillRect(drawX + 1, drawY - flare, 1, flare);
+                    sCtx.fillRect(drawX + 1, drawY + 3, 1, flare);
+                    sCtx.fillRect(drawX - flare, drawY + 1, flare, 1);
+                    sCtx.fillRect(drawX + 3, drawY + 1, flare, 1);
                 }
             }
 
@@ -440,7 +446,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     createShootingStar();
                 }
                 lastSpawnTime = now;
-                nextSpawnDelay = 6000 + Math.random() * 7000; // Next shooting star in 6-13s
+                nextSpawnDelay = 5000 + Math.random() * 5500; // Next shooting star in 5-10.5s
             }
 
             // 3. Update & Draw Shooting Stars (High FPS glide + handmade pixel wake)
@@ -454,39 +460,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // Smooth organic fade in & fade out
                 if (s.state === 'fade-in') {
-                    s.alpha += dt * 1.5;
+                    s.alpha += dt * 1.8;
                     if (s.alpha >= s.maxAlpha) {
                         s.alpha = s.maxAlpha;
                         s.state = 'gliding';
                     }
                 } else if (s.state === 'gliding') {
-                    if (s.distanceTraveled > s.maxDistance || s.x > sWidth + 80 || s.y > sHeight + 80) {
+                    if (s.distanceTraveled > s.maxDistance || s.x > sWidth + 120 || s.y > sHeight + 120) {
                         s.state = 'fade-out';
                     }
                 } else if (s.state === 'fade-out') {
-                    s.alpha -= dt * 1.2;
+                    s.alpha -= dt * 1.4;
                     if (s.alpha <= 0) {
                         shootingStars.splice(i, 1);
                         continue;
                     }
                 }
 
-                // Shed handmade pixel stardust embers along the path
-                if (s.distanceTraveled - s.lastSparkDist > 10) {
+                // Shed floating pixel stardust embers along the path
+                if (s.distanceTraveled - s.lastSparkDist > 8) {
                     s.lastSparkDist = s.distanceTraveled;
                     sparks.push({
-                        x: s.x - (Math.random() - 0.5) * 4,
-                        y: s.y - (Math.random() - 0.5) * 4,
-                        alpha: s.alpha * (0.55 + Math.random() * 0.4),
-                        life: 1.4 + Math.random() * 0.8,
-                        maxLife: 1.4 + Math.random() * 0.8,
+                        x: s.x - (Math.random() - 0.5) * 6,
+                        y: s.y - (Math.random() - 0.5) * 6,
+                        alpha: s.alpha * (0.7 + Math.random() * 0.3),
+                        life: 1.8 + Math.random() * 1.2,
+                        maxLife: 1.8 + Math.random() * 1.2,
                         color: s.color,
-                        size: Math.random() > 0.4 ? 1 : 2
+                        size: Math.random() > 0.4 ? 2 : 3
                     });
                 }
 
-                // Render stepped pixel tail (14 discrete integer segments)
-                const segments = 14;
+                // Render stepped pixel tail (20 discrete integer segments)
+                const segments = 20;
                 const speedMag = Math.hypot(s.vx, s.vy);
                 const normVx = s.vx / speedMag;
                 const normVy = s.vy / speedMag;
@@ -496,23 +502,23 @@ document.addEventListener("DOMContentLoaded", () => {
                     const segDist = (1 - t) * s.length;
                     const px = Math.floor(s.x - normVx * segDist);
                     const py = Math.floor(s.y - normVy * segDist);
-                    const segAlpha = s.alpha * Math.pow(t, 2.0) * 0.85;
-                    const segThickness = Math.max(1, Math.round(s.thickness * t));
+                    const segAlpha = s.alpha * Math.pow(t, 1.8) * 0.9;
+                    const segThickness = Math.max(1, Math.round(s.thickness * Math.pow(t, 0.7)));
 
                     sCtx.fillStyle = `rgba(${s.color}, ${segAlpha.toFixed(3)})`;
                     sCtx.fillRect(px, py, segThickness, segThickness);
                 }
 
-                // Pixel star head: 2x2 white core + warm gold halo
+                // Pixel star head: 3x3 white core + warm gold cross halo
                 const hx = Math.floor(s.x);
                 const hy = Math.floor(s.y);
                 // Outer pixel halo
-                sCtx.fillStyle = `rgba(229, 190, 133, ${(s.alpha * 0.6).toFixed(3)})`;
-                sCtx.fillRect(hx - 1, hy, 4, 2);
-                sCtx.fillRect(hx, hy - 1, 2, 4);
+                sCtx.fillStyle = `rgba(229, 190, 133, ${(s.alpha * 0.75).toFixed(3)})`;
+                sCtx.fillRect(hx - 2, hy, 7, 3);
+                sCtx.fillRect(hx, hy - 2, 3, 7);
                 // Core white-hot star
-                sCtx.fillStyle = `rgba(255, 252, 245, ${s.alpha.toFixed(3)})`;
-                sCtx.fillRect(hx, hy, 2, 2);
+                sCtx.fillStyle = `rgba(255, 255, 250, ${s.alpha.toFixed(3)})`;
+                sCtx.fillRect(hx, hy, 3, 3);
             }
 
             // 4. Update & Draw Stardust Embers (Floating handmade pixel sparks)
