@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <meta name="theme-color" content="#080827">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>180 Math Mobile | South Windsor, CT Mathematics Mentorship</title>
+    <meta name="description" content="180 Math Mobile Edition: South Windsor, CT mathematics mentorship founded by Jyothi. Small cohorts (4–8 students), first-principles intuition, and diagnostic roadmap.">
+    <link rel="canonical" href="https://rohankosur.github.io/180testing/mobile.html">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=Spline+Sans+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        midnight: '#080827',
+                        'midnight-surface': '#0E1038',
+                        'midnight-border': 'rgba(229, 190, 133, 0.18)',
+                        gold: '#E5BE85',
+                        'gold-light': '#F3E5AB',
+                        'gold-dim': '#C49B58',
+                        bone: '#FBFBFD',
+                        muted: '#94A3B8'
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+                        serif: ['"Fraunces"', 'Georgia', 'serif'],
+                        mono: ['"Spline Sans Mono"', 'monospace'],
+                        display: ['"Cinzel"', 'serif']
+                    }
+                }
+            }
+        };
+    </script>
+
+    <style>
+        :root {
+            --sat: env(safe-area-inset-top, 0px);
+            --sab: env(safe-area-inset-bottom, 0px);
+            --sal: env(safe-area-inset-left, 0px);
+            --sar: env(safe-area-inset-right, 0px);
+        }
+
+        html, body {
+            background-color: #080827;
+            color: #FBFBFD;
+            overflow-x: hidden;
+            width: 100%;
+            -webkit-text-size-adjust: 100%;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            touch-action: pan-y;
+            scroll-behavior: smooth;
+        }
+
+        /* Prevent iOS zoom on form elements */
+        input, select, textarea {
+            font-size: 16px !important;
+        }
+
+        /* Custom scrollbar for mobile swipe tracks */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Thermal Solution & Mentorship Warmth */
+        .thermal-solution {
+            background: linear-gradient(180deg, rgba(16, 17, 68, 0.5) 0%, rgba(36, 26, 80, 0.85) 30%, rgba(46, 32, 96, 0.88) 75%, rgba(16, 17, 68, 0.5) 100%);
+            border: 1px solid rgba(229, 190, 133, 0.38);
+            box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(229, 190, 133, 0.25), 0 0 40px -10px rgba(229, 190, 133, 0.16);
+            position: relative;
+        }
+        .thermal-solution::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 80% 50% at 50% 20%, rgba(229, 190, 133, 0.12) 0%, transparent 75%);
+            pointer-events-none;
+            border-radius: inherit;
+        }
+
+        .warmth-card {
+            background: linear-gradient(145deg, rgba(34, 28, 88, 0.95) 0%, rgba(20, 18, 62, 0.98) 100%);
+            border: 1px solid rgba(229, 190, 133, 0.42);
+            box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(229, 190, 133, 0.25);
+        }
+
+        .clinical-problem-card {
+            background: linear-gradient(145deg, rgba(10, 11, 40, 0.95) 0%, rgba(6, 6, 28, 0.98) 100%);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            box-shadow: 0 10px 25px -8px rgba(0, 0, 0, 0.7);
+        }
+
+        .editorial-card {
+            background: linear-gradient(145deg, rgba(16, 18, 56, 0.92) 0%, rgba(10, 11, 38, 0.96) 100%);
+            border: 1px solid rgba(229, 190, 133, 0.22);
+            box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.65);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #E5BE85 0%, #C49B58 100%);
+            color: #080827;
+            font-weight: 700;
+            box-shadow: 0 8px 24px rgba(229, 190, 133, 0.25);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .btn-gold:active {
+            transform: scale(0.97);
+            box-shadow: 0 3px 12px rgba(229, 190, 133, 0.35);
+        }
+
+        /* Fixed Bottom Action Bar */
+        .mobile-bottom-bar {
+            padding-bottom: max(12px, var(--sab));
+        }
+
+        /* Header Safe Area */
+        .mobile-header {
+            padding-top: max(10px, var(--sat));
+        }
+
+        /* Ambient Star Canvas */
+        #mobile-stars {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events-none;
+            opacity: 0.85;
+        }
+    </style>
+</head>
+<body class="selection:bg-gold/25 selection:text-gold pb-28">
+
+    <!-- Mobile Low-Power Star Canvas -->
+    <canvas id="mobile-stars"></canvas>
+
+    <!-- Top Sticky Mobile Navigation Header -->
+    <header class="sticky top-0 z-50 bg-[#080827]/92 backdrop-blur-xl border-b border-[#E5BE85]/20 shadow-lg mobile-header">
+        <div class="px-4 py-3 flex items-center justify-between">
+            <!-- Brand Logo & Title -->
+            <a href="#top" class="flex items-center space-x-2.5">
+                <img src="logo.png" alt="180 Math Logo" class="h-9 w-auto filter brightness-105">
+                <div class="flex flex-col">
+                    <span class="font-display font-black text-sm tracking-tight text-bone leading-none">180 MATH</span>
+                    <span class="text-[8px] font-mono text-gold tracking-widest uppercase">South Windsor, CT</span>
+                </div>
+            </a>
+
+            <!-- Quick Action & Menu Button -->
+            <div class="flex items-center space-x-2">
+                <a href="test.html" class="inline-flex items-center text-[10px] font-mono font-bold px-3 py-1.5 rounded-full bg-gold/15 text-gold border border-gold/40 active:bg-gold active:text-midnight transition-colors">
+                    <span>Free Test</span>
+                    <span class="ml-1 text-[9px]">↗</span>
+                </a>
+                <button id="mobile-menu-btn" aria-label="Open Navigation Menu" class="w-9 h-9 rounded-xl bg-[#101144] border border-midnight-border flex items-center justify-center text-gold active:bg-gold/20">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Horizontal Swipeable Section Jump Track -->
+        <div class="flex items-center space-x-2 px-4 py-2 overflow-x-auto no-scrollbar border-t border-midnight-border/40 font-mono text-[10px] font-semibold uppercase tracking-wider text-muted whitespace-nowrap bg-[#060620]/90">
+            <a href="#bottleneck" class="px-2.5 py-1 rounded-full bg-gold/10 text-gold border border-gold/30 shrink-0">Roadmap</a>
+            <a href="#about" class="px-2.5 py-1 rounded-full bg-[#101144] border border-midnight-border shrink-0 hover:text-bone">Meet Jyothi</a>
+            <a href="#twopaths" class="px-2.5 py-1 rounded-full bg-[#101144] border border-midnight-border shrink-0 hover:text-bone">Two Paths</a>
+            <a href="#programs" class="px-2.5 py-1 rounded-full bg-[#101144] border border-midnight-border shrink-0 hover:text-bone">Programs</a>
+            <a href="#pricing" class="px-2.5 py-1 rounded-full bg-[#101144] border border-midnight-border shrink-0 hover:text-bone">Tuition</a>
+            <a href="#testimonials" class="px-2.5 py-1 rounded-full bg-[#101144] border border-midnight-border shrink-0 hover:text-bone">Reviews</a>
+            <a href="#faqs" class="px-2.5 py-1 rounded-full bg-[#101144] border border-midnight-border shrink-0 hover:text-bone">FAQs</a>
+            <a href="#contact" class="px-2.5 py-1 rounded-full bg-gold text-midnight font-bold shrink-0">Contact</a>
+        </div>
+
+        <!-- Collapsible Mobile Drawer Modal -->
+        <div id="mobile-menu-drawer" class="hidden bg-[#0A0B33] border-b border-gold/25 px-5 py-5 space-y-3 font-mono text-xs shadow-2xl">
+            <div class="flex justify-between items-center pb-2 border-b border-midnight-border/40 text-muted">
+                <span class="text-gold font-bold uppercase tracking-wider text-[11px]">Quick Directory</span>
+                <span id="mobile-clock" class="text-[10px] text-muted">SW, CT --:--:--</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2 pt-1">
+                <a href="#top" class="p-2.5 bg-[#101144] rounded-lg border border-midnight-border text-bone font-medium" onclick="toggleMenu()">01 · Home</a>
+                <a href="#bottleneck" class="p-2.5 bg-[#101144] rounded-lg border border-midnight-border text-bone font-medium" onclick="toggleMenu()">02 · Roadmap</a>
+                <a href="#about" class="p-2.5 bg-[#101144] rounded-lg border border-gold/40 text-gold font-medium" onclick="toggleMenu()">03 · Meet Jyothi</a>
+                <a href="#twopaths" class="p-2.5 bg-[#101144] rounded-lg border border-midnight-border text-bone font-medium" onclick="toggleMenu()">04 · Two Paths</a>
+                <a href="#programs" class="p-2.5 bg-[#101144] rounded-lg border border-midnight-border text-bone font-medium" onclick="toggleMenu()">05 · Programs</a>
+                <a href="#pricing" class="p-2.5 bg-[#101144] rounded-lg border border-midnight-border text-bone font-medium" onclick="toggleMenu()">06 · Tuition</a>
+                <a href="#testimonials" class="p-2.5 bg-[#101144] rounded-lg border border-midnight-border text-bone font-medium" onclick="toggleMenu()">07 · Reviews</a>
+                <a href="#contact" class="p-2.5 bg-gold/15 rounded-lg border border-gold/50 text-gold font-bold" onclick="toggleMenu()">08 · Connect</a>
+            </div>
+            <div class="pt-3 border-t border-midnight-border/40 flex justify-between items-center text-[11px]">
+                <a href="test.html" class="text-gold font-bold underline">See Your Child's True Potential ↗</a>
+                <a href="index.html?view=desktop" class="text-muted hover:text-white">💻 Desktop View</a>
+            </div>
+        </div>
+    </header>
+
+    <main id="top" class="relative z-10 px-4 pt-6 space-y-12">
+
+        <!-- Mobile Hero Section -->
+        <section class="space-y-6 pt-2 pb-4">
+            <!-- Studio Location Badge -->
+            <div class="flex items-center space-x-2 text-muted font-mono text-[10px] tracking-wider uppercase">
+                <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span class="text-gold font-bold">South Windsor, CT Studio</span>
+                <span class="text-midnight-border">·</span>
+                <span>In-Person & Online</span>
+            </div>
+
+            <!-- Logo Centerpiece Banner -->
+            <div class="flex justify-center py-2">
+                <img src="logo.png" alt="180 Math Logo" class="h-28 w-auto filter brightness-105 drop-shadow-[0_12px_30px_rgba(0,0,0,0.8)]" style="mix-blend-mode: lighten;">
+            </div>
+
+            <!-- Headline -->
+            <div class="space-y-3 text-center sm:text-left">
+                <div class="inline-flex items-center space-x-2 px-3 py-1 bg-gold/10 border border-gold/30 rounded-full font-mono text-[10px] text-gold uppercase tracking-wider">
+                    <span>The Single Bottleneck in Your Child's Math Education</span>
+                </div>
+                <h1 class="font-serif text-3xl sm:text-4xl text-bone leading-tight font-light">
+                    Your child isn’t bad at math. They just have <em class="italic text-gold font-normal">one missing foundation.</em>
+                </h1>
+                <p class="font-serif text-base text-bone/80 leading-relaxed pt-1">
+                    Tired of nightly kitchen-table homework tears? Standard schooling rewards rote memorization that freezes under exam pressure. At our South Windsor studio, Lead Mentor <strong class="text-gold font-semibold">Jyothi</strong> diagnoses the single hidden conceptual fracture holding your child back—transforming stress into calm, lifelong confidence.
+                </p>
+            </div>
+
+            <!-- Two Thumb-Friendly Primary CTAs -->
+            <div class="space-y-3 pt-2 font-mono text-xs">
+                <a href="test.html" class="btn-gold w-full py-4 rounded-2xl flex items-center justify-center space-x-2 text-center text-sm uppercase tracking-wider shadow-lg">
+                    <span>See Your Child's True Potential</span>
+                    <span>→</span>
+                </a>
+                <a href="#bottleneck" class="w-full py-3.5 rounded-2xl border border-gold/40 text-gold flex items-center justify-center space-x-2 text-center uppercase tracking-wider font-semibold active:bg-gold/10">
+                    <span>Explore The Parent's Roadmap ↓</span>
+                </a>
+            </div>
+
+            <!-- Key Proof Metrics Grid -->
+            <div class="grid grid-cols-3 gap-2.5 pt-4 font-mono text-center">
+                <div class="p-3 bg-[#0B0C36] rounded-xl border border-midnight-border">
+                    <span class="block font-display font-black text-xl text-gold">94.2%</span>
+                    <span class="text-[9px] text-muted uppercase">Score 5 on AP</span>
+                </div>
+                <div class="p-3 bg-[#0B0C36] rounded-xl border border-midnight-border">
+                    <span class="block font-display font-black text-xl text-gold">+180</span>
+                    <span class="text-[9px] text-muted uppercase">Avg SAT Boost</span>
+                </div>
+                <div class="p-3 bg-[#0B0C36] rounded-xl border border-midnight-border">
+                    <span class="block font-display font-black text-xl text-gold">4–8</span>
+                    <span class="text-[9px] text-muted uppercase">Cohort Max</span>
+                </div>
+            </div>
+
+            <!-- Address Bar with 1-Tap Google Maps Link -->
+            <a href="https://maps.google.com/?q=17+Longmeadow+Drive,+South+Windsor,+CT+06074" target="_blank" rel="noopener" class="p-3.5 bg-[#0A0B33] rounded-xl border border-gold/30 flex items-center justify-between text-xs font-mono text-muted active:border-gold">
+                <div class="flex items-center space-x-2.5">
+                    <span class="text-gold text-base">📍</span>
+                    <div class="text-left">
+                        <span class="text-bone font-bold block text-[11px]">17 Longmeadow Drive</span>
+                        <span class="text-[10px] text-muted">South Windsor, CT (Near SWHS)</span>
+                    </div>
+                </div>
+                <span class="text-gold text-xs font-bold">Directions ↗</span>
+            </a>
+        </section>
+
+        <!-- 001 / The Parent's Roadmap Section -->
+        <section id="bottleneck" class="space-y-6 pt-4 scroll-mt-28">
+            <div class="flex items-center justify-between font-mono text-xs text-muted border-b border-midnight-border/40 pb-2">
+                <h2 class="text-gold font-bold uppercase tracking-wider text-[11px]">The Parent's Roadmap</h2>
+                <span class="text-[10px]">The Root Constraint</span>
+            </div>
+
+            <div class="space-y-2">
+                <h3 class="font-display font-bold text-2xl text-bone leading-tight">
+                    Why 1,000 more worksheets won't raise your child's score.
+                </h3>
+                <p class="font-serif text-sm text-bone/80 leading-relaxed">
+                    Math is strictly cumulative. If your child has a single unmastered concept from 1–2 grades prior, every new chapter feels like trying to build a brick wall on wet sand.
+                </p>
+            </div>
+
+            <!-- 3 Progressive Cards: Problem -> Root Cause -> Mechanism -->
+            <div class="space-y-4 font-mono text-xs">
+                <!-- Step 1: The Algorithmic Trap (Clinical Problem) -->
+                <div class="clinical-problem-card p-5 rounded-2xl space-y-3">
+                    <div class="flex justify-between items-center pb-2 border-b border-midnight-border/40 text-[10px]">
+                        <span class="text-gold font-bold">01 / THE CONVENTIONAL LIE</span>
+                        <span class="px-2 py-0.5 bg-red-500/10 text-red-400 rounded-full">ROTE MIMICRY</span>
+                    </div>
+                    <h4 class="font-display font-bold text-lg text-bone">The Algorithmic Trap</h4>
+                    <p class="font-serif text-xs text-bone/75 leading-relaxed">
+                        School rewards rote algorithmic mimicry: copy 10 steps from the whiteboard, memorize for Friday's quiz, and forget it two weeks later. This earns high marks on routine homework until exam day introduces an unfamiliar question twist—and your child freezes.
+                    </p>
+                    <div class="pt-2 border-t border-midnight-border/40 text-[11px] text-muted flex justify-between items-center">
+                        <span>Diagnostic Verdict:</span>
+                        <span class="text-bone font-serif italic">Memorization creates fragile confidence.</span>
+                    </div>
+                </div>
+
+                <!-- Step 2: The Hidden Conceptual Fracture (Clinical Problem) -->
+                <div class="clinical-problem-card p-5 rounded-2xl space-y-3 border-gold/40">
+                    <div class="flex justify-between items-center pb-2 border-b border-midnight-border/40 text-[10px]">
+                        <span class="text-gold font-bold">02 / THE ROOT CAUSE</span>
+                        <span class="px-2 py-0.5 bg-gold/15 text-gold rounded-full font-bold">MISSING FOUNDATION</span>
+                    </div>
+                    <h4 class="font-display font-bold text-lg text-bone">The Hidden Conceptual Fracture</h4>
+                    <p class="font-serif text-xs text-bone/75 leading-relaxed">
+                        Your student does not have a talent deficit. 95% of plateaued students are held back by <strong class="text-gold font-semibold">one specific missing foundation</strong>. Because math is strictly cumulative, this invisible fracture creates chronic homework anxiety.
+                    </p>
+                    <div class="pt-2 border-t border-midnight-border/40 text-[11px] text-muted flex justify-between items-center">
+                        <span>Diagnostic Verdict:</span>
+                        <span class="text-gold font-serif italic">Fix the missing foundation, restore confidence.</span>
+                    </div>
+                </div>
+
+                <!-- Step 3: First-Principles Reconstruction (Warmth Card / Solution) -->
+                <div class="warmth-card p-5 rounded-2xl space-y-3">
+                    <div class="flex justify-between items-center pb-2 border-b border-gold/30 text-[10px]">
+                        <span class="text-gold font-bold">03 / THE MECHANISM</span>
+                        <span class="px-2 py-0.5 bg-emerald-500/15 text-emerald-400 rounded-full font-bold">CONCEPT-GAP MATRIX™</span>
+                    </div>
+                    <h4 class="font-display font-bold text-lg text-bone">First-Principles Reconstruction</h4>
+                    <p class="font-serif text-xs text-bone/85 leading-relaxed">
+                        Commercial tutoring chains assign more repetitive worksheets that treat only symptoms. At our South Windsor studio, Jyothi uses our proprietary <strong class="text-gold font-semibold">Concept-Gap Matrix™</strong> to pinpoint the exact inflection point where intuition broke down—rebuilding it visually from first principles.
+                    </p>
+                    <div class="pt-2 border-t border-gold/25 text-[11px] text-muted flex justify-between items-center">
+                        <span>The Solution Shift:</span>
+                        <span class="text-gold font-serif italic">True intuition never needs memorizing.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 002 / Welded Human Mentorship Section -->
+        <section id="about" class="thermal-solution rounded-3xl p-6 sm:p-8 space-y-6 scroll-mt-28">
+            <span id="philosophy" class="scroll-mt-28"></span>
+            <div class="flex justify-between items-center pb-3 border-b border-gold/25 font-mono text-[10px] text-muted">
+                <span class="text-gold font-bold uppercase tracking-wider">002 / The Human Mentorship</span>
+                <span class="text-bone/70">The Stabilizing Force</span>
+            </div>
+
+            <div class="inline-flex items-center space-x-2 px-3 py-1 bg-gold/15 border border-gold/40 rounded-full font-mono text-[10px] text-gold uppercase tracking-wider">
+                <span>Patience · Warmth · Socratic Clarity</span>
+            </div>
+
+            <h3 class="font-serif text-2xl text-bone font-light leading-snug">
+                A diagnostic engine is only as powerful as the <em class="italic text-gold font-normal">human mentor guiding it.</em>
+            </h3>
+
+            <p class="font-serif text-sm text-bone/90 leading-relaxed">
+                At 180 Math, we know that identifying a child's hidden conceptual fracture is only half the journey. Rebuilding genuine academic confidence requires patience, emotional safety, and an experienced mentor who meets them where they are. Founded by <strong class="text-gold font-semibold">Jyothi</strong> with over a decade of dedicated teaching leadership, our South Windsor studio serves as the steady, stabilizing force that turns kitchen-table homework stress into calm, lifelong mathematical intuition.
+            </p>
+
+            <!-- Specification List -->
+            <div class="warmth-card p-5 rounded-2xl space-y-3 font-mono text-xs">
+                <div class="flex justify-between items-center pb-2 border-b border-gold/30">
+                    <span class="text-bone/70">Lead Mentor</span>
+                    <span class="text-bone font-semibold">Jyothi · 10+ Yrs Exp</span>
+                </div>
+                <div class="flex justify-between items-center pb-2 border-b border-midnight-border/40">
+                    <span class="text-bone/70">Cohort Size</span>
+                    <span class="text-gold font-bold">Small 4–8 Cohorts</span>
+                </div>
+                <div class="flex justify-between items-center pb-2 border-b border-midnight-border/40">
+                    <span class="text-bone/70">Format</span>
+                    <span class="text-bone">In-Person & Live Online</span>
+                </div>
+                <div class="flex justify-between items-center pb-2 border-b border-midnight-border/40">
+                    <span class="text-bone/70">Parent Updates</span>
+                    <span class="text-bone">Direct Milestone Briefings</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-bone/70">Parent Guarantee</span>
+                    <span class="text-emerald-400 font-bold">Zero Homework Tears</span>
+                </div>
+            </div>
+
+            <!-- Direct CTA to Connect with Jyothi -->
+            <div class="pt-2">
+                <a href="#contact" class="btn-gold w-full py-3.5 rounded-2xl font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center space-x-2">
+                    <span>Meet Jyothi & Plan Roadmap →</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- 003 / Two Paths Comparison Section -->
+        <section id="twopaths" class="space-y-6 pt-2 scroll-mt-28">
+            <div class="text-center space-y-2">
+                <span class="font-mono text-[10px] text-gold uppercase tracking-wider">Two Paths for Your Child</span>
+                <h3 class="font-display font-bold text-2xl text-bone">
+                    Nightly Homework Stress vs. Calm Confidence
+                </h3>
+            </div>
+
+            <!-- Side-by-Side Mobile Cards -->
+            <div class="space-y-4 font-mono text-xs">
+                <!-- Path A: The Rote Grind -->
+                <div class="clinical-problem-card p-5 rounded-2xl space-y-3 border-red-500/25">
+                    <div class="flex justify-between items-center pb-2 border-b border-red-500/20 text-red-400 font-bold text-[11px]">
+                        <span>Standard Tutoring (The 95%)</span>
+                        <span>✕ HIGH STRESS</span>
+                    </div>
+                    <ul class="space-y-2 font-serif text-xs text-bone/70">
+                        <li class="flex items-start space-x-2"><span class="text-red-400 font-mono">✕</span><span>Nightly kitchen-table tears, arguments over homework</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-red-400 font-mono">✕</span><span>Memorizes formulas with zero intuitive understanding</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-red-400 font-mono">✕</span><span>Freezes when exam problems alter question framing</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-red-400 font-mono">✕</span><span>Secretly concludes "I'm just not a math person"</span></li>
+                    </ul>
+                </div>
+
+                <!-- Path B: 180 Math Mentorship -->
+                <div class="warmth-card p-5 rounded-2xl space-y-3 shadow-lg">
+                    <div class="flex justify-between items-center pb-2 border-b border-gold/30 text-gold font-bold text-[11px]">
+                        <span>180 Math with Jyothi (The Top 1%)</span>
+                        <span>✓ FIRST PRINCIPLES</span>
+                    </div>
+                    <ul class="space-y-2 font-serif text-xs text-bone/90">
+                        <li class="flex items-start space-x-2"><span class="text-gold font-mono">✓</span><span>Independent, confident homework with zero parental stress</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-gold font-mono">✓</span><span>Derives advanced formulas from foundational principles</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-gold font-mono">✓</span><span>Solves unfamiliar, tricky exam problems with calm composure</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-gold font-mono">✓</span><span>Attains effortless 780–800 SAT Math and 5 on AP Calculus</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- CTA for Assessment -->
+            <a href="test.html" class="btn-gold w-full py-4 rounded-2xl font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center space-x-2">
+                <span>See Where Your Child Is Stuck (Free Test) →</span>
+            </a>
+        </section>
+
+        <!-- 004 / Programs & Tracks -->
+        <section id="programs" class="space-y-6 pt-4 scroll-mt-28">
+            <div class="flex items-center justify-between font-mono text-xs text-muted border-b border-midnight-border/40 pb-2">
+                <h2 class="text-gold font-bold uppercase tracking-wider text-[11px]">Program Tracks</h2>
+                <span class="text-[10px]">Grades 3 through AP / SAT</span>
+            </div>
+
+            <div class="space-y-3.5">
+                <!-- Track 1: Elementary -->
+                <div class="editorial-card p-5 rounded-2xl space-y-2">
+                    <div class="flex justify-between items-center text-[10px] font-mono text-muted">
+                        <span class="text-gold font-bold">GRADES 3–5</span>
+                        <span class="text-emerald-400">● ENROLLING</span>
+                    </div>
+                    <h3 class="font-display font-bold text-lg text-bone">Elementary Foundations</h3>
+                    <p class="font-serif text-xs text-bone/75">
+                        Building joyful numeracy, mental math mastery, times tables (1–20), and positive intuition before middle school confusion sets in.
+                    </p>
+                    <div class="pt-2 flex justify-between items-center font-mono text-[11px]">
+                        <span class="text-gold font-bold">$250 / month</span>
+                        <a href="#contact" class="text-bone underline hover:text-gold">Save Seat →</a>
+                    </div>
+                </div>
+
+                <!-- Track 2: Middle School -->
+                <div class="editorial-card p-5 rounded-2xl space-y-2">
+                    <div class="flex justify-between items-center text-[10px] font-mono text-muted">
+                        <span class="text-gold font-bold">GRADES 6–8</span>
+                        <span class="text-emerald-400">● ACTIVE COHORT</span>
+                    </div>
+                    <h3 class="font-display font-bold text-lg text-bone">Pre-Algebra, Algebra I & Geometry</h3>
+                    <p class="font-serif text-xs text-bone/75">
+                        Transitioning from basic arithmetic to analytical problem solving. Linear equations, coordinate geometry, and logical proofs.
+                    </p>
+                    <div class="pt-2 flex justify-between items-center font-mono text-[11px]">
+                        <span class="text-gold font-bold">$300 / month</span>
+                        <a href="#contact" class="text-bone underline hover:text-gold">Save Seat →</a>
+                    </div>
+                </div>
+
+                <!-- Track 3: High School & AP -->
+                <div class="editorial-card p-5 rounded-2xl space-y-2 border-gold/40 relative">
+                    <div class="absolute -top-2.5 right-4 px-2 py-0.5 bg-gold text-midnight font-mono text-[9px] font-bold rounded-full uppercase">
+                        Most Popular
+                    </div>
+                    <div class="flex justify-between items-center text-[10px] font-mono text-muted">
+                        <span class="text-gold font-bold">GRADES 9–12</span>
+                        <span class="text-emerald-400">● ACTIVE COHORT</span>
+                    </div>
+                    <h3 class="font-display font-bold text-lg text-bone">Algebra II, Pre-Calc & AP Calculus</h3>
+                    <p class="font-serif text-xs text-bone/75">
+                        Rigorous high school and AP Calculus AB/BC curriculum. Visual limits, differentiation mechanics, integration, and College Board exam mastery.
+                    </p>
+                    <div class="pt-2 flex justify-between items-center font-mono text-[11px]">
+                        <span class="text-gold font-bold">$350 / month</span>
+                        <a href="#contact" class="text-bone underline hover:text-gold">Save Seat →</a>
+                    </div>
+                </div>
+
+                <!-- Track 4: Private 1-on-1 & SAT -->
+                <div class="editorial-card p-5 rounded-2xl space-y-2">
+                    <div class="flex justify-between items-center text-[10px] font-mono text-muted">
+                        <span class="text-gold font-bold">CUSTOM PACING</span>
+                        <span class="text-amber-400">● LIMITED SLOTS</span>
+                    </div>
+                    <h3 class="font-display font-bold text-lg text-bone">Digital SAT, AMC Prep & Private Tutoring</h3>
+                    <p class="font-serif text-xs text-bone/75">
+                        Dedicated 1-on-1 coaching for Digital SAT 800 strategy, AMC 8/10/12 competition qualifiers, or emergency grade turnarounds.
+                    </p>
+                    <div class="pt-2 flex justify-between items-center font-mono text-[11px]">
+                        <span class="text-gold font-bold">$80 / hour</span>
+                        <a href="#contact" class="text-bone underline hover:text-gold">Book Consultation →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 005 / Tuition Transparency Callout -->
+        <section id="pricing" class="p-6 bg-[#080827] rounded-2xl border border-gold/30 space-y-3 font-mono text-xs">
+            <div class="flex items-center space-x-2 text-gold font-bold text-[11px] uppercase tracking-wider">
+                <span>⚠️ Note for Parents: The Cost of Inaction</span>
+            </div>
+            <p class="font-serif text-xs text-bone/85 leading-relaxed">
+                Pinpointing your child’s hidden conceptual bottleneck today takes 2 to 3 weeks of focused mentorship at our South Windsor studio; waiting until junior year forces them to unlearn years of calcified confusion under severe GPA pressure.
+            </p>
+            <div class="pt-1">
+                <a href="test.html" class="text-gold font-bold underline text-xs">Unlock Your Child's Confidence Today (Free Diagnostic) ↗</a>
+            </div>
+        </section>
+
+        <!-- 006 / Real Parent & Student Testimonials -->
+        <section id="testimonials" class="space-y-6 pt-4 scroll-mt-28">
+            <div class="flex items-center justify-between font-mono text-xs text-muted border-b border-midnight-border/40 pb-2">
+                <h2 class="text-gold font-bold uppercase tracking-wider text-[11px]">Parent & Student Stories</h2>
+                <span class="text-[10px]">South Windsor Studio</span>
+            </div>
+
+            <div class="space-y-4">
+                <div class="editorial-card p-5 rounded-2xl space-y-2.5">
+                    <div class="flex items-center space-x-1 text-gold text-xs">
+                        <span>★★★★★</span>
+                    </div>
+                    <p class="font-serif italic text-xs text-bone/90 leading-relaxed">
+                        "I had a great experience with Ms. Jyothi as my precalculus tutor, and would highly recommend her for anyone struggling with Math. She was incredibly helpful, breaking down complex topics in a way that made them easy to understand. Thanks to Ms. Jyothi's tutoring, I was able to improve my grades significantly."
+                    </p>
+                    <div class="font-mono text-[10px] text-gold/80 flex justify-between pt-1 border-t border-midnight-border/40">
+                        <span>Pre-Calculus Student</span>
+                        <span>South Windsor, CT</span>
+                    </div>
+                </div>
+
+                <div class="editorial-card p-5 rounded-2xl space-y-2.5">
+                    <div class="flex items-center space-x-1 text-gold text-xs">
+                        <span>★★★★★</span>
+                    </div>
+                    <p class="font-serif italic text-xs text-bone/90 leading-relaxed">
+                        "Jyothi Aunty clears concepts and helps me do great on quizzes. I get guaranteed A grades."
+                    </p>
+                    <div class="font-mono text-[10px] text-gold/80 flex justify-between pt-1 border-t border-midnight-border/40">
+                        <span>Middle & High School Track</span>
+                        <span>Connecticut Student</span>
+                    </div>
+                </div>
+
+                <div class="editorial-card p-5 rounded-2xl space-y-2.5">
+                    <div class="flex items-center space-x-1 text-gold text-xs">
+                        <span>★★★★★</span>
+                    </div>
+                    <p class="font-serif italic text-xs text-bone/90 leading-relaxed">
+                        "The lessons were very personalized yet well organized, and focused on the topics I needed the most help with. Difficult concepts were explained in a way that made them easy to understand. I saw a noticeable improvement in both problem-solving speed and accuracy, and my score was drastically improved."
+                    </p>
+                    <div class="font-mono text-[10px] text-gold/80 flex justify-between pt-1 border-t border-midnight-border/40">
+                        <span>SAT & Advanced Analysis Student</span>
+                        <span>Greater Hartford</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 007 / Mobile FAQs Accordion -->
+        <section id="faqs" class="space-y-4 pt-4 scroll-mt-28">
+            <div class="flex items-center justify-between font-mono text-xs text-muted border-b border-midnight-border/40 pb-2">
+                <h2 class="text-gold font-bold uppercase tracking-wider text-[11px]">Frequently Asked Questions</h2>
+                <span class="text-[10px]">Tap to Expand</span>
+            </div>
+
+            <div class="space-y-3 font-mono text-xs">
+                <details class="editorial-card p-4 rounded-xl cursor-pointer group">
+                    <summary class="font-sans font-bold text-sm text-gold flex justify-between items-center list-none">
+                        <span>Where is the South Windsor studio?</span>
+                        <span class="text-gold group-open:rotate-180 transition-transform">▼</span>
+                    </summary>
+                    <p class="font-serif text-xs text-bone/80 leading-relaxed mt-3 pt-3 border-t border-midnight-border/40">
+                        Our studio is located at <strong>17 Longmeadow Drive, South Windsor, CT 06074</strong>, conveniently located near South Windsor High School. We also conduct live, interactive online cohorts.
+                    </p>
+                </details>
+
+                <details class="editorial-card p-4 rounded-xl cursor-pointer group">
+                    <summary class="font-sans font-bold text-sm text-gold flex justify-between items-center list-none">
+                        <span>How small are the cohorts?</span>
+                        <span class="text-gold group-open:rotate-180 transition-transform">▼</span>
+                    </summary>
+                    <p class="font-serif text-xs text-bone/80 leading-relaxed mt-3 pt-3 border-t border-midnight-border/40">
+                        Cohorts are strictly capped at 4 to 8 students. This ensures your child receives personal attention, frequent checks for understanding, and never gets lost in a crowded classroom.
+                    </p>
+                </details>
+
+                <details class="editorial-card p-4 rounded-xl cursor-pointer group">
+                    <summary class="font-sans font-bold text-sm text-gold flex justify-between items-center list-none">
+                        <span>How do I get started with an assessment?</span>
+                        <span class="text-gold group-open:rotate-180 transition-transform">▼</span>
+                    </summary>
+                    <p class="font-serif text-xs text-bone/80 leading-relaxed mt-3 pt-3 border-t border-midnight-border/40">
+                        You can begin immediately with our free online <a href="test.html" class="text-gold underline font-bold">10-Minute Assessment</a>, or submit the contact form below to schedule an evaluation with Jyothi.
+                    </p>
+                </details>
+            </div>
+        </section>
+
+        <!-- 008 / Mobile-First 1-Minute Contact Form -->
+        <section id="contact" class="editorial-card p-6 rounded-3xl space-y-6 scroll-mt-28 border-gold/35">
+            <div class="space-y-2">
+                <div class="flex items-center justify-between font-mono text-[10px] text-muted">
+                    <span class="text-gold font-bold uppercase tracking-wider">008 / Direct Contact</span>
+                    <span class="text-emerald-400">● 24h Response</span>
+                </div>
+                <h3 class="font-display font-bold text-2xl text-bone">
+                    Connect with Jyothi
+                </h3>
+                <p class="font-serif text-xs text-bone/80 leading-relaxed">
+                    Enter your details below and Jyothi will personally review your student’s grade level and math goals. No spam, ever.
+                </p>
+            </div>
+
+            <form action="https://formspree.io/f/mojykkdn" method="POST" class="space-y-4 font-mono text-xs">
+                <div>
+                    <label for="m-name" class="block text-muted text-[10px] uppercase font-bold mb-1">Parent or Student Name *</label>
+                    <input id="m-name" type="text" name="Name" required placeholder="e.g. Sarah Jenkins" class="w-full bg-[#080827] border border-midnight-border rounded-xl px-3.5 py-3 text-bone focus:outline-none focus:border-gold">
+                </div>
+
+                <div>
+                    <label for="m-email" class="block text-muted text-[10px] uppercase font-bold mb-1">Email Address *</label>
+                    <input id="m-email" type="email" name="Email" required inputmode="email" placeholder="e.g. sarah@example.com" class="w-full bg-[#080827] border border-midnight-border rounded-xl px-3.5 py-3 text-bone focus:outline-none focus:border-gold">
+                </div>
+
+                <div>
+                    <label for="m-phone" class="block text-muted text-[10px] uppercase font-bold mb-1">Phone Number</label>
+                    <input id="m-phone" type="tel" name="Phone" inputmode="tel" placeholder="e.g. (860) 555-0199" class="w-full bg-[#080827] border border-midnight-border rounded-xl px-3.5 py-3 text-bone focus:outline-none focus:border-gold">
+                </div>
+
+                <div>
+                    <label for="m-grade" class="block text-muted text-[10px] uppercase font-bold mb-1">Student Grade Level *</label>
+                    <select id="m-grade" name="Grade Level" required class="w-full bg-[#080827] border border-midnight-border rounded-xl px-3.5 py-3 text-bone focus:outline-none focus:border-gold">
+                        <option value="" disabled selected>Select Grade...</option>
+                        <option value="Elementary">Elementary (Grades 3–5)</option>
+                        <option value="Middle School">Middle School (Grades 6–8)</option>
+                        <option value="High School">High School (Grades 9–12)</option>
+                        <option value="College">College / Advanced Prep</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="m-program" class="block text-muted text-[10px] uppercase font-bold mb-1">Program of Interest *</label>
+                    <select id="m-program" name="Program" required class="w-full bg-[#080827] border border-midnight-border rounded-xl px-3.5 py-3 text-bone focus:outline-none focus:border-gold">
+                        <option value="" disabled selected>Select Program...</option>
+                        <option value="Academic Cohort">Academic Group Cohort ($250–$350/mo)</option>
+                        <option value="SAT Prep">Digital SAT / ACT Accelerator</option>
+                        <option value="AP Calculus">AP Calculus AB/BC & Statistics</option>
+                        <option value="Private 1-on-1">Private 1-on-1 Mentorship ($80/hr)</option>
+                        <option value="AMC/AIME">AMC 8/10/12 Contest Prep</option>
+                        <option value="General Question">General Inquiry</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="m-msg" class="block text-muted text-[10px] uppercase font-bold mb-1">Current Math Challenges</label>
+                    <textarea id="m-msg" name="Message" rows="3" placeholder="Tell us about upcoming tests or areas where your child struggles..." class="w-full bg-[#080827] border border-midnight-border rounded-xl px-3.5 py-3 text-bone focus:outline-none focus:border-gold resize-none"></textarea>
+                </div>
+
+                <button type="submit" class="btn-gold w-full py-4 rounded-xl font-bold uppercase tracking-wider text-xs flex items-center justify-center space-x-2">
+                    <span>Connect with Jyothi & Plan Roadmap →</span>
+                </button>
+            </form>
+
+            <div class="pt-4 border-t border-midnight-border/40 text-center font-mono text-[11px] text-muted">
+                <span>Prefer direct email? </span>
+                <a href="mailto:rohan.kosur@gmail.com" class="text-gold underline font-semibold">rohan.kosur@gmail.com ↗</a>
+            </div>
+        </section>
+
+        <!-- Mobile Footer -->
+        <footer class="pt-8 pb-12 text-center font-mono text-xs text-muted space-y-4">
+            <div class="flex justify-center">
+                <img src="logo.png" alt="180 Math Logo" class="h-12 w-auto opacity-75">
+            </div>
+            <p class="text-bone/80 font-bold">180 Math · South Windsor, CT</p>
+            <p class="text-[11px] text-muted">17 Longmeadow Drive, South Windsor, CT 06074</p>
+            <div class="pt-3 flex justify-center space-x-6 text-[11px] text-gold">
+                <a href="index.html?view=desktop" class="underline">💻 View Full Desktop Site</a>
+                <a href="#top" class="hover:text-white">Back to top ↑</a>
+            </div>
+            <p class="text-[10px] text-muted/60 pt-2">© 2026 180 Math. All rights reserved.</p>
+        </footer>
+
+    </main>
+
+    <!-- Fixed Bottom Mobile Action Bar (Thumb Zone) -->
+    <nav aria-label="Mobile Quick Actions" class="fixed bottom-0 left-0 right-0 z-50 bg-[#080827]/96 backdrop-blur-2xl border-t border-gold/30 shadow-[0_-10px_30px_rgba(0,0,0,0.8)] mobile-bottom-bar px-4 pt-2.5">
+        <div class="grid grid-cols-3 gap-2 font-mono text-[11px]">
+            <a href="#bottleneck" class="py-2.5 px-2 bg-[#101144] rounded-xl border border-midnight-border text-center flex flex-col items-center justify-center text-muted active:text-gold active:bg-gold/15">
+                <span class="text-sm leading-none mb-0.5">🗺</span>
+                <span class="font-bold text-[10px] uppercase">Roadmap</span>
+            </a>
+            <a href="test.html" class="py-2.5 px-2 bg-gold text-midnight rounded-xl text-center flex flex-col items-center justify-center font-bold shadow-md active:bg-gold-light">
+                <span class="text-sm leading-none mb-0.5">📝</span>
+                <span class="text-[10px] uppercase tracking-wide">Free Test</span>
+            </a>
+            <a href="#contact" class="py-2.5 px-2 bg-[#101144] rounded-xl border border-gold/40 text-center flex flex-col items-center justify-center text-gold active:bg-gold/20">
+                <span class="text-sm leading-none mb-0.5">💬</span>
+                <span class="font-bold text-[10px] uppercase">Contact</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Interactive Mobile Scripts -->
+    <script>
+        // Menu toggle
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const menuDrawer = document.getElementById('mobile-menu-drawer');
+        function toggleMenu() {
+            if (menuDrawer) menuDrawer.classList.toggle('hidden');
+        }
+        if (menuBtn) menuBtn.addEventListener('click', toggleMenu);
+
+        // Live South Windsor CT Clock
+        function updateMobileClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('en-US', { hour12: false, timeZone: 'America/New_York' });
+            const clockEl = document.getElementById('mobile-clock');
+            if (clockEl) clockEl.innerText = `SW, CT ${timeStr} EST`;
+        }
+        setInterval(updateMobileClock, 1000);
+        updateMobileClock();
+
+        // Mobile Star Field Animation
+        (function initMobileStars() {
+            const canvas = document.getElementById('mobile-stars');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let w = canvas.width = window.innerWidth;
+            let h = canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            }, { passive: true });
+
+            const stars = [];
+            const count = Math.min(60, Math.floor(w * 0.12));
+            for (let i = 0; i < count; i++) {
+                stars.push({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    r: Math.random() * 1.4 + 0.4,
+                    alpha: Math.random() * 0.7 + 0.2,
+                    speed: Math.random() * 0.02 + 0.005,
+                    dir: Math.random() > 0.5 ? 1 : -1
+                });
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, w, h);
+                for (let i = 0; i < stars.length; i++) {
+                    const s = stars[i];
+                    s.alpha += s.speed * s.dir;
+                    if (s.alpha > 0.85) s.dir = -1;
+                    else if (s.alpha < 0.15) s.dir = 1;
+
+                    ctx.fillStyle = `rgba(229, 190, 133, ${s.alpha.toFixed(2)})`;
+                    ctx.fillRect(Math.floor(s.x), Math.floor(s.y), Math.ceil(s.r), Math.ceil(s.r));
+                }
+                requestAnimationFrame(draw);
+            }
+            requestAnimationFrame(draw);
+        })();
+    </script>
+</body>
+</html>

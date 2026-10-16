@@ -330,6 +330,22 @@
     <canvas id="celestial-canvas" class="fixed inset-0 z-[-1] pointer-events-none"></canvas>
     <canvas id="math-physics" class="fixed inset-0 z-[-1] pointer-events-none opacity-85"></canvas>
 
+    <!-- Mobile Experience Prompt Banner (Safari / Chrome on phone) -->
+    <aside aria-label="Mobile View Switcher" id="mobile-prompt-banner" class="hidden bg-gradient-to-r from-[#101144] via-[#1F1950] to-[#101144] border-b border-gold/40 px-4 py-2.5 text-xs font-mono text-bone z-[60] relative">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+            <div class="flex items-center space-x-2 min-w-0">
+                <span class="text-gold text-sm shrink-0">📱</span>
+                <span class="truncate text-[11px] text-bone/90">Browsing on your phone? Try our dedicated <strong class="text-gold">Mobile Edition</strong></span>
+            </div>
+            <div class="flex items-center space-x-2 shrink-0">
+                <a href="mobile.html" class="px-3 py-1 rounded-full bg-gold text-midnight font-bold text-[10px] uppercase tracking-wider hover:bg-gold-light transition-colors">
+                    Switch ↗
+                </a>
+                <button id="close-mobile-banner" class="text-muted hover:text-white px-1.5 py-0.5 text-xs" aria-label="Dismiss banner">✕</button>
+            </div>
+        </div>
+    </aside>
+
     <!-- Navigation Header with Separate Page Sections -->
     <header id="main-nav" class="fixed top-0 left-0 right-0 z-50 bg-[#0B0B33]/85 backdrop-blur-2xl border-b border-[#E5BE85]/15 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
         <!-- Scroll Reading Progress Line -->
@@ -384,6 +400,10 @@
             <a href="test.html" class="text-gold uppercase tracking-widest text-sm py-1 font-bold flex items-center justify-between" onclick="document.getElementById('mobile-drawer').classList.add('hidden')">
                 <span>See Your Child's True Potential</span>
                 <span>↗</span>
+            </a>
+            <a href="mobile.html" class="p-2.5 rounded-xl bg-gold/15 border border-gold/40 text-gold font-bold flex items-center justify-between text-xs mt-1">
+                <span>📱 Switch to Mobile Version</span>
+                <span>→</span>
             </a>
         </div>
     </header>
@@ -1665,6 +1685,7 @@
                     <span>© 2026 180 Math · All rights reserved</span>
                 </div>
                 <div class="flex items-center space-x-6">
+                    <a href="mobile.html" class="text-gold underline hover:text-white transition-colors">📱 Mobile Edition</a>
                     <span id="footer-clock">Local · --:--:--</span>
                     <a href="#top" class="text-gold hover:text-bone transition-colors">Back to top ↑</a>
                 </div>
@@ -1751,6 +1772,22 @@
             }
             heatmapContainer.innerHTML = html;
         }
+
+        // Show mobile banner if viewing on phone screen & not dismissed
+        (function checkMobile() {
+            if (window.innerWidth < 768 && !window.location.search.includes('view=desktop') && !sessionStorage.getItem('dismissMobileBanner')) {
+                const banner = document.getElementById('mobile-prompt-banner');
+                if (banner) banner.classList.remove('hidden');
+            }
+            const closeBtn = document.getElementById('close-mobile-banner');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    const banner = document.getElementById('mobile-prompt-banner');
+                    if (banner) banner.classList.add('hidden');
+                    sessionStorage.setItem('dismissMobileBanner', 'true');
+                });
+            }
+        })();
     </script>
     <script src="main.js?v=20261016"></script>
 </body>
