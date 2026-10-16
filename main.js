@@ -313,6 +313,230 @@ document.addEventListener("DOMContentLoaded", () => {
 
     requestAnimationFrame(animate);
 
+    // ========================================================
+    // 5.5 Handmade Pixelated Starfield & Slow Shooting Stars Engine
+    // ========================================================
+    const starCanvas = document.getElementById('celestial-canvas');
+    if (starCanvas) {
+        const sCtx = starCanvas.getContext('2d');
+        let sWidth = 0, sHeight = 0;
+
+        function resizeStarCanvas() {
+            sWidth = starCanvas.width = window.innerWidth;
+            sHeight = starCanvas.height = window.innerHeight;
+            initTwinkleStars();
+        }
+        window.addEventListener('resize', resizeStarCanvas, { passive: true });
+
+        // --- A. Pixelated Twinkling Stars (Handmade 16-bit Geometry) ---
+        let stars = [];
+
+        function initTwinkleStars() {
+            const count = window.innerWidth < 768 ? 65 : 130;
+            stars = [];
+            for (let i = 0; i < count; i++) {
+                stars.push({
+                    x: Math.random() * sWidth,
+                    y: Math.random() * sHeight,
+                    baseAlpha: 0.25 + Math.random() * 0.55,
+                    twinkleSpeed: 0.7 + Math.random() * 2.2,
+                    twinklePhase: Math.random() * Math.PI * 2,
+                    // 0: 1x1 micro-pixel, 1: 2x2 square, 2: 4-point cross, 3: diamond sparkle
+                    type: Math.random() < 0.6 ? 0 : (Math.random() < 0.82 ? 1 : (Math.random() < 0.95 ? 2 : 3)),
+                    // Warm gold (#E5BE85), Starlight bone (#FAF5E8), Pale diamond (#C8D7F0)
+                    color: Math.random() < 0.5 ? '229, 190, 133' : (Math.random() < 0.85 ? '250, 245, 232' : '200, 215, 240'),
+                    parallax: 0.04 + Math.random() * 0.08
+                });
+            }
+        }
+
+        // --- B. Slow-Moving Shooting Stars with Handmade Pixel Trail ---
+        let shootingStars = [];
+        let sparks = []; // Floating stardust embers shed by shooting stars
+        let lastSpawnTime = performance.now();
+        let nextSpawnDelay = 2200; // First shooting star appears gracefully soon
+
+        function createShootingStar() {
+            // Slight downward angle: 18 to 24 degrees below horizontal
+            const angleDeg = 18 + Math.random() * 6;
+            const angleRad = (angleDeg * Math.PI) / 180;
+            // Serene, meditative glide (slow moving)
+            const speed = 1.9 + Math.random() * 0.9;
+
+            // Spawn from upper-left quadrant
+            const startX = Math.random() * (sWidth * 0.5) - 60;
+            const startY = Math.random() * (sHeight * 0.35) - 30;
+
+            shootingStars.push({
+                x: startX,
+                y: startY,
+                vx: Math.cos(angleRad) * speed,
+                vy: Math.sin(angleRad) * speed,
+                length: 65 + Math.random() * 35, // Pixelated tail length
+                thickness: Math.random() > 0.4 ? 2 : 3,
+                alpha: 0,
+                maxAlpha: 0.85 + Math.random() * 0.15,
+                state: 'fade-in',
+                distanceTraveled: 0,
+                maxDistance: sWidth * 0.65 + Math.random() * (sWidth * 0.45),
+                color: Math.random() > 0.35 ? '229, 190, 133' : '250, 245, 232',
+                lastSparkDist: 0
+            });
+        }
+
+        let lastFrameTime = performance.now();
+
+        function renderCelestial(now) {
+            // Delta-time for silky high-FPS motion across 60Hz and 120Hz displays
+            const dt = Math.min((now - lastFrameTime) / 1000, 0.1);
+            lastFrameTime = now;
+
+            sCtx.clearRect(0, 0, sWidth, sHeight);
+
+            const scrollY = window.scrollY || 0;
+
+            // 1. Draw Pixelated Twinkling Stars
+            for (let i = 0; i < stars.length; i++) {
+                const star = stars[i];
+                const alphaMod = (Math.sin(now * 0.001 * star.twinkleSpeed + star.twinklePhase) + 1) * 0.5;
+                const alpha = Math.max(0.08, Math.min(1, star.baseAlpha * (0.35 + alphaMod * 0.75)));
+
+                // Subtle parallax on scroll with screen wrapping
+                let drawX = Math.floor(star.x);
+                let drawY = Math.floor((star.y - scrollY * star.parallax) % sHeight);
+                if (drawY < 0) drawY += sHeight;
+
+                sCtx.fillStyle = `rgba(${star.color}, ${alpha.toFixed(3)})`;
+
+                if (star.type === 0) {
+                    // 1x1 micro pixel
+                    sCtx.fillRect(drawX, drawY, 1, 1);
+                } else if (star.type === 1) {
+                    // 2x2 crisp pixel square
+                    sCtx.fillRect(drawX, drawY, 2, 2);
+                } else if (star.type === 2) {
+                    // 4-point handmade cross (with subtle flaring at twinkle peak)
+                    const armLen = alphaMod > 0.75 ? 2 : 1;
+                    sCtx.fillRect(drawX, drawY, 1, 1);
+                    sCtx.fillStyle = `rgba(${star.color}, ${(alpha * 0.7).toFixed(3)})`;
+                    sCtx.fillRect(drawX, drawY - armLen, 1, armLen);
+                    sCtx.fillRect(drawX, drawY + 1, 1, armLen);
+                    sCtx.fillRect(drawX - armLen, drawY, armLen, 1);
+                    sCtx.fillRect(drawX + 1, drawY, armLen, 1);
+                } else {
+                    // Diamond sparkle (5x5 pixel cluster)
+                    sCtx.fillRect(drawX, drawY, 2, 2);
+                    sCtx.fillStyle = `rgba(${star.color}, ${(alpha * 0.5).toFixed(3)})`;
+                    sCtx.fillRect(drawX, drawY - 2, 2, 1);
+                    sCtx.fillRect(drawX, drawY + 3, 2, 1);
+                    sCtx.fillRect(drawX - 2, drawY, 1, 2);
+                    sCtx.fillRect(drawX + 3, drawY, 1, 2);
+                }
+            }
+
+            // 2. Spawn Organic Shooting Stars
+            if (now - lastSpawnTime > nextSpawnDelay) {
+                if (shootingStars.length < 2) {
+                    createShootingStar();
+                }
+                lastSpawnTime = now;
+                nextSpawnDelay = 6000 + Math.random() * 7000; // Next shooting star in 6-13s
+            }
+
+            // 3. Update & Draw Shooting Stars (High FPS glide + handmade pixel wake)
+            for (let i = shootingStars.length - 1; i >= 0; i--) {
+                const s = shootingStars[i];
+
+                const moveDist = Math.hypot(s.vx, s.vy) * (dt * 60);
+                s.x += s.vx * (dt * 60);
+                s.y += s.vy * (dt * 60);
+                s.distanceTraveled += moveDist;
+
+                // Smooth organic fade in & fade out
+                if (s.state === 'fade-in') {
+                    s.alpha += dt * 1.5;
+                    if (s.alpha >= s.maxAlpha) {
+                        s.alpha = s.maxAlpha;
+                        s.state = 'gliding';
+                    }
+                } else if (s.state === 'gliding') {
+                    if (s.distanceTraveled > s.maxDistance || s.x > sWidth + 80 || s.y > sHeight + 80) {
+                        s.state = 'fade-out';
+                    }
+                } else if (s.state === 'fade-out') {
+                    s.alpha -= dt * 1.2;
+                    if (s.alpha <= 0) {
+                        shootingStars.splice(i, 1);
+                        continue;
+                    }
+                }
+
+                // Shed handmade pixel stardust embers along the path
+                if (s.distanceTraveled - s.lastSparkDist > 10) {
+                    s.lastSparkDist = s.distanceTraveled;
+                    sparks.push({
+                        x: s.x - (Math.random() - 0.5) * 4,
+                        y: s.y - (Math.random() - 0.5) * 4,
+                        alpha: s.alpha * (0.55 + Math.random() * 0.4),
+                        life: 1.4 + Math.random() * 0.8,
+                        maxLife: 1.4 + Math.random() * 0.8,
+                        color: s.color,
+                        size: Math.random() > 0.4 ? 1 : 2
+                    });
+                }
+
+                // Render stepped pixel tail (14 discrete integer segments)
+                const segments = 14;
+                const speedMag = Math.hypot(s.vx, s.vy);
+                const normVx = s.vx / speedMag;
+                const normVy = s.vy / speedMag;
+
+                for (let seg = segments; seg >= 0; seg--) {
+                    const t = seg / segments; // 1 at head, 0 at tail tip
+                    const segDist = (1 - t) * s.length;
+                    const px = Math.floor(s.x - normVx * segDist);
+                    const py = Math.floor(s.y - normVy * segDist);
+                    const segAlpha = s.alpha * Math.pow(t, 2.0) * 0.85;
+                    const segThickness = Math.max(1, Math.round(s.thickness * t));
+
+                    sCtx.fillStyle = `rgba(${s.color}, ${segAlpha.toFixed(3)})`;
+                    sCtx.fillRect(px, py, segThickness, segThickness);
+                }
+
+                // Pixel star head: 2x2 white core + warm gold halo
+                const hx = Math.floor(s.x);
+                const hy = Math.floor(s.y);
+                // Outer pixel halo
+                sCtx.fillStyle = `rgba(229, 190, 133, ${(s.alpha * 0.6).toFixed(3)})`;
+                sCtx.fillRect(hx - 1, hy, 4, 2);
+                sCtx.fillRect(hx, hy - 1, 2, 4);
+                // Core white-hot star
+                sCtx.fillStyle = `rgba(255, 252, 245, ${s.alpha.toFixed(3)})`;
+                sCtx.fillRect(hx, hy, 2, 2);
+            }
+
+            // 4. Update & Draw Stardust Embers (Floating handmade pixel sparks)
+            for (let i = sparks.length - 1; i >= 0; i--) {
+                const sp = sparks[i];
+                sp.life -= dt;
+                if (sp.life <= 0) {
+                    sparks.splice(i, 1);
+                    continue;
+                }
+                const progress = sp.life / sp.maxLife;
+                const curAlpha = sp.alpha * progress;
+
+                sCtx.fillStyle = `rgba(${sp.color}, ${curAlpha.toFixed(3)})`;
+                sCtx.fillRect(Math.floor(sp.x), Math.floor(sp.y), sp.size, sp.size);
+            }
+
+            requestAnimationFrame(renderCelestial);
+        }
+
+        resizeStarCanvas();
+        requestAnimationFrame(renderCelestial);
+    }
+
     // 6. Global Form Submit Handler (Loading State)
     document.querySelectorAll("form").forEach(form => {
         form.addEventListener("submit", (e) => {

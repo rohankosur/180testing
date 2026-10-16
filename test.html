@@ -33,10 +33,12 @@
         .option-label:hover { background-color: rgba(229, 190, 133, 0.1); }
         input[type="radio"]:checked + .option-label { background-color: rgba(229, 190, 133, 0.2); border-color: #E5BE85; box-shadow: 0 0 10px rgba(229, 190, 133, 0.2); }
         input[type="radio"]:focus-visible + .option-label { border-color: #E5BE85; box-shadow: 0 0 0 2px rgba(229, 190, 133, 0.5); outline: none; }
+        #celestial-canvas { image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges; }
     </style>
 </head>
 <body class="font-[system-ui] relative overflow-x-hidden flex flex-col min-h-screen">
 
+    <canvas id="celestial-canvas" class="fixed inset-0 z-[-1] pointer-events-none"></canvas>
     <canvas id="math-physics" class="fixed inset-0 z-[0] pointer-events-none opacity-90"></canvas>
     <div class="cinematic-noise"></div>
     <div class="global-light"></div>
