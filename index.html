@@ -13,6 +13,19 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Spline+Sans+Mono:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
     
+    <!-- KaTeX for pristine mathematical typography -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+        delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '\\[', right: '\\]', display: true},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '$', right: '$', display: false}
+        ],
+        throwOnError: false
+    });"></script>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -210,7 +223,7 @@
                     Diagnostic Test ↗
                 </a>
                 <div id="clock" class="hidden sm:block text-gold font-mono text-[11px] px-3 py-1 bg-[#101144]/80 border border-midnight-border rounded-full shadow-inner">
-                    BOS --:--:--
+                    SW, CT --:--:--
                 </div>
                 <button aria-label="Toggle navigation menu" class="md:hidden text-[#E5BE85] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E5BE85]/50 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center p-2" onclick="document.getElementById('mobile-drawer').classList.toggle('hidden')">
                     <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
@@ -244,9 +257,9 @@
 
             <!-- Metadata Top Row -->
             <div class="flex flex-wrap items-center justify-between text-muted font-mono text-xs tracking-wider mb-8 pb-3 border-b border-midnight-border/50 relative z-10">
-                <span class="text-gold">©26 / EDITION 2.4</span>
-                <span class="text-bone/80">MATHEMATICS MENTORSHIP & DIAGNOSTIC ENGINE</span>
-                <span class="hidden sm:inline text-muted">BOSTON, MA · 42.36°N / 71.06°W</span>
+                <span class="text-gold">©26 / SOUTH WINDSOR, CT</span>
+                <span class="text-bone/80">PREMIER MATHEMATICS MENTORSHIP FOR PARENTS & STUDENTS</span>
+                <span class="hidden sm:inline text-muted">SOUTH WINDSOR, CT · 41.83°N / 72.61°W</span>
             </div>
 
             <!-- Logo Centerpiece & Official Tagline Banner -->
@@ -259,7 +272,7 @@
                     <span class="text-midnight-border">/</span>
                     <span>02 — DIAGNOSTIC MAPPING</span>
                     <span class="text-midnight-border">/</span>
-                    <span>03 — UNCOMPROMISING MASTERY</span>
+                    <span>03 — UNCOMPROMISING CONFIDENCE</span>
                 </div>
             </div>
 
@@ -267,21 +280,21 @@
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-end relative z-10">
                 <div class="lg:col-span-8">
                     <div class="inline-flex items-center space-x-2 px-3 py-1 bg-gold/10 border border-gold/30 rounded-full font-mono text-[11px] text-gold mb-5 uppercase tracking-wider">
-                        <span>The Single Bottleneck in Math Mastery</span>
+                        <span>The Single Bottleneck in Your Child's Math Education</span>
                     </div>
                     <p class="font-serif text-2xl sm:text-3xl md:text-4xl text-bone leading-snug font-light mb-4">
-                        You’re not bad at math. You were just taught to <em class="font-serif italic text-gold font-normal">memorize</em> instead of intuit.
+                        Your child isn’t bad at math. They were just taught to <em class="font-serif italic text-gold font-normal">memorize</em> instead of intuit.
                     </p>
                     <p class="font-serif text-base sm:text-lg text-bone/75 leading-relaxed max-w-2xl mb-8">
-                        Why does solving 1,000 drill problems still lead to exam anxiety and score plateaus? Because rote algorithms collapse under pressure. At 180 Math, we diagnose the <strong class="text-gold font-semibold">one missing axiomatic gap</strong> holding your student back—turning intimidation into effortless, first-principles mastery.
+                        Watching your child study for hours—only to freeze on test day? Standard schooling rewards mechanical mimicry that collapses under exam pressure. At our South Windsor, CT studio, we diagnose the <strong class="text-gold font-semibold">one missing conceptual bottleneck</strong> holding your student back—turning kitchen-table homework stress into calm, lifelong mathematical confidence.
                     </p>
                     <div class="flex flex-wrap items-center gap-4 font-mono text-xs">
                         <a href="test.html" class="btn-gold px-7 py-3.5 rounded-full font-black uppercase tracking-wider flex items-center space-x-2">
-                            <span>Isolate Your Single Bottleneck</span>
+                            <span>Diagnose Your Child's Bottleneck</span>
                             <span>→</span>
                         </a>
                         <a href="#bottleneck" class="border border-gold/40 text-gold px-7 py-3.5 rounded-full hover:bg-gold/10 transition-colors uppercase tracking-wider font-semibold">
-                            Why Memorization Fails ↓
+                            Why Rote Drills Fail Parents ↓
                         </a>
                     </div>
                 </div>
@@ -307,10 +320,10 @@
             <!-- Real-Time Activity Bar in Midnight Navy -->
             <div class="mt-14 pt-6 border-t border-midnight-border/50 flex flex-wrap items-center justify-between text-xs font-mono text-muted gap-4 relative z-10">
                 <div>
-                    <span class="text-gold font-bold">Currently:</span> Enrolling Fall & Spring Cohorts · 1-on-1 & Small Group Seminars
+                    <span class="text-gold font-bold">Studio:</span> 17 Longmeadow Dr, South Windsor, CT · In-Person Cohorts & Live Online
                 </div>
                 <div class="text-right">
-                    <span class="text-gold font-bold">Track Record:</span> 94.2% Scored 5 on AP Exams · +180 Avg SAT Math Boost
+                    <span class="text-gold font-bold">Parent Outcomes:</span> 94.2% Score 5 on APs · +180 Avg SAT Boost · Zero Homework Tears
                 </div>
             </div>
         </section>
@@ -339,16 +352,16 @@
         <!-- The Single Bottleneck & Unique Mechanism Section -->
         <section id="bottleneck" class="py-24 border-b border-midnight-border scroll-mt-20">
             <div class="flex items-center justify-between font-mono text-xs text-muted mb-12">
-                <h2 class="text-gold font-bold uppercase tracking-wider">The Diagnostic Manifesto</h2>
+                <h2 class="text-gold font-bold uppercase tracking-wider">The Parent's Diagnostic Manifesto</h2>
                 <span>the root constraint & epistemic shift</span>
             </div>
 
             <div class="max-w-3xl mb-16">
                 <h3 class="font-display font-extrabold text-3xl sm:text-5xl text-bone tracking-tight leading-tight mb-6">
-                    Why solving 1,000 more problems won't raise your score.
+                    Why solving 1,000 more worksheets won't raise your child's score.
                 </h3>
                 <p class="font-serif text-lg sm:text-xl text-bone/80 leading-relaxed font-light">
-                    Every semester, ambitious students spend hundreds of hours doing textbook drills, buying prep books, and taking practice test after practice test—only to find their score trapped at a frustrating plateau. <strong class="text-gold font-semibold">It’s not because they lack intelligence or work ethic.</strong>
+                    Every semester, caring parents watch their children spend hundreds of hours doing textbook drills, buying prep books, and taking practice test after practice test—only to find their grades or SAT scores trapped at a frustrating plateau. <strong class="text-gold font-semibold">It’s not because your child lacks intelligence or work ethic.</strong>
                 </p>
             </div>
 
@@ -365,11 +378,11 @@
                             The Algorithmic Trap
                         </h4>
                         <p class="font-serif text-bone/75 text-sm leading-relaxed">
-                            Standard schooling rewards rote algorithmic mimicry: copy 10 steps from the whiteboard, memorize the formula for Friday’s quiz, and forget it two weeks later. This earns good report cards on routine homework—but collapses into sheer panic when an AP exam, competition test, or Digital SAT presents an unseen question twist.
+                            Standard schooling rewards rote algorithmic mimicry: copy 10 steps from the whiteboard, memorize the formula for Friday’s quiz, and forget it two weeks later. This earns high marks on routine homework—giving parents false reassurance—until an AP exam, contest, or Digital SAT presents an unseen question twist and your child freezes.
                         </p>
                     </div>
                     <div class="mt-6 pt-4 border-t border-midnight-border/40 text-[11px] text-muted">
-                        Verdict: <span class="text-bone">Memorization creates fragile knowledge.</span>
+                        Verdict: <span class="text-bone">Memorization creates fragile confidence.</span>
                     </div>
                 </div>
 
@@ -387,11 +400,11 @@
                             One Single Axiomatic Leak
                         </h4>
                         <p class="font-serif text-bone/75 text-sm leading-relaxed">
-                            You don’t have a talent problem. 95% of plateaued students are held back by <strong class="text-gold">one specific missing mental model</strong>—often an unmastered geometric relationship or algebraic intuition from 2 years prior. Because math is strictly cumulative, this single invisible leak poisons every chapter that follows.
+                            Your child does not have a talent deficit. 95% of plateaued students are held back by <strong class="text-gold">one specific missing mental model</strong>—often an unmastered concept from 1–2 grades prior. Because math is strictly cumulative, this single invisible leak creates chronic anxiety and poisons every chapter that follows.
                         </p>
                     </div>
                     <div class="mt-6 pt-4 border-t border-midnight-border/40 text-[11px] text-muted">
-                        Verdict: <span class="text-gold">Fix the single bottleneck, fix everything.</span>
+                        Verdict: <span class="text-gold">Fix the single bottleneck, restore your child's confidence.</span>
                     </div>
                 </div>
 
@@ -406,7 +419,7 @@
                             First-Principles Reconstruction
                         </h4>
                         <p class="font-serif text-bone/75 text-sm leading-relaxed">
-                            Traditional tutors throw more worksheets at the symptoms. At 180 Math, our proprietary <strong class="text-gold font-semibold">Concept-Gap Matrix™</strong> scans for the root inflection point where intuition broke down. We rebuild the axiom visually in minutes, and the entire school curriculum snaps into effortless focus.
+                            Commercial tutoring chains assign more repetitive worksheets that treat only the symptoms. At our South Windsor studio, Jyothi uses our proprietary <strong class="text-gold font-semibold">Concept-Gap Matrix™</strong> to pinpoint the exact inflection point where your child's intuition broke down. We rebuild the foundation visually from first principles, and school math suddenly snaps into effortless clarity.
                         </p>
                     </div>
                     <div class="mt-6 pt-4 border-t border-midnight-border/40 text-[11px] text-muted">
@@ -420,7 +433,7 @@
                 <div class="text-center max-w-2xl mx-auto mb-10">
                     <span class="font-mono text-xs text-gold uppercase tracking-wider">Epistemic Asymmetry · Two Mathematical Realities</span>
                     <h4 class="font-display font-bold text-2xl sm:text-3xl text-bone mt-2">
-                        How the Top 1% Think Differently
+                        Two Paths for Your Child: Rote Grind vs. Intuition Engine
                     </h4>
                 </div>
 
@@ -429,14 +442,14 @@
                     <div class="p-6 bg-[#080827] rounded-xl border border-red-500/20">
                         <div class="text-red-400 font-bold uppercase tracking-wider pb-3 border-b border-red-500/20 mb-4 flex items-center justify-between">
                             <span>The Rote Grind (The 95%)</span>
-                            <span>✕ OUTDATED</span>
+                            <span>✕ HIGH STRESS</span>
                         </div>
                         <ul class="space-y-3 font-serif text-sm text-bone/70">
-                            <li class="flex items-start space-x-2"><span class="text-red-400 font-mono">✕</span><span>Memorizes 150+ isolated formulas with zero derivation</span></li>
+                            <li class="flex items-start space-x-2"><span class="text-red-400 font-mono">✕</span><span>Nightly kitchen-table tears, frustration, and arguments over homework</span></li>
+                            <li class="flex items-start space-x-2"><span class="text-red-400 font-mono">✕</span><span>Memorizes 150+ isolated formulas with zero conceptual derivation</span></li>
                             <li class="flex items-start space-x-2"><span class="text-red-400 font-mono">✕</span><span>Freezes when exam problems alter question framing or variables</span></li>
-                            <li class="flex items-start space-x-2"><span class="text-red-400 font-mono">✕</span><span>Wastes 15+ hours weekly on brute-force drill worksheets</span></li>
-                            <li class="flex items-start space-x-2"><span class="text-red-400 font-mono">✕</span><span>Plateaus at 620–680 SAT Math and AP 3 with chronic test anxiety</span></li>
-                            <li class="flex items-start space-x-2"><span class="text-red-400 font-mono">✕</span><span>Views mathematics as a hostile chore to survive</span></li>
+                            <li class="flex items-start space-x-2"><span class="text-red-400 font-mono">✕</span><span>15+ hours weekly on drill sheets; plateaus at 620–680 SAT & AP 3</span></li>
+                            <li class="flex items-start space-x-2"><span class="text-red-400 font-mono">✕</span><span>Secretly concludes "I'm just not a math person" and dreads STEM</span></li>
                         </ul>
                     </div>
 
@@ -447,19 +460,19 @@
                             <span>✓ FIRST PRINCIPLES</span>
                         </div>
                         <ul class="space-y-3 font-serif text-sm text-bone/90">
-                            <li class="flex items-start space-x-2"><span class="text-gold font-mono">✓</span><span>Derives any advanced formula from 3 core axioms in 5 seconds</span></li>
-                            <li class="flex items-start space-x-2"><span class="text-gold font-mono">✓</span><span>Instantly recognizes the underlying geometric/algebraic archetype</span></li>
-                            <li class="flex items-start space-x-2"><span class="text-gold font-mono">✓</span><span>Solves 5 high-leverage diagnostic proofs that unlock whole units</span></li>
+                            <li class="flex items-start space-x-2"><span class="text-gold font-mono">✓</span><span>Independent, confident homework completion with zero parental stress</span></li>
+                            <li class="flex items-start space-x-2"><span class="text-gold font-mono">✓</span><span>Derives any advanced formula from 3 core visual axioms in seconds</span></li>
+                            <li class="flex items-start space-x-2"><span class="text-gold font-mono">✓</span><span>Solves unfamiliar, tricky exam problems with calm analytical composure</span></li>
                             <li class="flex items-start space-x-2"><span class="text-gold font-mono">✓</span><span>Attains effortless 780–800 SAT Math and 5 on AP Calculus</span></li>
-                            <li class="flex items-start space-x-2"><span class="text-gold font-mono">✓</span><span>Views mathematics as a confident, creative, lifelong superpower</span></li>
+                            <li class="flex items-start space-x-2"><span class="text-gold font-mono">✓</span><span>Builds lifelong mathematical confidence that unlocks top university STEM</span></li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="mt-10 pt-6 border-t border-midnight-border/40 flex flex-wrap justify-between items-center gap-4">
-                    <span class="font-mono text-xs text-muted">Ready to stop drilling blindly and diagnose your student's single constraint?</span>
+                    <span class="font-mono text-xs text-muted">Ready to eliminate kitchen-table math stress and diagnose your child's single constraint?</span>
                     <a href="test.html" class="btn-gold px-6 py-3 rounded-full font-mono text-xs font-bold uppercase tracking-wider flex items-center space-x-2">
-                        <span>Take Free 10-Min Diagnostic Test</span>
+                        <span>Take Free 10-Min Parent Diagnostic Evaluation</span>
                         <span>→</span>
                     </a>
                 </div>
@@ -480,10 +493,10 @@
                         Mastery is not memorization. It’s <em class="font-serif italic text-gold font-normal">intuition.</em>
                     </p>
                     <p class="font-serif text-lg text-bone/80 leading-relaxed">
-                        At 180 Math, we strongly believe every child can succeed in mathematics when taught with patience, clarity, and genuine encouragement. Founded in 2026, 180math.com is the culmination of more than a decade of teaching leadership led by <strong class="text-gold font-semibold">Jyothi</strong>, whose mentorship has guided students from elementary arithmetic through high-school multivariable calculus and AP courses.
+                        At 180 Math, we strongly believe every child can succeed in mathematics when taught with patience, clarity, and genuine encouragement. Founded by <strong class="text-gold font-semibold">Jyothi</strong> with over a decade of dedicated teaching leadership, our South Windsor studio mentors students from elementary arithmetic through multivariable calculus, AP courses, and contest math.
                     </p>
                     <p class="font-serif text-lg text-bone/75 leading-relaxed">
-                        What sets 180 Math apart is our commitment to intimate, small class sizes. In our cohorts, students feel comfortable asking questions, making mistakes, and building unshakeable confidence at their own pace. Whether learning in person at our studio or online globally, we turn the intimidation often associated with math into a sense of lasting accomplishment.
+                        We actively partner with parents throughout South Windsor, Ellington, Glastonbury, and Greater Hartford. In our small, single-digit cohorts (4–8 students), your child receives individualized attention in an encouraging, non-judgmental environment. Parents receive regular milestone briefings, direct tutor communication, and complete curriculum alignment—transforming math from a stressful household debate into a shared source of confidence.
                     </p>
                     <div class="pt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 font-mono text-xs text-muted">
                         <div class="p-4 bg-[#080827] rounded-xl border border-midnight-border">
@@ -720,14 +733,14 @@
                 <span class="font-mono text-xs text-gold">Includes Custom Alignment & DeltaMath Drills</span>
             </div>
 
-            <!-- The Compounding Cost of Waiting Callout -->
+            <!-- The Compounding Cost of Waiting Callout for Parents -->
             <div class="mb-12 p-6 sm:p-8 bg-[#080827] rounded-2xl border border-gold/30 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 shadow-[0_0_30px_rgba(229,190,133,0.06)]">
                 <div class="max-w-2xl">
                     <div class="flex items-center space-x-2 text-gold font-mono text-xs uppercase tracking-wider mb-2 font-bold">
-                        <span>⚠️ The Compounding Cost of Inaction</span>
+                        <span>⚠️ A Critical Note for Parents: The Compounding Cost of Inaction</span>
                     </div>
                     <p class="font-serif text-bone/90 text-sm sm:text-base leading-relaxed">
-                        Mathematics is strictly cumulative. A single undetected conceptual leak in middle school or Algebra quietly metastasizes into paralysis in Pre-Calculus, permanently suppressing your student's SAT score and college STEM admissions. <strong class="text-gold font-semibold">Fixing an axiomatic bottleneck today takes 2 weeks of focused mentorship; waiting until junior year requires unlearning 3 years of calcified confusion.</strong>
+                        Mathematics is strictly cumulative. A single undetected conceptual leak in 7th grade or Algebra I quietly snowballs into Pre-Calculus paralysis, shutting doors to AP STEM tracks and competitive college admissions. <strong class="text-gold font-semibold">Pinpointing your child’s axiomatic bottleneck today takes 2 to 3 weeks of focused mentorship at our South Windsor studio; waiting until junior year forces them to unlearn years of calcified confusion under severe GPA pressure.</strong>
                     </p>
                 </div>
                 <div class="shrink-0 w-full lg:w-auto">
@@ -1467,25 +1480,36 @@
 
     <!-- Interactive Scripts -->
     <script>
-        // Live Boston Clock
+        // Live South Windsor, CT Clock
         function updateClock() {
             const now = new Date();
             const timeStr = now.toLocaleTimeString('en-US', { hour12: false, timeZone: 'America/New_York' });
             const clockEl = document.getElementById('clock');
             const footerClockEl = document.getElementById('footer-clock');
-            if (clockEl) clockEl.innerText = `BOS ${timeStr} EST`;
-            if (footerClockEl) footerClockEl.innerText = `Boston · ${timeStr} EST`;
+            if (clockEl) clockEl.innerText = `SW, CT ${timeStr} EST`;
+            if (footerClockEl) footerClockEl.innerText = `South Windsor, CT · ${timeStr} EST`;
         }
         setInterval(updateClock, 1000);
         updateClock();
 
-        // Problem of the Week Toggle
+        // Problem of the Week Toggle & Math Rendering
         function toggleSolution() {
             const tray = document.getElementById('solution-tray');
             const arrow = document.getElementById('solution-arrow');
             if (tray.classList.contains('hidden')) {
                 tray.classList.remove('hidden');
                 arrow.innerText = '↑';
+                if (window.renderMathInElement) {
+                    renderMathInElement(tray, {
+                        delimiters: [
+                            {left: '$$', right: '$$', display: true},
+                            {left: '\\[', right: '\\]', display: true},
+                            {left: '\\(', right: '\\)', display: false},
+                            {left: '$', right: '$', display: false}
+                        ],
+                        throwOnError: false
+                    });
+                }
             } else {
                 tray.classList.add('hidden');
                 arrow.innerText = '↓';
