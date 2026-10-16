@@ -191,18 +191,108 @@
             image-rendering: -moz-crisp-edges;
             image-rendering: crisp-edges;
         }
+
+        /* -------------------------------------------------------------
+           Vertical Slide Animations (Apple / Luxury Editorial Standard)
+           - Intentional Easing: cubic-bezier(0.16, 1, 0.3, 1)
+           - Hardware Acceleration: transform + opacity on compositor
+           - Restrained & Purposeful: 28px - 36px offset
+           ------------------------------------------------------------- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Zoom-and-Scale vertical slide */
+        .reveal-scale {
+            opacity: 0;
+            transform: translateY(28px) scale(0.96);
+            transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+
+        .reveal-scale.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Staggered container cascades */
+        .stagger-children > *:nth-child(1) { transition-delay: 0.05s; }
+        .stagger-children > *:nth-child(2) { transition-delay: 0.15s; }
+        .stagger-children > *:nth-child(3) { transition-delay: 0.25s; }
+        .stagger-children > *:nth-child(4) { transition-delay: 0.35s; }
+        .stagger-children > *:nth-child(5) { transition-delay: 0.45s; }
+        .stagger-children > *:nth-child(6) { transition-delay: 0.55s; }
+
+        /* Slide-Down / Slide-Up Navbar */
+        #main-nav {
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                        background-color 0.3s ease,
+                        box-shadow 0.3s ease;
+            will-change: transform;
+        }
+        #main-nav.nav-hidden {
+            transform: translateY(-105%);
+        }
+
+        /* Scroll Progress Bar */
+        #scroll-progress {
+            transform-origin: left;
+            will-change: transform;
+        }
+
+        /* Pinned Step Storytelling */
+        .sticky-story-step {
+            transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .sticky-story-step.step-active {
+            border-color: rgba(229, 190, 133, 0.55) !important;
+            box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.8), 0 0 25px -5px rgba(229, 190, 133, 0.2) !important;
+            transform: translateY(-2px);
+        }
+
+        /* Slide-up quick consultation drawer */
+        #slide-drawer {
+            transform: translateY(140%);
+            transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+            will-change: transform, opacity;
+        }
+        #slide-drawer.drawer-visible {
+            transform: translateY(0);
+        }
+
+        /* Accessibility: respect prefers-reduced-motion */
+        @media (prefers-reduced-motion: reduce) {
+            .reveal, .reveal-scale, #main-nav, #slide-drawer, .stagger-children > * {
+                transition: none !important;
+                transform: none !important;
+                opacity: 1 !important;
+                animation: none !important;
+            }
+        }
     </style>
 </head>
 <body class="selection:bg-gold/25 selection:text-gold relative overflow-x-hidden min-h-screen isolate">
 
     <div class="cinematic-noise"></div>
     <div class="bg-grid"></div>
-    <div class="cosmic-light"></div>
+    <div class="cosmic-light" data-parallax="-0.15"></div>
     <canvas id="celestial-canvas" class="fixed inset-0 z-[-1] pointer-events-none"></canvas>
     <canvas id="math-physics" class="fixed inset-0 z-[-1] pointer-events-none opacity-85"></canvas>
 
     <!-- Navigation Header with Separate Page Sections -->
-    <header class="fixed top-0 left-0 right-0 z-50 bg-[#0B0B33]/85 backdrop-blur-2xl border-b border-[#E5BE85]/15 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+    <header id="main-nav" class="fixed top-0 left-0 right-0 z-50 bg-[#0B0B33]/85 backdrop-blur-2xl border-b border-[#E5BE85]/15 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+        <!-- Scroll Reading Progress Line -->
+        <div id="scroll-progress" class="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-gold/30 via-gold to-white origin-left scale-x-0 pointer-events-none"></div>
         <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
             <!-- Brand Emblem -->
             <a href="index.html" class="flex items-center space-x-3 group">
@@ -272,7 +362,7 @@
             </div>
 
             <!-- Logo Centerpiece & Official Tagline Banner -->
-            <div class="flex flex-col items-center text-center relative z-10 mb-8">
+            <div class="flex flex-col items-center text-center relative z-10 mb-8 reveal-scale">
                 <div class="relative inline-block animate-float">
                     <img src="logo.png" alt="180 Math Logo Banner" class="w-full max-w-sm sm:max-w-md md:max-w-lg object-contain drop-shadow-[0_20px_45px_rgba(0,0,0,0.8)] filter brightness-105" style="mix-blend-mode: lighten;">
                 </div>
@@ -286,7 +376,7 @@
             </div>
 
             <!-- Two-Column Editorial Row -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-end relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-end relative z-10 reveal">
                 <div class="lg:col-span-8">
                     <div class="inline-flex items-center space-x-2 px-3 py-1 bg-gold/10 border border-gold/30 rounded-full font-mono text-[11px] text-gold mb-5 uppercase tracking-wider">
                         <span>The Single Bottleneck in Your Child's Math Education</span>
@@ -309,7 +399,7 @@
                 </div>
 
                 <!-- Circular Rotating Stamp with Mini Logo Pi Center -->
-                <div class="lg:col-span-4 flex justify-start lg:justify-end">
+                <div class="lg:col-span-4 flex justify-start lg:justify-end" data-parallax="0.06">
                     <a href="#philosophy" class="relative w-36 h-36 flex items-center justify-center group cursor-pointer">
                         <svg class="absolute inset-0 w-full h-full animate-spin-slow text-gold/70 group-hover:text-gold transition-colors" viewBox="0 0 100 100">
                             <path id="circlePath" fill="none" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" />
@@ -327,7 +417,7 @@
             </div>
 
             <!-- Real-Time Activity Bar in Midnight Navy -->
-            <div class="mt-14 pt-6 border-t border-midnight-border/50 flex flex-wrap items-center justify-between text-xs font-mono text-muted gap-4 relative z-10">
+            <div class="mt-14 pt-6 border-t border-midnight-border/50 flex flex-wrap items-center justify-between text-xs font-mono text-muted gap-4 relative z-10 reveal">
                 <div>
                     <span class="text-gold font-bold">Studio:</span> 17 Longmeadow Dr, South Windsor, CT · In-Person Cohorts & Live Online
                 </div>
@@ -360,12 +450,12 @@
 
         <!-- The Single Bottleneck & Unique Mechanism Section -->
         <section id="bottleneck" class="py-24 border-b border-midnight-border scroll-mt-20">
-            <div class="flex items-center justify-between font-mono text-xs text-muted mb-12">
+            <div class="flex items-center justify-between font-mono text-xs text-muted mb-12 reveal">
                 <h2 class="text-gold font-bold uppercase tracking-wider">The Parent's Diagnostic Manifesto</h2>
                 <span>the root constraint & epistemic shift</span>
             </div>
 
-            <div class="max-w-3xl mb-16">
+            <div class="max-w-3xl mb-16 reveal">
                 <h3 class="font-display font-extrabold text-3xl sm:text-5xl text-bone tracking-tight leading-tight mb-6">
                     Why solving 1,000 more worksheets won't raise your child's score.
                 </h3>
@@ -374,71 +464,119 @@
                 </p>
             </div>
 
-            <!-- 3 Pillars of The Single Bottleneck -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 font-mono text-xs">
-                <!-- Pillar 1: The Absolution -->
-                <div class="editorial-card p-8 rounded-2xl flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-center text-muted pb-3 mb-4 border-b border-midnight-border/40">
-                            <span class="text-gold font-bold">01 / THE CONVENTIONAL LIE</span>
-                            <span>MIMICRY</span>
+            <!-- Sticky Container Storytelling: 3 Pillars of The Single Bottleneck -->
+            <div class="lg:grid lg:grid-cols-12 gap-8 items-start mb-16">
+                <!-- Sticky Left Pinned Narrative Card -->
+                <div class="hidden lg:block lg:col-span-4 sticky top-28 self-start space-y-4">
+                    <div class="editorial-card p-6 rounded-2xl border-gold/40 shadow-xl">
+                        <div class="flex items-center space-x-2 text-gold font-mono text-[11px] font-bold uppercase tracking-wider mb-2">
+                            <span class="w-2 h-2 rounded-full bg-gold animate-pulse"></span>
+                            <span>Diagnostic Sequence</span>
                         </div>
-                        <h4 class="font-display font-bold text-xl text-bone mb-3">
-                            The Algorithmic Trap
-                        </h4>
-                        <p class="font-serif text-bone/75 text-sm leading-relaxed">
-                            Standard schooling rewards rote algorithmic mimicry: copy 10 steps from the whiteboard, memorize the formula for Friday’s quiz, and forget it two weeks later. This earns high marks on routine homework—giving parents false reassurance—until an AP exam, contest, or Digital SAT presents an unseen question twist and your child freezes.
+                        <h4 class="font-display font-bold text-xl text-bone mb-2">The Epistemic Breakthrough</h4>
+                        <p class="font-serif text-bone/70 text-xs leading-relaxed mb-6">
+                            Follow how our South Windsor studio isolates the single hidden bottleneck holding your child back:
                         </p>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-midnight-border/40 text-[11px] text-muted">
-                        Verdict: <span class="text-bone">Memorization creates fragile confidence.</span>
+                        <!-- Pinned Step Navigation Track -->
+                        <div class="space-y-3 font-mono text-xs">
+                            <div id="step-nav-1" class="step-nav-item flex items-center space-x-3 p-3 rounded-xl border border-gold/50 bg-gold/15 text-gold transition-all">
+                                <span class="w-6 h-6 rounded-full border border-current flex items-center justify-center text-[10px] font-bold shrink-0">01</span>
+                                <div>
+                                    <div class="font-bold leading-none">The Algorithmic Trap</div>
+                                    <div class="text-[10px] opacity-75 mt-0.5">Rote Mimicry vs. True Understanding</div>
+                                </div>
+                            </div>
+                            <div id="step-nav-2" class="step-nav-item flex items-center space-x-3 p-3 rounded-xl border border-midnight-border text-muted transition-all">
+                                <span class="w-6 h-6 rounded-full border border-current flex items-center justify-center text-[10px] font-bold shrink-0">02</span>
+                                <div>
+                                    <div class="font-bold leading-none">The Axiomatic Leak</div>
+                                    <div class="text-[10px] opacity-75 mt-0.5">The One Core Bottleneck</div>
+                                </div>
+                            </div>
+                            <div id="step-nav-3" class="step-nav-item flex items-center space-x-3 p-3 rounded-xl border border-midnight-border text-muted transition-all">
+                                <span class="w-6 h-6 rounded-full border border-current flex items-center justify-center text-[10px] font-bold shrink-0">03</span>
+                                <div>
+                                    <div class="font-bold leading-none">First-Principles Matrix</div>
+                                    <div class="text-[10px] opacity-75 mt-0.5">Visual Axiom Reconstruction</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-midnight-border/50 text-[11px] font-mono text-gold flex items-center justify-between">
+                            <span>Scroll to advance steps</span>
+                            <span>↓</span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Pillar 2: The One Big Domino -->
-                <div class="editorial-card p-8 rounded-2xl flex flex-col justify-between border-gold/40 relative">
-                    <div class="absolute -top-3 right-6 px-3 py-0.5 bg-gold text-midnight font-mono text-[10px] font-bold rounded-full uppercase tracking-wider">
-                        The Core Bottleneck
-                    </div>
-                    <div>
-                        <div class="flex justify-between items-center text-muted pb-3 mb-4 border-b border-midnight-border/40">
-                            <span class="text-gold font-bold">02 / THE ROOT CAUSE</span>
-                            <span>THE LINCHPIN</span>
+                <!-- Right Column: Vertical Slide Story Cards -->
+                <div class="lg:col-span-8 space-y-8 font-mono text-xs">
+                    <!-- Pillar 1: The Absolution -->
+                    <div id="story-step-1" class="editorial-card p-8 rounded-2xl flex flex-col justify-between reveal sticky-story-step step-active" data-step="1">
+                        <div>
+                            <div class="flex justify-between items-center text-muted pb-3 mb-4 border-b border-midnight-border/40">
+                                <span class="text-gold font-bold">01 / THE CONVENTIONAL LIE</span>
+                                <span class="px-2 py-0.5 bg-red-500/10 text-red-400 rounded-full text-[10px]">MIMICRY</span>
+                            </div>
+                            <h4 class="font-display font-bold text-2xl text-bone mb-3">
+                                The Algorithmic Trap
+                            </h4>
+                            <p class="font-serif text-bone/75 text-base leading-relaxed">
+                                Standard schooling rewards rote algorithmic mimicry: copy 10 steps from the whiteboard, memorize the formula for Friday’s quiz, and forget it two weeks later. This earns high marks on routine homework—giving parents false reassurance—until an AP exam, contest, or Digital SAT presents an unseen question twist and your child freezes.
+                            </p>
                         </div>
-                        <h4 class="font-display font-bold text-xl text-bone mb-3">
-                            One Single Axiomatic Leak
-                        </h4>
-                        <p class="font-serif text-bone/75 text-sm leading-relaxed">
-                            Your child does not have a talent deficit. 95% of plateaued students are held back by <strong class="text-gold">one specific missing mental model</strong>—often an unmastered concept from 1–2 grades prior. Because math is strictly cumulative, this single invisible leak creates chronic anxiety and poisons every chapter that follows.
-                        </p>
+                        <div class="mt-6 pt-4 border-t border-midnight-border/40 text-xs text-muted flex justify-between items-center">
+                            <span>Diagnostic Verdict:</span>
+                            <span class="text-bone font-serif italic text-sm">Memorization creates fragile confidence.</span>
+                        </div>
                     </div>
-                    <div class="mt-6 pt-4 border-t border-midnight-border/40 text-[11px] text-muted">
-                        Verdict: <span class="text-gold">Fix the single bottleneck, restore your child's confidence.</span>
-                    </div>
-                </div>
 
-                <!-- Pillar 3: The Unique Mechanism -->
-                <div class="editorial-card p-8 rounded-2xl flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-center text-muted pb-3 mb-4 border-b border-midnight-border/40">
-                            <span class="text-gold font-bold">03 / THE MECHANISM</span>
-                            <span>DIAGNOSTIC MATRIX</span>
+                    <!-- Pillar 2: The One Big Domino -->
+                    <div id="story-step-2" class="editorial-card p-8 rounded-2xl flex flex-col justify-between border-gold/40 relative reveal sticky-story-step" data-step="2">
+                        <div class="absolute -top-3 right-6 px-3 py-0.5 bg-gold text-midnight font-mono text-[10px] font-bold rounded-full uppercase tracking-wider">
+                            The Core Bottleneck
                         </div>
-                        <h4 class="font-display font-bold text-xl text-bone mb-3">
-                            First-Principles Reconstruction
-                        </h4>
-                        <p class="font-serif text-bone/75 text-sm leading-relaxed">
-                            Commercial tutoring chains assign more repetitive worksheets that treat only the symptoms. At our South Windsor studio, Jyothi uses our proprietary <strong class="text-gold font-semibold">Concept-Gap Matrix™</strong> to pinpoint the exact inflection point where your child's intuition broke down. We rebuild the foundation visually from first principles, and school math suddenly snaps into effortless clarity.
-                        </p>
+                        <div>
+                            <div class="flex justify-between items-center text-muted pb-3 mb-4 border-b border-midnight-border/40">
+                                <span class="text-gold font-bold">02 / THE ROOT CAUSE</span>
+                                <span class="px-2 py-0.5 bg-gold/15 text-gold rounded-full text-[10px]">THE LINCHPIN</span>
+                            </div>
+                            <h4 class="font-display font-bold text-2xl text-bone mb-3">
+                                One Single Axiomatic Leak
+                            </h4>
+                            <p class="font-serif text-bone/75 text-base leading-relaxed">
+                                Your child does not have a talent deficit. 95% of plateaued students are held back by <strong class="text-gold font-semibold">one specific missing mental model</strong>—often an unmastered concept from 1–2 grades prior. Because math is strictly cumulative, this single invisible leak creates chronic anxiety and poisons every chapter that follows.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-midnight-border/40 text-xs text-muted flex justify-between items-center">
+                            <span>Diagnostic Verdict:</span>
+                            <span class="text-gold font-serif italic text-sm">Fix the single bottleneck, restore your child's confidence.</span>
+                        </div>
                     </div>
-                    <div class="mt-6 pt-4 border-t border-midnight-border/40 text-[11px] text-muted">
-                        Verdict: <span class="text-bone">True intuition never needs memorizing.</span>
+
+                    <!-- Pillar 3: The Unique Mechanism -->
+                    <div id="story-step-3" class="editorial-card p-8 rounded-2xl flex flex-col justify-between reveal sticky-story-step" data-step="3">
+                        <div>
+                            <div class="flex justify-between items-center text-muted pb-3 mb-4 border-b border-midnight-border/40">
+                                <span class="text-gold font-bold">03 / THE MECHANISM</span>
+                                <span class="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 rounded-full text-[10px]">DIAGNOSTIC MATRIX</span>
+                            </div>
+                            <h4 class="font-display font-bold text-2xl text-bone mb-3">
+                                First-Principles Reconstruction
+                            </h4>
+                            <p class="font-serif text-bone/75 text-base leading-relaxed">
+                                Commercial tutoring chains assign more repetitive worksheets that treat only the symptoms. At our South Windsor studio, Jyothi uses our proprietary <strong class="text-gold font-semibold">Concept-Gap Matrix™</strong> to pinpoint the exact inflection point where your child's intuition broke down. We rebuild the foundation visually from first principles, and school math suddenly snaps into effortless clarity.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-midnight-border/40 text-xs text-muted flex justify-between items-center">
+                            <span>Diagnostic Verdict:</span>
+                            <span class="text-bone font-serif italic text-sm">True intuition never needs memorizing.</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- Epistemic Contrast: The Rote Grind vs. First-Principles Intuition -->
-            <div class="editorial-card p-8 sm:p-12 rounded-2xl">
+            <div class="editorial-card p-8 sm:p-12 rounded-2xl reveal">
                 <div class="text-center max-w-2xl mx-auto mb-10">
                     <span class="font-mono text-xs text-gold uppercase tracking-wider">Epistemic Asymmetry · Two Mathematical Realities</span>
                     <h4 class="font-display font-bold text-2xl sm:text-3xl text-bone mt-2">
@@ -491,12 +629,12 @@
         <!-- 001 / About & Philosophy Section -->
         <section id="about" class="py-24 border-b border-midnight-border scroll-mt-20">
             <span id="philosophy" class="scroll-mt-20"></span>
-            <div class="flex items-center justify-between font-mono text-xs text-muted mb-10">
+            <div class="flex items-center justify-between font-mono text-xs text-muted mb-10 reveal">
                 <h2 class="text-gold font-bold uppercase tracking-wider">001 / About 180 Math</h2>
                 <span>/who-we-are & mentorship</span>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center reveal">
                 <div class="lg:col-span-7 space-y-6">
                     <p class="font-serif text-3xl sm:text-4xl text-bone leading-tight font-light">
                         Mastery is not memorization. It’s <em class="font-serif italic text-gold font-normal">intuition.</em>
@@ -523,7 +661,7 @@
                 </div>
 
                 <!-- Technical Specification Sheet with Logo Watermark -->
-                <div class="lg:col-span-5 editorial-card p-7 rounded-2xl relative overflow-hidden font-mono text-xs space-y-4">
+                <div class="lg:col-span-5 editorial-card p-7 rounded-2xl relative overflow-hidden font-mono text-xs space-y-4 reveal-scale">
                     <img src="logo.png" alt="" class="absolute right-4 bottom-4 w-32 h-auto opacity-10 pointer-events-none filter grayscale">
                     
                     <div class="text-gold font-bold pb-3 border-b border-midnight-border/50 uppercase tracking-wider flex justify-between items-center">
@@ -564,7 +702,7 @@
         <!-- 002 / Program Offerings Section -->
         <section id="program" class="py-24 border-b border-midnight-border scroll-mt-20">
             <span id="curriculum" class="scroll-mt-20"></span>
-            <div class="flex flex-wrap items-baseline justify-between mb-12">
+            <div class="flex flex-wrap items-baseline justify-between mb-12 reveal">
                 <div>
                     <h2 class="font-display font-bold text-3xl sm:text-4xl text-bone uppercase tracking-tight">
                         Program Offerings <sup class="text-gold font-mono text-sm">(04 Tracks)</sup>
@@ -575,7 +713,7 @@
             </div>
 
             <!-- Curriculum Cards Grid in Midnight Navy -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 stagger-children reveal">
                 <!-- Card 1 -->
                 <article class="editorial-card p-8 rounded-2xl flex flex-col justify-between">
                     <div>
@@ -732,7 +870,7 @@
 
         <!-- 003 / Pricing & Investment Section -->
         <section id="pricing" class="py-24 border-b border-midnight-border scroll-mt-20">
-            <div class="flex flex-wrap items-baseline justify-between mb-12">
+            <div class="flex flex-wrap items-baseline justify-between mb-12 reveal">
                 <div>
                     <h2 class="font-display font-bold text-3xl sm:text-4xl text-bone uppercase tracking-tight">
                         Tuition & Pricing <sup class="text-gold font-mono text-sm">(04 Plans)</sup>
@@ -743,7 +881,7 @@
             </div>
 
             <!-- The Compounding Cost of Waiting Callout for Parents -->
-            <div class="mb-12 p-6 sm:p-8 bg-[#080827] rounded-2xl border border-gold/30 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 shadow-[0_0_30px_rgba(229,190,133,0.06)]">
+            <div class="mb-12 p-6 sm:p-8 bg-[#080827] rounded-2xl border border-gold/30 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 shadow-[0_0_30px_rgba(229,190,133,0.06)] reveal-scale">
                 <div class="max-w-2xl">
                     <div class="flex items-center space-x-2 text-gold font-mono text-xs uppercase tracking-wider mb-2 font-bold">
                         <span>⚠️ A Critical Note for Parents: The Compounding Cost of Inaction</span>
@@ -760,7 +898,7 @@
             </div>
 
             <!-- Pricing Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 stagger-children reveal">
                 <!-- Elementary Card -->
                 <div class="editorial-card p-6 rounded-2xl flex flex-col justify-between">
                     <div>
@@ -882,13 +1020,13 @@
         <!-- 004 / Proof & Testimonials Section -->
         <section id="testimonials" class="py-24 border-b border-midnight-border scroll-mt-20">
             <span id="proof" class="scroll-mt-20"></span>
-            <div class="flex items-center justify-between font-mono text-xs text-muted mb-12">
+            <div class="flex items-center justify-between font-mono text-xs text-muted mb-12 reveal">
                 <h2 class="text-gold font-bold uppercase tracking-wider">004 / Proof & Testimonials</h2>
                 <span>empirical results & student voices</span>
             </div>
 
             <!-- Big Stat Grid in Midnight Blue -->
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-16 stagger-children reveal">
                 <div class="editorial-card p-6 rounded-2xl text-center sm:text-left">
                     <div class="font-display font-black text-4xl sm:text-5xl text-gold mb-2">+180</div>
                     <div class="font-mono text-xs text-muted uppercase tracking-wider">Avg SAT Math Gain</div>
@@ -912,7 +1050,7 @@
             </div>
 
             <!-- Activity Heatmap Representation -->
-            <div class="editorial-card p-8 rounded-2xl">
+            <div class="editorial-card p-8 rounded-2xl reveal">
                 <div class="flex flex-wrap justify-between items-center font-mono text-xs text-muted mb-6">
                     <div>180math.com/cohorts · 52-week diagnostic activity</div>
                     <div class="flex items-center space-x-2">
@@ -932,7 +1070,7 @@
             </div>
 
             <!-- Real Learner Testimonial Cards -->
-            <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 font-mono text-xs">
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 font-mono text-xs stagger-children reveal">
                 <div class="editorial-card p-6 rounded-2xl flex flex-col justify-between">
                     <p class="font-serif text-sm text-bone/85 italic leading-relaxed mb-6">
                         "I had a great experience here at 180math. The lessons were very personalized yet well organized, and focused on the topics I needed the most help with. Difficult concepts were explained in a way that made them easy to understand. I saw a noticeable improvement in both problem-solving speed and accuracy, and my score was drastically improved."
@@ -1015,12 +1153,12 @@
 
         <!-- 005 / Courtside Math Section -->
         <section id="challenge" class="py-24 border-b border-midnight-border scroll-mt-20">
-            <div class="flex items-center justify-between font-mono text-xs text-muted mb-12">
+            <div class="flex items-center justify-between font-mono text-xs text-muted mb-12 reveal">
                 <h2 class="text-gold font-bold uppercase tracking-wider">005 / Courtside Math</h2>
                 <span>problem of the week</span>
             </div>
 
-            <div class="editorial-card p-8 sm:p-12 rounded-2xl border-gold/30">
+            <div class="editorial-card p-8 sm:p-12 rounded-2xl border-gold/30 reveal-scale">
                 <div class="flex flex-wrap items-center justify-between font-mono text-xs text-muted mb-6 gap-2">
                     <span class="px-3 py-1 bg-gold/15 text-gold rounded-full border border-gold/40 font-bold uppercase">
                         Challenge #42 · AMC 12 / AIME Level
@@ -1060,13 +1198,13 @@
 
         <!-- Behind the Chalkboard Section -->
         <section class="py-24 border-b border-midnight-border">
-            <div class="flex items-center justify-between font-mono text-xs text-muted mb-12">
+            <div class="flex items-center justify-between font-mono text-xs text-muted mb-12 reveal">
                 <h2 class="text-gold font-bold uppercase tracking-wider">Moments in the Studio</h2>
                 <span>behind the chalkboard</span>
             </div>
 
             <!-- Studio Photo Cards with Emblem -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 font-mono text-xs">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 font-mono text-xs stagger-children reveal">
                 <div class="editorial-card p-6 rounded-2xl flex flex-col justify-between">
                     <div>
                         <div class="text-gold mb-3 font-bold">01 / 03 · SW_STUDIO</div>
@@ -1102,7 +1240,7 @@
 
         <!-- 006 / Academic Schedule & Calendar Section -->
         <section id="schedule" class="py-24 border-b border-midnight-border scroll-mt-20">
-            <div class="flex flex-wrap items-baseline justify-between mb-12">
+            <div class="flex flex-wrap items-baseline justify-between mb-12 reveal">
                 <div>
                     <h2 class="font-display font-bold text-3xl sm:text-4xl text-bone uppercase tracking-tight">
                         Academic Schedule <sup class="text-gold font-mono text-sm">(2026–2027)</sup>
@@ -1114,7 +1252,7 @@
                 </a>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start reveal">
                 <div class="lg:col-span-7 editorial-card p-8 rounded-2xl space-y-6">
                     <h3 class="font-display font-bold text-2xl text-bone">
                         36 Weeks of Structured Mastery
@@ -1188,7 +1326,7 @@
 
         <!-- 007 / Frequently Asked Questions Section -->
         <section id="faqs" class="py-24 border-b border-midnight-border scroll-mt-20">
-            <div class="flex flex-wrap items-baseline justify-between mb-12">
+            <div class="flex flex-wrap items-baseline justify-between mb-12 reveal">
                 <div>
                     <h2 class="font-display font-bold text-3xl sm:text-4xl text-bone uppercase tracking-tight">
                         Frequently Asked Questions <sup class="text-gold font-mono text-sm">(07)</sup>
@@ -1198,7 +1336,7 @@
                 <span class="font-mono text-xs text-muted">Click any question to expand</span>
             </div>
 
-            <div class="space-y-4 max-w-4xl mx-auto">
+            <div class="space-y-4 max-w-4xl mx-auto stagger-children reveal">
                 <details class="editorial-card p-6 rounded-2xl cursor-pointer group">
                     <summary class="font-display font-bold text-lg text-gold flex justify-between items-center list-none focus:outline-none">
                         <span>Where are you located for in-person lessons?</span>
@@ -1273,7 +1411,7 @@
 
         <!-- 008 / Contact & Consultation Section -->
         <section id="contact" class="py-24 border-b border-midnight-border scroll-mt-20">
-            <div class="flex flex-wrap items-baseline justify-between mb-12">
+            <div class="flex flex-wrap items-baseline justify-between mb-12 reveal">
                 <div>
                     <h2 class="font-display font-bold text-3xl sm:text-4xl text-bone uppercase tracking-tight">
                         Initialize Contact <sup class="text-gold font-mono text-sm">(Direct)</sup>
@@ -1283,7 +1421,7 @@
                 <span class="font-mono text-xs text-emerald-400">● Responses within 24 Hours</span>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 reveal">
                 <!-- Left Info Card -->
                 <div class="lg:col-span-5 editorial-card p-8 rounded-2xl flex flex-col justify-between">
                     <div>
@@ -1486,6 +1624,30 @@
         </footer>
 
     </main>
+
+    <!-- Slide-Out Quick Action Consultation Drawer -->
+    <div id="slide-drawer" class="fixed bottom-6 right-6 z-40 max-w-sm w-full mx-4 sm:mx-0 editorial-card p-5 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.85)] border border-gold/40 flex items-start space-x-4 pointer-events-auto">
+        <div class="w-10 h-10 rounded-xl bg-gold/15 border border-gold/30 flex items-center justify-center text-gold shrink-0 mt-0.5">
+            <span class="font-mono font-bold text-sm">180°</span>
+        </div>
+        <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between mb-1">
+                <span class="font-mono text-[10px] font-bold text-gold uppercase tracking-wider">South Windsor Studio</span>
+                <button id="close-drawer" class="text-muted hover:text-white text-xs px-1 focus:outline-none" aria-label="Close notification">✕</button>
+            </div>
+            <p class="font-sans text-xs text-bone/90 font-medium leading-snug mb-2.5">
+                Planning your child's 2026–2027 math trajectory?
+            </p>
+            <div class="flex items-center space-x-2">
+                <a href="#schedule" class="inline-flex items-center text-[11px] font-mono font-bold text-midnight bg-gold px-3 py-1.5 rounded-lg hover:bg-gold-light transition-colors shadow-sm">
+                    Book Diagnostic ↗
+                </a>
+                <a href="test.html" class="inline-flex items-center text-[11px] font-mono text-gold/90 hover:text-white px-2 py-1.5 transition-colors">
+                    Free Evaluation
+                </a>
+            </div>
+        </div>
+    </div>
 
     <!-- Interactive Scripts -->
     <script>

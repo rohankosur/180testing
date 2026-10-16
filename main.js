@@ -1,10 +1,65 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Scroll setting
+    // 1. Scroll & Vertical Motion Dynamics
     let ticking = false;
+    let lastScrollY = window.scrollY || 0;
+    const mainNav = document.getElementById('main-nav');
+    const scrollProgress = document.getElementById('scroll-progress');
+    const slideDrawer = document.getElementById('slide-drawer');
+    const closeDrawerBtn = document.getElementById('close-drawer');
+    let drawerDismissed = false;
+
+    if (closeDrawerBtn && slideDrawer) {
+        closeDrawerBtn.addEventListener('click', () => {
+            drawerDismissed = true;
+            slideDrawer.classList.remove('drawer-visible');
+        });
+    }
+
     window.addEventListener('scroll', () => {
         if (!ticking) {
             window.requestAnimationFrame(() => {
-                document.documentElement.style.setProperty('--scroll', window.scrollY + 'px');
+                const currentScrollY = window.scrollY || 0;
+                document.documentElement.style.setProperty('--scroll', currentScrollY + 'px');
+
+                // A. Reading progress bar pinned to navbar
+                if (scrollProgress) {
+                    const maxScroll = (document.documentElement.scrollHeight || 1) - window.innerHeight;
+                    const progress = maxScroll > 0 ? Math.min(1, Math.max(0, currentScrollY / maxScroll)) : 0;
+                    scrollProgress.style.transform = `scaleX(${progress})`;
+                }
+
+                // B. Vertical slide navbar auto-hide on scroll down, reveal on scroll up
+                if (mainNav) {
+                    if (currentScrollY > 150) {
+                        const diff = currentScrollY - lastScrollY;
+                        if (diff > 8) {
+                            mainNav.classList.add('nav-hidden');
+                        } else if (diff < -5) {
+                            mainNav.classList.remove('nav-hidden');
+                        }
+                    } else {
+                        mainNav.classList.remove('nav-hidden');
+                    }
+                }
+
+                // C. Slide-up bottom consultation drawer
+                if (slideDrawer && !drawerDismissed) {
+                    if (currentScrollY > 450) {
+                        slideDrawer.classList.add('drawer-visible');
+                    } else {
+                        slideDrawer.classList.remove('drawer-visible');
+                    }
+                }
+
+                // D. Scroll Parallax Elements
+                const parallaxEls = document.querySelectorAll('[data-parallax]');
+                parallaxEls.forEach(el => {
+                    const speed = parseFloat(el.dataset.parallax) || 0.08;
+                    const offset = Math.round(currentScrollY * speed);
+                    el.style.transform = `translate3d(0, ${offset}px, 0)`;
+                });
+
+                lastScrollY = currentScrollY;
                 ticking = false;
             });
             ticking = true;
@@ -39,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 30);
     }
 
-    // 3. Reveal Observer
+    // 3. Reveal Observer with Staggered Cascades & Zoom-Scale support
     const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -50,8 +105,34 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
         });
-    }, { threshold: 0.15 });
-    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+    }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+    document.querySelectorAll('.reveal, .reveal-scale').forEach(el => revealObserver.observe(el));
+
+    // 3.5 Sticky Storytelling Step Observer
+    const storySteps = document.querySelectorAll('.sticky-story-step');
+    const stepNavItems = document.querySelectorAll('.step-nav-item');
+    if (storySteps.length > 0 && stepNavItems.length > 0) {
+        const stepObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const stepNum = entry.target.dataset.step;
+                    storySteps.forEach(s => s.classList.remove('step-active'));
+                    entry.target.classList.add('step-active');
+                    stepNavItems.forEach((nav, idx) => {
+                        if (String(idx + 1) === String(stepNum)) {
+                            nav.classList.add('border-gold/50', 'bg-gold/15', 'text-gold');
+                            nav.classList.remove('border-midnight-border', 'text-muted');
+                        } else {
+                            nav.classList.remove('border-gold/50', 'bg-gold/15', 'text-gold');
+                            nav.classList.add('border-midnight-border', 'text-muted');
+                        }
+                    });
+                }
+            });
+        }, { threshold: 0.45, rootMargin: "-10% 0px -30% 0px" });
+
+        storySteps.forEach(s => stepObserver.observe(s));
+    }
 
     // 4. Cached rects for cards & mouse move
     window.cards = Array.from(document.querySelectorAll(".spotlight-card, .btn-glow"));
