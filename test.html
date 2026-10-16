@@ -1,42 +1,184 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Placement Evaluation | 180 Math</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Diagnostic Evaluation Engine | 180 Math</title>
+    <meta name="description" content="180 Math Diagnostic Engine: Pinpoint the hidden conceptual fractures from middle or early high school holding back your child's math potential.">
+    <meta name="theme-color" content="#0B0B33">
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <!-- Editorial & Architectural Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Spline+Sans+Mono:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
+
+    <!-- KaTeX for pristine mathematical typography -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['"Bricolage Grotesque"', 'sans-serif'],
+                        serif: ['"Newsreader"', 'serif'],
+                        mono: ['"Spline Sans Mono"', 'monospace'],
+                    },
+                    colors: {
+                        midnight: '#0B0B33',
+                        'midnight-card': '#101144',
+                        'midnight-surface': '#080827',
+                        'midnight-border': 'rgba(229, 190, 133, 0.18)',
+                        gold: '#E5BE85',
+                        'gold-light': '#F5DFC0',
+                        'gold-dim': '#C49A58',
+                        silver: '#E0E5EC',
+                        bone: '#FAF5E8',
+                        muted: '#8E9AB0'
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
         :root { --scroll: 0px; }
-        html { scroll-behavior: smooth; background-color: #0B0B33; color: #E5BE85; font-family: system-ui, -apple-system, sans-serif; }
+        html { scroll-behavior: smooth; background-color: #0B0B33; color: #FAF5E8; }
         body { background-color: #0B0B33; }
 
-        .cinematic-noise { position: fixed; inset: 0; z-index: 9999; pointer-events: none; opacity: 0.05; mix-blend-mode: overlay; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
-        .global-light { position: fixed; top: -20vh; left: -20vw; width: 80vw; height: 80vh; background: radial-gradient(circle at center, rgba(229, 190, 133, 0.08) 0%, transparent 70%); z-index: -3; pointer-events: none; }
-        .bg-grid { position: fixed; inset: -50vh -50vw; z-index: -4; background-color: #0B0B33; background-image: linear-gradient(to right, rgba(229, 190, 133, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(229, 190, 133, 0.03) 1px, transparent 1px); background-size: 50px 50px; transform: translateY(calc(var(--scroll) * 0.15)); }
+        .cinematic-noise {
+            position: fixed; inset: 0; z-index: 9999; pointer-events: none; opacity: 0.045; mix-blend-mode: overlay;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+        .global-light {
+            position: fixed; top: -20vh; left: -20vw; width: 80vw; height: 80vh;
+            background: radial-gradient(circle at center, rgba(229, 190, 133, 0.08) 0%, transparent 70%);
+            z-index: -3; pointer-events: none;
+        }
+        .bg-grid {
+            position: fixed; inset: -50vh -50vw; z-index: -4; background-color: #0B0B33;
+            background-image: linear-gradient(to right, rgba(229, 190, 133, 0.035) 1px, transparent 1px), linear-gradient(to bottom, rgba(229, 190, 133, 0.035) 1px, transparent 1px);
+            background-size: 50px 50px; transform: translateY(calc(var(--scroll) * 0.12));
+        }
 
         .perspective-container { perspective: 1200px; }
-        .spotlight-card { position: relative; background: linear-gradient(135deg, rgba(11, 11, 51, 0.9) 0%, rgba(11, 11, 51, 0.6) 100%); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-top: 1px solid rgba(229, 190, 133, 0.15); border-left: 1px solid rgba(229, 190, 133, 0.1); border-bottom: 1px solid rgba(0, 0, 0, 0.5); border-right: 1px solid rgba(0, 0, 0, 0.5); box-shadow: 20px 30px 60px rgba(0, 0, 0, 0.4), -5px -5px 20px rgba(229, 190, 133, 0.03); transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease; transform-style: preserve-3d; border-radius: 1.5rem; will-change: transform; }
-        .spotlight-card > * { transform: translateZ(30px); }
-        .spotlight-card::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(229, 190, 133, 0.15), transparent 40%); transition: opacity 0.3s; opacity: 0; border-radius: inherit; }
+        .spotlight-card {
+            position: relative;
+            background: linear-gradient(135deg, rgba(16, 17, 68, 0.9) 0%, rgba(11, 11, 51, 0.75) 100%);
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border-top: 1px solid rgba(229, 190, 133, 0.22);
+            border-left: 1px solid rgba(229, 190, 133, 0.14);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.6);
+            border-right: 1px solid rgba(0, 0, 0, 0.6);
+            box-shadow: 20px 30px 60px rgba(0, 0, 0, 0.45), -5px -5px 20px rgba(229, 190, 133, 0.03);
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease, border-color 0.3s ease;
+            transform-style: preserve-3d;
+            border-radius: 1.5rem;
+            will-change: transform;
+        }
+        .spotlight-card > * { transform: translateZ(25px); }
+        .spotlight-card::after {
+            content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(229, 190, 133, 0.18), transparent 45%);
+            transition: opacity 0.3s; opacity: 0; border-radius: inherit;
+        }
         .spotlight-card:hover::after { opacity: 1; }
-        .spotlight-card:hover { box-shadow: 30px 40px 70px rgba(0, 0, 0, 0.6), -5px -5px 25px rgba(229, 190, 133, 0.15); z-index: 20; }
+        .spotlight-card:hover {
+            box-shadow: 30px 40px 70px rgba(0, 0, 0, 0.65), -5px -5px 25px rgba(229, 190, 133, 0.15);
+            z-index: 20;
+        }
 
-        .btn-glow { position: relative; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 10px 20px rgba(0,0,0,0.4); transform: translateZ(50px); }
-        .btn-glow:hover { box-shadow: 0 15px 30px rgba(229, 190, 133, 0.4), 0 5px 15px rgba(0,0,0,0.5); transform: translateY(-8px) translateZ(50px); }
+        /* Thermal Solution & Mentorship Warmth */
+        .thermal-solution {
+            background: linear-gradient(180deg, rgba(16, 17, 68, 0.55) 0%, rgba(36, 26, 80, 0.85) 30%, rgba(46, 32, 96, 0.88) 75%, rgba(16, 17, 68, 0.55) 100%);
+            border: 1px solid rgba(229, 190, 133, 0.38);
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(229, 190, 133, 0.25), 0 0 55px -10px rgba(229, 190, 133, 0.16);
+        }
+        .warmth-card {
+            background: linear-gradient(145deg, rgba(34, 28, 88, 0.95) 0%, rgba(22, 18, 64, 0.98) 100%);
+            border: 1px solid rgba(229, 190, 133, 0.4);
+            box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(229, 190, 133, 0.25), 0 0 40px -5px rgba(229, 190, 133, 0.18);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #E5BE85 0%, #C49A58 100%);
+            color: #0B0B33;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 8px 24px -4px rgba(229, 190, 133, 0.35);
+        }
+        .btn-gold:hover:not(:disabled) {
+            background: linear-gradient(135deg, #F5DFC0 0%, #D4AF37 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px -4px rgba(229, 190, 133, 0.55);
+        }
+
+        .btn-glow {
+            position: relative; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4); transform: translateZ(35px);
+        }
+        .btn-glow:hover {
+            box-shadow: 0 15px 30px rgba(229, 190, 133, 0.4), 0 5px 15px rgba(0,0,0,0.5);
+            transform: translateY(-4px) translateZ(35px);
+        }
+
         .link-hover { transition: color .2s ease, text-shadow .2s ease; }
         .link-hover:hover { color: #ffffff; text-shadow: 0 0 12px rgba(229,190,133,.6); }
 
-        .reveal { opacity: 0; transform: translateY(40px) translateZ(-50px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); will-change: transform, opacity; }
-        .reveal.active { opacity: 1; transform: translateY(0) translateZ(0); }
+        .reveal { opacity: 0; transform: translateY(32px); transition: all 0.85s cubic-bezier(0.16, 1, 0.3, 1); will-change: transform, opacity; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
 
-        .option-label { cursor: pointer; transition: all 0.2s; }
-        .option-label:hover { background-color: rgba(229, 190, 133, 0.1); }
-        input[type="radio"]:checked + .option-label { background-color: rgba(229, 190, 133, 0.2); border-color: #E5BE85; box-shadow: 0 0 10px rgba(229, 190, 133, 0.2); }
-        input[type="radio"]:focus-visible + .option-label { border-color: #E5BE85; box-shadow: 0 0 0 2px rgba(229, 190, 133, 0.5); outline: none; }
-        #celestial-canvas { image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges; }
+        /* Option Item Radio Styles */
+        .option-item {
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(229, 190, 133, 0.2);
+            background: rgba(16, 17, 68, 0.5);
+        }
+        .option-item:hover {
+            background-color: rgba(229, 190, 133, 0.12);
+            border-color: rgba(229, 190, 133, 0.45);
+            transform: translateX(4px);
+        }
+        .option-item.selected {
+            background-color: rgba(229, 190, 133, 0.22);
+            border-color: #E5BE85;
+            box-shadow: 0 0 20px rgba(229, 190, 133, 0.25);
+        }
+        .option-item.correct-reveal {
+            background-color: rgba(16, 185, 129, 0.22) !important;
+            border-color: #10B981 !important;
+            box-shadow: 0 0 22px rgba(16, 185, 129, 0.35) !important;
+        }
+        .option-item.wrong-reveal {
+            background-color: rgba(239, 68, 68, 0.22) !important;
+            border-color: #EF4444 !important;
+            box-shadow: 0 0 22px rgba(239, 68, 68, 0.35) !important;
+        }
+
+        /* KaTeX rendering tweaks */
+        .katex-display {
+            margin: 0.8em 0 !important;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 4px 0;
+        }
+        .katex {
+            font-size: 1.08em;
+            color: #FAF5E8;
+        }
+
+        #celestial-canvas {
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+        }
     </style>
 </head>
-<body class="font-[system-ui] relative overflow-x-hidden flex flex-col min-h-screen isolate">
+<body class="font-sans relative overflow-x-hidden flex flex-col min-h-screen isolate text-bone">
 
     <canvas id="celestial-canvas" class="fixed inset-0 z-[-1] pointer-events-none"></canvas>
     <canvas id="math-physics" class="fixed inset-0 z-[0] pointer-events-none opacity-90"></canvas>
@@ -45,7 +187,7 @@
     <div class="bg-grid"></div>
 
     <!-- Navigation Header -->
-    <header class="fixed top-0 left-0 right-0 z-50 bg-[#0B0B33]/85 backdrop-blur-2xl border-b border-[#E5BE85]/15 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+    <header class="fixed top-0 left-0 right-0 z-50 bg-[#0B0B33]/90 backdrop-blur-2xl border-b border-[#E5BE85]/15 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
         <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
             <!-- Brand Emblem -->
             <a href="index.html#top" class="flex items-center space-x-3 group">
@@ -56,7 +198,7 @@
                 </div>
             </a>
 
-            <!-- Nav Links matching the 8 sections -->
+            <!-- Nav Links -->
             <nav class="hidden md:flex items-center space-x-5 lg:space-x-7 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-[#E5BE85]/80">
                 <a href="index.html#top" class="link-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E5BE85]/50 rounded-sm">Home</a>
                 <a href="index.html#about" class="link-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E5BE85]/50 rounded-sm">About</a>
@@ -70,8 +212,11 @@
 
             <!-- Actions -->
             <div class="flex items-center space-x-3">
+                <a href="index.html" class="hidden sm:inline-flex items-center text-xs font-mono text-gold hover:text-white px-3 py-1.5 transition-colors">
+                    ← Back to Overview
+                </a>
                 <span class="inline-flex items-center justify-center h-8 px-3.5 text-[11px] font-mono font-semibold text-midnight bg-gold rounded-full shadow-md">
-                    Diagnostic Test ●
+                    Diagnostic Engine ●
                 </span>
                 <button aria-label="Toggle navigation menu" class="md:hidden text-[#E5BE85] focus:outline-none p-2" onclick="document.getElementById('mobile-drawer').classList.toggle('hidden')">
                     <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
@@ -92,180 +237,804 @@
         </div>
     </header>
 
-    <section class="flex-grow pt-40 pb-24 px-6 relative z-10 perspective-container flex flex-col justify-center items-center">
+    <!-- Main Diagnostic Section -->
+    <main class="flex-grow pt-36 md:pt-40 pb-24 px-4 sm:px-6 relative z-10 perspective-container flex flex-col justify-center items-center">
         <div class="max-w-4xl w-full" id="quiz-container">
-            <div class="text-center mb-12 reveal active">
-                <h1 class="text-5xl font-black text-[#E5BE85] mb-6 tracking-tighter decipher-text drop-shadow-lg">Placement Evaluation</h1>
-                <p class="text-lg text-[#E5BE85]/80 leading-relaxed font-light tracking-wide drop-shadow-md">Select your tier to begin the diagnostic test.</p>
-            </div>
 
-            <!-- Tier Selection -->
-            <div id="tier-selection" class="grid md:grid-cols-3 gap-8 reveal active">
-                <button onclick="startQuiz('elementary')" class="spotlight-card p-10 text-center btn-glow focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E5BE85] rounded-2xl">
-                    <h3 class="text-2xl font-bold text-[#E5BE85] mb-4">Elementary</h3>
-                    <p class="text-[#E5BE85]/80 text-sm font-light">Grades 3-5</p>
-                </button>
-                <button onclick="startQuiz('middle')" class="spotlight-card p-10 text-center btn-glow focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E5BE85] rounded-2xl">
-                    <h3 class="text-2xl font-bold text-[#E5BE85] mb-4">Middle School</h3>
-                    <p class="text-[#E5BE85]/80 text-sm font-light">Grades 6-8</p>
-                </button>
-                <button onclick="startQuiz('high')" class="spotlight-card p-10 text-center btn-glow focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E5BE85] rounded-2xl">
-                    <h3 class="text-2xl font-bold text-[#E5BE85] mb-4">High School / SAT</h3>
-                    <p class="text-[#E5BE85]/80 text-sm font-light">Grades 9-12</p>
-                </button>
-            </div>
+            <!-- ================= VIEW 1: TIER SELECTION ================= -->
+            <div id="tier-selection" class="space-y-10 reveal active">
+                <div class="text-center max-w-2xl mx-auto">
+                    <span class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-gold/10 border border-gold/30 text-gold font-mono text-[11px] font-semibold tracking-widest uppercase mb-4 shadow-sm">
+                        <span>●</span>
+                        <span>Foundational Diagnostic Engine</span>
+                    </span>
+                    <h1 class="text-4xl sm:text-5xl font-black text-gold tracking-tight font-display mb-4 decipher-text drop-shadow-lg">
+                        Uncover the Hidden Conceptual Fracture
+                    </h1>
+                    <p class="text-base sm:text-lg text-bone/80 font-serif italic leading-relaxed">
+                        When students struggle with high school math or SAT scores, standard school reports call it "carelessness." In truth, it is almost always a single unmastered concept from middle or early high school.
+                    </p>
+                    <p class="text-xs sm:text-sm text-gold/80 font-mono mt-3">
+                        Select a tier below. After each question, our engine will dissect the trap, trace the root cause back to early grades, and present Jyothi's first-principles derivation.
+                    </p>
+                </div>
 
-            <!-- Question View -->
-            <div id="question-view" class="spotlight-card p-10 hidden reveal active">
-                <div class="transform translateZ(20px)">
-                    <div class="flex justify-between items-center mb-8 border-b border-[#E5BE85]/20 pb-4">
-                        <span id="tier-badge" class="text-xs font-bold text-[#E5BE85] uppercase tracking-widest bg-[#E5BE85]/10 px-3 py-1 rounded-full"></span>
-                        <span id="question-counter" class="text-sm font-bold text-[#E5BE85]/80">Question 1 of 5</span>
+                <!-- 3 Tier Cards -->
+                <div class="grid md:grid-cols-3 gap-6 sm:gap-8">
+                    <!-- Elementary Card -->
+                    <div class="spotlight-card p-8 flex flex-col justify-between text-left border-gold/20 hover:border-gold/60 transition-all rounded-2xl group">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-xs font-mono font-bold uppercase tracking-widest text-gold bg-gold/10 px-3 py-1 rounded-full border border-gold/20">Grades 4–6</span>
+                                <span class="text-[11px] font-mono text-muted">5 Questions</span>
+                            </div>
+                            <h2 class="text-2xl font-bold font-display text-white mb-2 group-hover:text-gold transition-colors">Elementary & Pre-Algebra</h2>
+                            <p class="text-sm text-bone/70 leading-relaxed mb-6 font-light">
+                                Diagnostic targets: Multiplicative 2D scaling, harmonic rate averages, measurement fraction division, and inverse variation.
+                            </p>
+                        </div>
+                        <button onclick="startQuiz('elementary')" class="btn-gold w-full py-3.5 rounded-xl font-mono text-xs font-bold uppercase tracking-wider text-center shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-gold">
+                            Begin Elementary Diagnostic →
+                        </button>
                     </div>
-                    <h2 id="question-text" class="text-2xl font-bold text-white mb-8 leading-relaxed focus:outline-none" tabindex="-1"></h2>
-                    <div id="options-container" class="space-y-4"></div>
-                    <button id="next-btn" onclick="nextQuestion()" class="w-full mt-8 bg-[#E5BE85]/20 text-[#E5BE85] border border-[#E5BE85]/40 py-4 rounded-xl font-bold uppercase tracking-wider text-sm hover:bg-[#E5BE85] hover:text-[#0B0B33] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#E5BE85]/20 disabled:hover:text-[#E5BE85] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E5BE85]" disabled>Next Question</button>
+
+                    <!-- Middle School Card -->
+                    <div class="spotlight-card p-8 flex flex-col justify-between text-left border-gold/30 hover:border-gold/70 transition-all rounded-2xl warmth-card group relative">
+                        <div class="absolute -top-3 right-6 bg-gold text-midnight font-mono text-[10px] font-black uppercase tracking-wider px-3 py-0.5 rounded-full shadow-md">
+                            Most Common Pivot
+                        </div>
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-xs font-mono font-bold uppercase tracking-widest text-gold bg-gold/10 px-3 py-1 rounded-full border border-gold/20">Grades 7–9</span>
+                                <span class="text-[11px] font-mono text-muted">5 Questions</span>
+                            </div>
+                            <h2 class="text-2xl font-bold font-display text-white mb-2 group-hover:text-gold transition-colors">Middle School & Algebra I</h2>
+                            <p class="text-sm text-bone/70 leading-relaxed mb-6 font-light">
+                                Diagnostic targets: The principal radical trap, unary negative precedence, inequality reflection, and infinite linear coincidence.
+                            </p>
+                        </div>
+                        <button onclick="startQuiz('middle')" class="btn-gold w-full py-3.5 rounded-xl font-mono text-xs font-bold uppercase tracking-wider text-center shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-gold">
+                            Begin Middle School Diagnostic →
+                        </button>
+                    </div>
+
+                    <!-- High School / SAT Card -->
+                    <div class="spotlight-card p-8 flex flex-col justify-between text-left border-gold/20 hover:border-gold/60 transition-all rounded-2xl group">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-xs font-mono font-bold uppercase tracking-widest text-gold bg-gold/10 px-3 py-1 rounded-full border border-gold/20">Grades 9–12</span>
+                                <span class="text-[11px] font-mono text-muted">5 Questions</span>
+                            </div>
+                            <h2 class="text-2xl font-bold font-display text-white mb-2 group-hover:text-gold transition-colors">High School & SAT 800</h2>
+                            <p class="text-sm text-bone/70 leading-relaxed mb-6 font-light">
+                                Diagnostic targets: Removable domain holes, quadratic vertex extrema, rational exponent parity, and the extraneous division trap.
+                            </p>
+                        </div>
+                        <button onclick="startQuiz('high')" class="btn-gold w-full py-3.5 rounded-xl font-mono text-xs font-bold uppercase tracking-wider text-center shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-gold">
+                            Begin High School Diagnostic →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Reassuring Parent Note -->
+                <div class="p-6 rounded-2xl bg-midnight-card/60 border border-gold/15 max-w-2xl mx-auto text-center">
+                    <p class="text-xs font-mono uppercase tracking-widest text-gold/80 mb-2 font-bold">180 Math Diagnostic Guarantee</p>
+                    <p class="text-xs text-bone/75 leading-relaxed font-light">
+                        No trick questions, no punitive timers, and no academic shame. This assessment is designed to bring relief by identifying the single foundational leak that, once plugged, transforms your child's confidence.
+                    </p>
                 </div>
             </div>
 
-            <!-- Results View -->
-            <div id="results-view" class="hidden reveal active space-y-8">
-                <div class="spotlight-card p-12 text-center">
-                    <div class="transform translateZ(30px)">
-                        <h2 id="results-heading" class="text-4xl font-black text-[#E5BE85] mb-4 focus:outline-none" tabindex="-1">Diagnostic Report</h2>
-                        <div class="text-6xl font-black text-white mb-6 drop-shadow-lg" id="score-display"></div>
-                        <p id="score-message" class="text-xl text-[#E5BE85]/80 font-light mb-8"></p>
-                        <div id="cta-container"></div>
+            <!-- ================= VIEW 2: INTERACTIVE QUESTION WORKSPACE ================= -->
+            <div id="question-view" class="hidden space-y-6">
+                <!-- Top Status Header -->
+                <div class="flex items-center justify-between pb-3 border-b border-gold/20">
+                    <button onclick="resetToTiers()" class="text-xs font-mono text-gold/70 hover:text-white flex items-center space-x-1.5 transition-colors focus:outline-none">
+                        <span>← Switch Tier</span>
+                    </button>
+                    <div class="flex items-center space-x-3">
+                        <span id="tier-badge" class="text-[11px] font-mono font-bold uppercase tracking-widest text-gold bg-gold/10 px-3 py-1 rounded-full border border-gold/20"></span>
+                        <span id="question-counter" class="text-xs font-mono font-semibold text-bone/80">Question 1 of 5</span>
                     </div>
                 </div>
-                <div id="breakdown-container" class="space-y-6"></div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-midnight-surface rounded-full h-2 border border-gold/20 overflow-hidden">
+                    <div id="progress-bar" class="h-full bg-gradient-to-r from-gold to-gold-dim transition-all duration-500 rounded-full" style="width: 20%;"></div>
+                </div>
+
+                <!-- Question Spotlight Card -->
+                <div class="spotlight-card p-6 sm:p-10 text-left border-gold/25 relative overflow-hidden">
+                    <div class="transform translateZ(20px) space-y-6">
+                        <!-- Concept Tag -->
+                        <div class="flex items-center space-x-2">
+                            <span class="inline-block w-2 h-2 rounded-full bg-gold animate-pulse"></span>
+                            <span id="concept-tag" class="text-[11px] font-mono uppercase tracking-widest text-gold/80 font-bold"></span>
+                        </div>
+
+                        <!-- Question Text with KaTeX -->
+                        <div id="question-text" class="text-xl sm:text-2xl font-display font-medium text-bone leading-relaxed focus:outline-none"></div>
+
+                        <!-- Options Container -->
+                        <div id="options-container" class="space-y-3.5 pt-2"></div>
+
+                        <!-- Action Button -->
+                        <div class="pt-4 flex flex-col sm:flex-row items-center gap-4">
+                            <button id="action-btn" onclick="handleActionClick()" class="btn-gold w-full py-4 px-8 rounded-xl font-mono text-xs font-bold uppercase tracking-wider text-center shadow-lg disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-gold" disabled>
+                                Check Foundation & Reveal Breakdown
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Solution Analysis Panel (Reveals on Check) -->
+                <div id="solution-panel" class="hidden transition-all duration-500 space-y-6">
+                    <!-- Dynamic Verdict Card -->
+                    <div id="verdict-card" class="p-6 sm:p-8 rounded-2xl border text-left backdrop-blur-xl">
+                        <div class="flex items-start space-x-4">
+                            <div id="verdict-icon" class="text-3xl sm:text-4xl flex-shrink-0"></div>
+                            <div>
+                                <h3 id="verdict-title" class="text-xl sm:text-2xl font-display font-black mb-1"></h3>
+                                <p id="verdict-subtitle" class="text-xs sm:text-sm font-mono text-bone/80"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4-Part Foundation Analysis Card -->
+                    <div class="spotlight-card p-6 sm:p-10 text-left space-y-8 border-gold/30">
+                        <!-- 1. The Surface Trap -->
+                        <div class="space-y-2">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-xs font-mono font-bold uppercase tracking-widest text-rose-400 bg-rose-950/40 border border-rose-500/30 px-2.5 py-0.5 rounded">
+                                    The Surface Symptom
+                                </span>
+                            </div>
+                            <h4 class="text-lg font-display font-bold text-white">Why This Answer Is So Tempting</h4>
+                            <p id="sol-trap" class="text-sm sm:text-base text-bone/80 leading-relaxed font-light"></p>
+                        </div>
+
+                        <!-- 2. The Hidden Conceptual Fracture (Root Cause) -->
+                        <div class="p-5 sm:p-6 rounded-xl bg-gradient-to-br from-amber-950/30 via-midnight-card to-midnight-card border border-amber-500/40 space-y-3">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-xs font-mono font-black uppercase tracking-widest text-amber-300 bg-amber-500/20 border border-amber-400/40 px-3 py-1 rounded-full">
+                                    ⚠️ The Hidden Conceptual Fracture
+                                </span>
+                            </div>
+                            <div id="sol-root-badge" class="font-mono text-xs text-gold font-bold"></div>
+                            <p id="sol-root" class="text-sm sm:text-base text-bone/90 leading-relaxed font-light"></p>
+                        </div>
+
+                        <!-- 3. First-Principles Derivation -->
+                        <div class="space-y-3">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-xs font-mono font-bold uppercase tracking-widest text-emerald-400 bg-emerald-950/40 border border-emerald-500/30 px-2.5 py-0.5 rounded">
+                                    💡 First-Principles Intuitive Derivation
+                                </span>
+                            </div>
+                            <h4 class="text-lg font-display font-bold text-white">The Ground Truth Step-by-Step</h4>
+                            <div id="sol-derivation" class="text-sm sm:text-base text-bone/85 leading-relaxed bg-midnight-surface/80 p-5 rounded-xl border border-gold/15 overflow-x-auto"></div>
+                        </div>
+
+                        <!-- 4. Lead Mentor Jyothi's Prescription -->
+                        <div class="p-5 sm:p-6 rounded-xl bg-gold/10 border border-gold/30 space-y-2.5 warmth-card">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-7 h-7 rounded-full bg-gold text-midnight font-display font-black text-xs flex items-center justify-center flex-shrink-0">
+                                    J
+                                </div>
+                                <span class="text-xs font-mono font-bold uppercase tracking-widest text-gold">
+                                    Lead Mentor Jyothi's Prescription (South Windsor Studio)
+                                </span>
+                            </div>
+                            <p id="sol-mentor" class="text-sm sm:text-base text-bone font-serif italic leading-relaxed pl-10"></p>
+                        </div>
+
+                        <!-- Continue CTA -->
+                        <div class="pt-4 border-t border-gold/15 flex justify-end">
+                            <button id="continue-bottom-btn" onclick="handleActionClick()" class="btn-gold py-3.5 px-8 rounded-xl font-mono text-xs font-bold uppercase tracking-wider text-center shadow-md">
+                                Continue →
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <!-- ================= VIEW 3: COMPREHENSIVE DIAGNOSTIC PORTFOLIO ================= -->
+            <div id="results-view" class="hidden space-y-10 reveal active">
+                <!-- Portfolio Summary Card -->
+                <div class="spotlight-card p-8 sm:p-12 text-center border-gold/35 thermal-solution rounded-3xl">
+                    <div class="transform translateZ(30px) space-y-6 max-w-2xl mx-auto">
+                        <span class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-gold/20 border border-gold/40 text-gold font-mono text-xs font-bold tracking-widest uppercase shadow-sm">
+                            <span>●</span>
+                            <span>Diagnostic Portfolio Completed</span>
+                        </span>
+
+                        <h2 id="results-heading" class="text-3xl sm:text-5xl font-black font-display text-white tracking-tight">
+                            Your Child's Conceptual Roadmap
+                        </h2>
+
+                        <!-- Large Score Meter -->
+                        <div class="py-4">
+                            <div class="text-6xl sm:text-7xl font-black font-display text-gold tracking-tight" id="score-display">0%</div>
+                            <div class="text-sm font-mono uppercase tracking-widest text-bone/70 mt-2" id="score-fraction">0 of 5 Core Principles Mastered</div>
+                        </div>
+
+                        <p id="score-evaluation" class="text-base sm:text-lg text-bone/90 font-serif italic leading-relaxed"></p>
+
+                        <!-- Action Pill Bar -->
+                        <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+                            <a href="contact.html" class="btn-gold w-full sm:w-auto py-4 px-8 rounded-xl font-mono text-xs font-bold uppercase tracking-wider shadow-lg flex items-center justify-center space-x-2">
+                                <span>Schedule a 1-on-1 Review with Jyothi</span>
+                                <span>→</span>
+                            </a>
+                            <button onclick="resetToTiers()" class="w-full sm:w-auto py-4 px-6 rounded-xl font-mono text-xs font-bold uppercase tracking-wider text-gold border border-gold/30 hover:bg-gold/10 transition-colors">
+                                Evaluate Another Tier
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Conceptual Breakdown List -->
+                <div class="space-y-6">
+                    <div class="text-center sm:text-left flex flex-col sm:flex-row sm:items-end justify-between border-b border-gold/20 pb-4">
+                        <div>
+                            <span class="text-xs font-mono uppercase tracking-widest text-gold/70 font-bold block mb-1">Detailed Analysis</span>
+                            <h3 class="text-2xl font-bold font-display text-white">Itemized Foundational Audit</h3>
+                        </div>
+                        <span class="text-xs font-mono text-muted mt-2 sm:mt-0">Click any card to inspect the derivation</span>
+                    </div>
+
+                    <div id="breakdown-items-container" class="space-y-4"></div>
+                </div>
+
+                <!-- Lead Mentor Direct Mentorship Callout -->
+                <div class="spotlight-card p-8 sm:p-10 border-gold/30 warmth-card rounded-2xl text-left">
+                    <div class="flex flex-col md:flex-row gap-8 items-center">
+                        <div class="flex-shrink-0 text-center">
+                            <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-gold to-gold-light text-midnight font-display font-black text-3xl flex items-center justify-center shadow-xl mx-auto mb-3">
+                                J
+                            </div>
+                            <div class="font-display font-bold text-white text-base">Jyothi</div>
+                            <div class="text-[11px] font-mono text-gold/80">Lead Mentor • 10+ Yrs</div>
+                            <div class="text-[10px] font-mono text-muted">South Windsor, CT</div>
+                        </div>
+                        <div class="space-y-3">
+                            <h4 class="text-xl font-bold font-display text-gold">Every Fracture Can Be Permanently Healed</h4>
+                            <p class="text-sm text-bone/85 leading-relaxed font-light">
+                                "In over a decade of teaching here in Connecticut, I have never met a student who was 'bad at math.' I have only met students who were handed an unexamined algorithm in 6th or 7th grade instead of a geometric truth. When we repair that single concept, homework tears vanish and high test scores follow naturally."
+                            </p>
+                            <div class="pt-2 flex flex-wrap gap-3 font-mono text-xs">
+                                <a href="contact.html" class="text-gold underline hover:text-white font-bold">Book a South Windsor Consultation ↗</a>
+                                <span class="text-muted">•</span>
+                                <a href="index.html#program" class="text-gold/80 underline hover:text-white">Explore Cohort Roadmaps ↗</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
-    </section>
+    </main>
 
-    <footer class="bg-[#04060e] text-[#E5BE85]/50 py-16 text-center border-t border-[#E5BE85]/10 mt-auto relative z-10">
-        <p class="tracking-widest uppercase text-xs font-bold">&copy; 2026 180 Math. All rights reserved.</p>
+    <!-- Footer -->
+    <footer class="bg-[#04060e] text-[#E5BE85]/60 py-16 text-center border-t border-[#E5BE85]/15 mt-auto relative z-10 font-mono text-xs">
+        <div class="max-w-7xl mx-auto px-6 space-y-4">
+            <p class="tracking-widest uppercase font-bold text-bone/90">&copy; 2026 180 Math • South Windsor, Connecticut</p>
+            <p class="text-muted text-[11px]">Empowering young minds one degree at a time through first-principles mathematics mentorship.</p>
+        </div>
     </footer>
 
+    <!-- Scripts -->
     <script src="main.js?v=20261016"></script>
     <script>
+        // 15 Conceptually Rigorous Diagnostic Questions
         const quizData = {
             elementary: [
-                { q: "What is 7 × 8?", options: ["54", "56", "64", "49"], answer: 1, breakdown: "Multiplication principles: 7 groups of 8 equals 56. If you chose 54, you might have confused it with 6 × 9." },
-                { q: "What is 125 + 387?", options: ["512", "502", "412", "522"], answer: 0, breakdown: "Addition with carrying: Remember to carry over the 1 when adding 5 + 7 = 12." },
-                { q: "What is the perimeter of a rectangle with length 6 and width 4?", options: ["24", "10", "20", "16"], answer: 2, breakdown: "Perimeter formula: P = 2(l + w). 2(6 + 4) = 2(10) = 20. 24 is the area (6 × 4)." },
-                { q: "What fraction is equivalent to 1/2?", options: ["2/3", "3/6", "4/10", "1/4"], answer: 1, breakdown: "Equivalent fractions: Multiplying the numerator and denominator by the same number (3/3) yields 3/6." },
-                { q: "If a pizza is cut into 8 equal slices and you eat 3, what fraction of the pizza is left?", options: ["3/8", "5/8", "1/8", "8/5"], answer: 1, breakdown: "Subtraction of fractions: 8/8 - 3/8 = 5/8." }
+                {
+                    id: 'elem-1',
+                    conceptName: '2D Multiplicative Area Scaling',
+                    gradeRoot: 'Grade 4/5 Measurement & 2D Spatial Units',
+                    q: 'A rectangular garden has an area of $18\\text{ m}^2$. If both its length and its width are tripled ($3\\times$), what is the area of the enlarged garden?',
+                    options: [
+                        '$54\\text{ m}^2$',
+                        '$72\\text{ m}^2$',
+                        '$162\\text{ m}^2$',
+                        '$108\\text{ m}^2$'
+                    ],
+                    answer: 2,
+                    surfaceTrap: 'Option A ($54\\text{ m}^2$) is chosen by over 60% of students who simply multiply the original area by 3 ($18 \\times 3 = 54$). The word "tripled" triggers an unthinking linear multiplication reflex.',
+                    rootCause: 'Grade 4/5 Measurement & Spatial Units: Students treat area as if it were a 1-dimensional line rather than a 2-dimensional product ($L \\times W$). When linear dimensions scale by a factor $k$, the 2D area scales quadratically by $k^2 = 3^2 = 9$.',
+                    derivation: '$$\\text{Area}_{\\text{new}} = L_{\\text{new}} \\times W_{\\text{new}} = (3L) \\times (3W) = 9 \\times (L \\times W) = 9 \\times 18\\text{ m}^2 = 162\\text{ m}^2$$Tiling intuition: If you enlarge a garden 3 times wider and 3 times longer, you can fit exactly $3 \\times 3 = 9$ copies of the original garden inside it.',
+                    mentorPrescription: 'In our South Windsor elementary cohorts, we forbid rote memorization of $A=L \\times W$. We have students build 2D grids with physical tiles. Once a child sees that doubling both sides yields 4 tiles and tripling yields 9 tiles, they never fall for linear scaling traps in high school geometry.'
+                },
+                {
+                    id: 'elem-2',
+                    conceptName: 'Rate Ratios vs. Arithmetic Averages (Harmonic Mean)',
+                    gradeRoot: 'Grade 5/6 Definition of Rate as a Physical Ratio',
+                    q: 'A bicyclist rides uphill $12\\text{ miles}$ at a constant speed of $6\\text{ mph}$, then immediately turns around and rides back down the same $12\\text{ miles}$ at $12\\text{ mph}$. What was the bicyclist\'s average speed for the entire $24\\text{ mile}$ round trip?',
+                    options: [
+                        '$9.0\\text{ mph}$',
+                        '$8.0\\text{ mph}$',
+                        '$8.5\\text{ mph}$',
+                        '$7.2\\text{ mph}$'
+                    ],
+                    answer: 1,
+                    surfaceTrap: 'Option A ($9.0\\text{ mph}$) is the universal trap. Students calculate the arithmetic mean of the speeds: $\\frac{6 + 12}{2} = 9.0$. It feels intuitively symmetrical, but physics does not work by arithmetic means.',
+                    rootCause: 'Grade 5/6 Definition of Rate: Memorizing "average = add and divide by 2" causes students to forget the physical definition of speed: $\\text{Rate} = \\frac{\\text{Total Distance}}{\\text{Total Time}}$. Because the rider spends twice as much time going uphill ($2\\text{ hours}$ vs $1\\text{ hour}$), the slower speed exerts twice the temporal weight.',
+                    derivation: '$$\\text{Time}_{\\text{uphill}} = \\frac{12\\text{ mi}}{6\\text{ mph}} = 2\\text{ hours}, \\quad \\text{Time}_{\\text{downhill}} = \\frac{12\\text{ mi}}{12\\text{ mph}} = 1\\text{ hour}$$$$\\text{Total Time} = 2 + 1 = 3\\text{ hours}, \\quad \\text{Total Distance} = 12 + 12 = 24\\text{ miles}$$$$\\text{Average Speed} = \\frac{\\text{Total Distance}}{\\text{Total Time}} = \\frac{24\\text{ miles}}{3\\text{ hours}} = 8.0\\text{ mph}$$This is the harmonic mean: $\\frac{2 \\times 6 \\times 12}{6 + 12} = \\frac{144}{18} = 8\\text{ mph}$.',
+                    mentorPrescription: 'Jyothi teaches students to ask "What is the denominator?" Whenever dealing with rates, the denominator is time. Time spent at $6\\text{ mph}$ was 120 minutes, while time spent at $12\\text{ mph}$ was only 60 minutes. Slower speeds dominate the clock.'
+                },
+                {
+                    id: 'elem-3',
+                    conceptName: 'Measurement Fraction Division',
+                    gradeRoot: 'Grade 5 Concept of Division as Measurement / Grouping',
+                    q: 'A pastry chef has $3\\frac{3}{4}\\text{ cups}$ of organic flour. Each batch of croissants requires exactly $\\frac{3}{8}\\text{ cup}$ of flour. How many complete batches can the chef bake?',
+                    options: [
+                        '$8\\text{ batches}$',
+                        '$9\\text{ batches}$',
+                        '$10\\text{ batches}$',
+                        '$12\\text{ batches}$'
+                    ],
+                    answer: 2,
+                    surfaceTrap: 'Options A ($8$) or B ($9$) occur when students make algorithmic conversion errors using rote "keep-change-flip" without understanding what fraction division represents.',
+                    rootCause: 'Grade 5 Measurement Division: Standard schools drill the mechanical rule "flip the second fraction and multiply" without teaching that division asks: "How many measuring scoops of size $\\frac{3}{8}$ fit inside $3\\frac{3}{4}$?" Without conceptual imagery, students are helpless if they scramble the mnemonic.',
+                    derivation: 'First, express the total flour in eighth-cup measuring units:$$3\\frac{3}{4} = \\frac{15}{4} = \\frac{30}{8}\\text{ cups}$$Now divide by the recipe requirement:$$\\frac{30\\text{ eighths}}{3\\text{ eighths}} = \\frac{30}{3} = 10\\text{ batches}$$Using reciprocal multiplication: $\\frac{15}{4} \\times \\frac{8}{3} = \\frac{120}{12} = 10$.',
+                    mentorPrescription: 'When children learn fractions through common denominators instead of mindless flipping, division becomes effortless mental math: "30 eighths divided by 3 eighths is obviously 10." We restore the visual intuition of volume and capacity.'
+                },
+                {
+                    id: 'elem-4',
+                    conceptName: 'Order of Operations & Equal Precedence',
+                    gradeRoot: 'Grade 6 Rigid PEMDAS Misconception',
+                    q: 'Evaluate the arithmetic expression:$$20 - 4(3 - 5)^2 + 6 \\div 2 \\times 3$$',
+                    options: [
+                        '$13$',
+                        '$5$',
+                        '$25$',
+                        '$-5$'
+                    ],
+                    answer: 0,
+                    surfaceTrap: 'Option B ($5$) is the classic "PEMDAS victim" answer. Students do multiplication before division in $6 \\div 2 \\times 3$, getting $6 \\div 6 = 1$, then compute $20 - 16 + 1 = 5$. Others do $20 - 4 = 16$ first.',
+                    rootCause: 'Grade 6 Rigid PEMDAS Fallacy: Mnemonics like PEMDAS mislead students into believing Multiplication (M) always precedes Division (D). In reality, Multiplication and Division share identical mathematical priority and must be evaluated strictly left-to-right.',
+                    derivation: '$$\\text{Step 1 (Parentheses): } (3 - 5) = -2$$$$\\text{Step 2 (Exponents): } (-2)^2 = +4$$$$\\text{Step 3 (Multiplication): } 4 \\times 4 = 16 \\implies 20 - 16 = 4$$$$\\text{Step 4 (Division & Mult, left-to-right): } 6 \\div 2 = 3, \\text{ then } 3 \\times 3 = 9$$$$\\text{Step 5 (Addition): } 4 + 9 = 13$$',
+                    mentorPrescription: 'We banish the rigid PEMDAS acronym in our studio. We teach operations as operational hierarchies: addition/subtraction are lateral movements on a number line, while multiplication/division are scaling factors. Division is simply multiplying by the reciprocal: $6 \\times \\frac{1}{2} \\times 3 = 9$.'
+                },
+                {
+                    id: 'elem-5',
+                    conceptName: 'Inverse Variation vs. Direct Proportions',
+                    gradeRoot: 'Grade 6 Direct vs. Inverse Work Dynamics',
+                    q: 'Four identical commercial lawnmowers can cut a municipal park in exactly $6\\text{ hours}$. If $2$ additional identical mowers join them (for a total of $6$ mowers) working at the same rate, how many hours will it take to mow the park?',
+                    options: [
+                        '$9\\text{ hours}$',
+                        '$4\\text{ hours}$',
+                        '$4.5\\text{ hours}$',
+                        '$3\\text{ hours}$'
+                    ],
+                    answer: 1,
+                    surfaceTrap: 'Option A ($9\\text{ hours}$) is submitted by students who reflexively cross-multiply: $\\frac{4}{6} = \\frac{6}{x} \\implies 4x = 36 \\implies x = 9$. But adding workers should decrease time, not increase it!',
+                    rootCause: 'Grade 6 Proportional Reasoning: Over-reliance on cross-multiplication for direct proportions ($y = kx$) blinds students to inverse variation ($xy = k$). When workers increase, completion time decreases inversely.',
+                    derivation: '$$\\text{Total Work Constant} = 4\\text{ mowers} \\times 6\\text{ hours} = 24\\text{ mower-hours}$$$$\\text{Time with 6 mowers} = \\frac{24\\text{ mower-hours}}{6\\text{ mowers}} = 4\\text{ hours}$$',
+                    mentorPrescription: 'Jyothi introduces the concept of "Invariance": the physical lawn size doesn\'t change. It requires 24 total mower-hours of effort. When children anchor to invariant conservation, word problems in high school chemistry and physics become second nature.'
+                }
             ],
             middle: [
-                { q: "Solve for x: 3x - 7 = 14", options: ["x = 7", "x = 6", "x = 21", "x = 9"], answer: 0, breakdown: "Algebraic equations: Add 7 to both sides (3x = 21), then divide by 3." },
-                { q: "What is 20% of 85?", options: ["17", "15", "18", "20"], answer: 0, breakdown: "Percentages: 20% is 1/5. 85 / 5 = 17." },
-                { q: "Simplify: (4^3) / (4^2)", options: ["1", "4", "16", "64"], answer: 1, breakdown: "Exponent rules: When dividing terms with the same base, subtract the exponents. 3 - 2 = 1, so 4^1 = 4." },
-                { q: "What is the area of a circle with radius 3? (Use π ≈ 3.14)", options: ["9.42", "28.26", "18.84", "12.56"], answer: 1, breakdown: "Area of a circle: A = πr². A = 3.14 × (3^2) = 3.14 × 9 = 28.26." },
-                { q: "If y = 2x + 5, what is the value of y when x = -3?", options: ["-1", "1", "11", "-11"], answer: 0, breakdown: "Substituting values: y = 2(-3) + 5 = -6 + 5 = -1." }
+                {
+                    id: 'mid-1',
+                    conceptName: 'The Principal Radical Trap',
+                    gradeRoot: 'Grade 8 Definition of Principal Square Root Function',
+                    q: 'For all real numbers $x$, which algebraic expression is universally equivalent to:$$\\sqrt{x^2 - 6x + 9}$$',
+                    options: [
+                        '$x - 3$',
+                        '$|x - 3|$',
+                        '$\\pm(x - 3)$',
+                        '$x + 3$'
+                    ],
+                    answer: 1,
+                    surfaceTrap: 'Option A ($x - 3$) is chosen by roughly 75% of algebra students who write $\\sqrt{(x-3)^2} = x-3$. But if $x = 0$, $\\sqrt{0 - 0 + 9} = \\sqrt{9} = 3$, whereas $x - 3 = 0 - 3 = -3$! A positive square root cannot equal a negative number.',
+                    rootCause: 'Grade 8 Radical Functions: Students confuse solving an equation ($y^2 = k$, which has two roots $\\pm\\sqrt{k}$) with evaluating the radical function $\\sqrt{u}$, which is strictly non-negative by definition: $\\sqrt{u^2} = |u|$.',
+                    derivation: '$$\\sqrt{x^2 - 6x + 9} = \\sqrt{(x - 3)^2} = |x - 3|$$For $x \\ge 3$: $|x - 3| = x - 3$.$$\\text{For } x < 3: |x - 3| = -(x - 3) = 3 - x$$Because $\\sqrt{\\cdot} \\ge 0$ for all real inputs, the absolute value is mandatory.',
+                    mentorPrescription: 'This is the #1 trap on the SAT math section and early AP Calculus limits. In our Algebra I cohorts, we drill the radical definition: the radical symbol $\\sqrt{\\cdot}$ is an active operation demanding the non-negative root. Forgetting $|x-3|$ leads to false proofs that $-1 = 1$.'
+                },
+                {
+                    id: 'mid-2',
+                    conceptName: 'Unary Negative Precedence & Exponent Binding',
+                    gradeRoot: 'Grade 7 Order of Operations & Negative Powers',
+                    q: 'Evaluate the exact numerical value of: $$-3^2 + (-2)^3 - 4^{-1}$$',
+                    options: [
+                        '$-\\frac{69}{4}$',
+                        '$-\\frac{5}{4}$',
+                        '$\\frac{67}{4}$',
+                        '$-\\frac{73}{4}$'
+                    ],
+                    answer: 0,
+                    surfaceTrap: 'Option B ($-\\frac{5}{4}$) or positive values occur when students evaluate $-3^2$ as $(-3)^2 = +9$. They compute $9 - 8 - 0.25 = 0.75$.',
+                    rootCause: 'Grade 7 Exponent Precedence: In mathematical syntax, exponentiation binds tighter than unary negation. $-3^2$ means $-(3^2) = -9$, whereas $(-3)^2$ means $(-3) \\times (-3) = +9$. Additionally, $4^{-1}$ means $\\frac{1}{4}$, not $-4$.',
+                    derivation: '$$\\text{Term 1: } -3^2 = -(3 \\times 3) = -9$$$$\\text{Term 2: } (-2)^3 = (-2)(-2)(-2) = -8$$$$\\text{Term 3: } -4^{-1} = -\\frac{1}{4} = -0.25$$$$\\text{Combine: } -9 + (-8) - \\frac{1}{4} = -17 - \\frac{1}{4} = -\\frac{68}{4} - \\frac{1}{4} = -\\frac{69}{4} \\quad (-17.25)$$',
+                    mentorPrescription: 'Calculators, Python, and SAT grading algorithms all enforce unary precedence: $-3^2 = -9$. We teach students to write $-3^2$ as $(-1) \\times 3^2$. Exponents act only on their immediate base, eliminating sign confusion forever.'
+                },
+                {
+                    id: 'mid-3',
+                    conceptName: 'Inequality Inversion on the Real Number Line',
+                    gradeRoot: 'Grade 7 Inequalities & Coordinate Reflection',
+                    q: 'Solve for all real values of $x$:$$-\\frac{2x - 5}{3} \\ge 7$$',
+                    options: [
+                        '$x \\le -8$',
+                        '$x \\ge -8$',
+                        '$x \\le 13$',
+                        '$x \\ge 13$'
+                    ],
+                    answer: 0,
+                    surfaceTrap: 'Option B ($x \\ge -8$) has the correct numerical value but the wrong inequality direction. The student forgot to reverse the inequality sign when multiplying by $-3$.',
+                    rootCause: 'Grade 7 Inequalities: Students memorize "flip the sign when multiplying by a negative" as an arbitrary superstition rather than understanding geometric reflection: multiplying by a negative reflects every point across zero, reversing the relative order of numbers ($2 < 5$, but $-2 > -5$).',
+                    derivation: '$$-\\frac{2x - 5}{3} \\ge 7$$Multiply both sides by $-3$ (which reverses $\\ge$ to $\\le$):$$2x - 5 \\le -21$$Add $5$ to both sides:$$2x \\le -16$$Divide by $+2$:$$x \\le -8$$Check with $x = -10$: $-\\frac{2(-10) - 5}{3} = -\\frac{-25}{3} = +\\frac{25}{3} \\approx 8.33 \\ge 7 \\quad \\checkmark$',
+                    mentorPrescription: 'Jyothi has students test boundary values and visualize number lines. When you multiply by $-1$, you mirror the entire universe through the origin: what was on the far right is now on the far left. Once visualized, nobody forgets to flip the symbol.'
+                },
+                {
+                    id: 'mid-4',
+                    conceptName: 'Perpendicular Slopes as Geometric 90-Degree Rotations',
+                    gradeRoot: 'Grade 8 Coordinate Geometry & Negative Reciprocal Slopes',
+                    q: 'A line $L$ is perpendicular to the line segment connecting $(2, -3)$ and $(6, 5)$, and passes through the point $(4, 1)$. What is the $y$-intercept of line $L$?',
+                    options: [
+                        '$(0, 3)$',
+                        '$(0, -7)$',
+                        '$(0, 2)$',
+                        '$(0, -1)$'
+                    ],
+                    answer: 0,
+                    surfaceTrap: 'Option B ($(0, -7)$) is chosen when students use the parallel slope $m = 2$ instead of the perpendicular slope $m_\\perp = -\\frac{1}{2}$, leading to $y - 1 = 2(x - 4) \\implies y = 2x - 7$.',
+                    rootCause: 'Grade 8 Coordinate Geometry: Forgetting that perpendicular lines have negative reciprocal slopes ($m_1 \\cdot m_2 = -1$), caused by a $90^\\circ$ rotation where $\\frac{\\Delta y}{\\Delta x}$ transforms into $-\\frac{\\Delta x}{\\Delta y}$.',
+                    derivation: '$$\\text{Segment Slope: } m = \\frac{5 - (-3)}{6 - 2} = \\frac{8}{4} = 2$$$$\\text{Perpendicular Slope: } m_\\perp = -\\frac{1}{2}$$$$\\text{Point-Slope Equation through } (4, 1):$$$$y - 1 = -\\frac{1}{2}(x - 4) \\implies y - 1 = -\\frac{1}{2}x + 2 \\implies y = -\\frac{1}{2}x + 3$$Setting $x = 0$ yields the $y$-intercept: $(0, 3)$.',
+                    mentorPrescription: 'Why are perpendicular slopes negative reciprocals? In our studio, we rotate the slope triangle by $90^\\circ$: rise becomes run, and the direction flips from positive to negative. When geometry explains the algebra, memory becomes permanent.'
+                },
+                {
+                    id: 'mid-5',
+                    conceptName: 'Infinite Solutions & Geometric Coincidence',
+                    gradeRoot: 'Grade 8 Systems of Linear Equations & Equivalence',
+                    q: 'The system of linear equations below has infinitely many solutions $(x, y)$:$$\\begin{cases} 3x - 4y = 12 \\\\ 9x - 12y = 2k + 6 \\end{cases}$$What is the value of $k$?',
+                    options: [
+                        '$k = 15$',
+                        '$k = 18$',
+                        '$k = 6$',
+                        '$k = 30$'
+                    ],
+                    answer: 0,
+                    surfaceTrap: 'Option C ($k = 6$) is chosen when students set $2k + 6 = 12$ without recognizing that the coefficients were scaled by $3$. Option D ($k = 30$) happens when students find $2k = 30$ but forget to divide by $2$.',
+                    rootCause: 'Grade 8 Systems of Equations: Students view systems as isolated algebraic rules rather than geometric lines. "Infinitely many solutions" means the two equations describe the exact same line, so every term must be scaled by the identical scalar multiple.',
+                    derivation: 'Multiply the entire first equation by $3$ to match the $x$ and $y$ coefficients:$$3 \\times (3x - 4y = 12) \\implies 9x - 12y = 36$$For the lines to be coincident, the constant terms must match:$$2k + 6 = 36 \\implies 2k = 30 \\implies k = 15$$',
+                    mentorPrescription: 'Equations are geometric entities. When two lines intersect at every point, they are identical. In our South Windsor classes, students immediately inspect coefficient ratios ($9/3 = 3$), scale the constant ($12 \\times 3 = 36$), and solve effortlessly.'
+                }
             ],
             high: [
-                { q: "Factor completely: x² - 9x + 20", options: ["(x-4)(x+5)", "(x-4)(x-5)", "(x+4)(x+5)", "(x-2)(x-10)"], answer: 1, breakdown: "Factoring quadratics: Find two numbers that multiply to 20 and add to -9. Those are -4 and -5." },
-                { q: "Solve the system: y = 2x - 1 and y = x + 3", options: ["(4, 7)", "(2, 3)", "(3, 5)", "(4, 5)"], answer: 0, breakdown: "Systems of equations: Set 2x - 1 = x + 3. Subtract x: x - 1 = 3. Add 1: x = 4. Plug back in: y = 4 + 3 = 7." },
-                { q: "What is the sine of 30 degrees?", options: ["1", "√3/2", "1/2", "√2/2"], answer: 2, breakdown: "Trigonometry: In a 30-60-90 triangle or on the unit circle, sin(30°) = 1/2." },
-                { q: "Simplify: √(72)", options: ["6√2", "2√6", "36", "8"], answer: 0, breakdown: "Simplifying radicals: Find the largest perfect square factor. 72 = 36 × 2. √36 × √2 = 6√2." },
-                { q: "Find the vertex of the parabola y = x² - 6x + 8", options: ["(3, -1)", "(-3, 17)", "(3, 8)", "(6, 8)"], answer: 0, breakdown: "Vertex formula: x = -b/(2a). x = -(-6)/(2×1) = 3. Plug in 3: y = 9 - 18 + 8 = -1." }
+                {
+                    id: 'high-1',
+                    conceptName: 'Inviolability of Function Domains & Removable Holes',
+                    gradeRoot: 'Algebra I / Precalculus Domain Restrictions',
+                    q: 'Consider the real-valued functions: $$f(x) = \\frac{x^2 - 4}{x - 2} \\quad \\text{and} \\quad g(x) = x + 2$$ Which of the following statements is mathematically true?',
+                    options: [
+                        '$f(x)$ and $g(x)$ are identical functions across all real numbers.',
+                        '$f(x) = g(x)$ for all $x \\ne 2$, but $f(x)$ is undefined at $x = 2$, creating a removable discontinuity (hole) at $(2, 4)$.',
+                        '$f(x)$ has a vertical asymptote at $x = 2$.',
+                        '$f(2) = 0$ while $g(2) = 4$.'
+                    ],
+                    answer: 1,
+                    surfaceTrap: 'Option A is selected by over 70% of high school students who factor $\\frac{(x-2)(x+2)}{x-2} = x+2$ and assume the two functions are identical everywhere.',
+                    rootCause: 'Algebra I Domain Restrictions: Canceling algebraic terms without preserving domain restrictions. Division by zero is undefined in real analysis. A function is defined not just by its formula, but by its domain: $\\text{Domain}(f) = \\mathbb{R} \\setminus \\{2\\}$, whereas $\\text{Domain}(g) = \\mathbb{R}$.',
+                    derivation: '$$f(x) = \\frac{(x - 2)(x + 2)}{x - 2}$$The factor $(x - 2)$ cancels if and only if $x - 2 \\ne 0 \\iff x \\ne 2$.$$f(2) = \\frac{0}{0} \\quad (\\text{undefined})$$$$\\lim_{x \\to 2} f(x) = \\lim_{x \\to 2} (x + 2) = 4$$The graph of $f(x)$ is a straight line with a hollow circle (removable hole) at $(2, 4)$, whereas $g(x)$ is solid everywhere.',
+                    mentorPrescription: 'This is the foundational gateway to AP Calculus AB/BC. If a student does not respect domain restrictions, they will struggle with limits, continuity, and differential equations. Jyothi teaches students to record the domain *before* simplifying any expression.'
+                },
+                {
+                    id: 'high-2',
+                    conceptName: 'Quadratic Extrema: Input Coordinate vs. Function Output',
+                    gradeRoot: 'Algebra I Vertex Form & Coordinate Distinction',
+                    q: 'What is the absolute minimum value attained by the quadratic function: $$f(x) = 2x^2 - 12x + 23$$',
+                    options: [
+                        '$5$',
+                        '$3$',
+                        '$11$',
+                        '$23$'
+                    ],
+                    answer: 0,
+                    surfaceTrap: 'Option B ($3$) is the classic blunder: $3$ is the input $x$ where the minimum occurs, but the question asks for the minimum *value* of the function ($y$). Option C ($11$) results from completing the square without factoring out the leading coefficient $2$.',
+                    rootCause: 'Algebra I Input vs. Output Distinction: Failing to distinguish between the location of an extremum ($x$-coordinate) and the value of the function ($y$-coordinate), combined with errors factoring non-monic quadratics ($a \\ne 1$).',
+                    derivation: 'Factor $2$ out of the variable terms:$$f(x) = 2(x^2 - 6x) + 23$$Complete the square inside: $\\left(\\frac{-6}{2}\\right)^2 = 9$.$$f(x) = 2(x^2 - 6x + 9 - 9) + 23 = 2(x - 3)^2 - 18 + 23 = 2(x - 3)^2 + 5$$Since $2(x - 3)^2 \\ge 0$ for all real $x$, the absolute minimum occurs at $x = 3$. The minimum value is $f(3) = 5$.',
+                    mentorPrescription: 'SAT math writers deliberately set traps with "what is the value of $f(x)$" vs "for what value of $x$". In our studio, students translate every problem into coordinate language: Vertex $(h, k) = (3, 5) \\implies$ At $x=3$, minimum value is $5$.'
+                },
+                {
+                    id: 'high-3',
+                    conceptName: 'Rational Exponent Parity & Absolute Value Roots',
+                    gradeRoot: 'Algebra II / Early High School Even-Root Properties',
+                    q: 'For all real numbers $x$, simplify the algebraic expression: $$\\sqrt{x^6} - \\left((-x)^2\\right)^{3/2}$$',
+                    options: [
+                        '$0$',
+                        '$2x^3$',
+                        '$|x|^3 - x^3$',
+                        '$-2x^3$'
+                    ],
+                    answer: 0,
+                    surfaceTrap: 'Option B ($2x^3$) or Option C occur when students casually write $\\sqrt{x^6} = x^3$ and $((-x)^2)^{3/2} = -x^3$, forgetting that even roots must yield non-negative values for negative $x$.',
+                    rootCause: 'Algebra II Even-Root Properties: For any real number $x$ and even root $2k$, $\\sqrt[2k]{x^{2k}} = |x|$. If $x = -2$, $x^3 = -8$, but $\\sqrt{(-2)^6} = \\sqrt{64} = +8 = |-2|^3$. Both terms evaluate to $|x|^3$, so their difference is identically $0$.',
+                    derivation: '$$\\text{Term 1: } \\sqrt{x^6} = \\sqrt{(x^3)^2} = |x^3| = |x|^3$$$$\\text{Term 2: } \\left((-x)^2\\right)^{3/2} = \\left(x^2\\right)^{3/2} = (\\sqrt{x^2})^3 = (|x|)^3 = |x|^3$$$$\\text{Difference: } |x|^3 - |x|^3 = 0 \\quad \\text{for all } x \\in \\mathbb{R}$$',
+                    mentorPrescription: 'Digital SAT 800 scorers never fall for exponent parity traps. Jyothi trains students to test negative test values (like $x = -1$) whenever even roots appear. If the formula gives negative answers for a principal square root, you know absolute values are missing.'
+                },
+                {
+                    id: 'high-4',
+                    conceptName: 'One-to-One Inverses & Domain-Range Duality',
+                    gradeRoot: 'Algebra II / Precalculus Function Inverses',
+                    q: 'Let $f(x) = x^2 - 4x + 7$ with restricted domain $x \\ge 2$. Find the formula for the inverse function $f^{-1}(x)$, and specify its domain.',
+                    options: [
+                        '$f^{-1}(x) = 2 + \\sqrt{x - 3}$ for $x \\ge 3$',
+                        '$f^{-1}(x) = 2 \\pm \\sqrt{x - 3}$ for $x \\ge 3$',
+                        '$f^{-1}(x) = 2 - \\sqrt{x - 3}$ for $x \\ge 3$',
+                        '$f^{-1}(x) = \\sqrt{x - 7} + 2$ for $x \\ge 7$'
+                    ],
+                    answer: 0,
+                    surfaceTrap: 'Option B is an invalid function (fails vertical line test with $\\pm$). Option C picks the negative branch $2 - \\sqrt{x-3}$, which maps outputs to $y \\le 2$, contradicting the original domain $x \\ge 2$.',
+                    rootCause: 'Algebra II Function Inverses: Forgetting that finding an inverse is a mapping swap: $\\text{Domain}(f^{-1}) = \\text{Range}(f)$ and $\\text{Range}(f^{-1}) = \\text{Domain}(f)$. Since the domain of $f$ is $[2, \\infty)$, the output of $f^{-1}$ must be $\\ge 2$, requiring the positive branch $+$.',
+                    derivation: 'Write $f(x)$ in vertex form:$$y = (x - 2)^2 + 3$$Since $x \\ge 2$, $(x - 2) \\ge 0$, and the range is $y \\ge 3$. Solve for $x$: $$(x - 2)^2 = y - 3 \\implies x - 2 = +\\sqrt{y - 3} \\quad (\\text{since } x \\ge 2)$$$$x = 2 + \\sqrt{y - 3}$$Swap variables to express $f^{-1}(x)$:$$f^{-1}(x) = 2 + \\sqrt{x - 3} \\quad \\text{with domain } x \\ge 3$$',
+                    mentorPrescription: 'Inverses are reflections across the identity line $y = x$. If the original parabola was restricted to the right branch ($x \\ge 2$), the inverse must be the upper branch of the sideways parabola. Jyothi makes students sketch the graph before touching algebra.'
+                },
+                {
+                    id: 'high-5',
+                    conceptName: 'Preserving Solution Families (The Extraneous Division Trap)',
+                    gradeRoot: 'Grade 8 / Algebra I Solving by Factoring vs. Variable Division',
+                    q: 'How many distinct real solutions exist for the equation: $$\\sin(2x) = \\cos(x)$$ in the half-open interval $[0, 2\\pi)$?',
+                    options: [
+                        '$4\\text{ solutions}$',
+                        '$2\\text{ solutions}$',
+                        '$3\\text{ solutions}$',
+                        '$1\\text{ solution}$'
+                    ],
+                    answer: 0,
+                    surfaceTrap: 'Option B ($2\\text{ solutions}$) is chosen by students who write $2\\sin(x)\\cos(x) = \\cos(x)$ and divide both sides by $\\cos(x)$, getting $2\\sin(x) = 1 \\implies \\sin(x) = 1/2$ (yielding only $\\pi/6$ and $5\\pi/6$). They throw away two entire solutions!',
+                    rootCause: 'Grade 8 / Algebra I Factoring Principle: Dividing both sides of an equation by a variable expression that can equal zero destroys solutions. In Grade 8, students do this with $x^2 = 5x$ (dividing by $x$ and losing $x = 0$). In Pre-Calculus, they repeat the exact same error with $\\cos(x)$.',
+                    derivation: 'Apply double-angle identity and collect all terms on one side:$$2\\sin(x)\\cos(x) - \\cos(x) = 0$$Factor out $\\cos(x)$:$$\\cos(x)\\left(2\\sin(x) - 1\\right) = 0$$Case 1: $\\cos(x) = 0 \\implies x = \\frac{\\pi}{2}, \\frac{3\\pi}{2}$ (2 solutions)Case 2: $2\\sin(x) - 1 = 0 \\implies \\sin(x) = \\frac{1}{2} \\implies x = \\frac{\\pi}{6}, \\frac{5\\pi}{6}$ (2 solutions)$$\\text{Total distinct solutions in } [0, 2\\pi) = 2 + 2 = 4\\text{ solutions}$$',
+                    mentorPrescription: 'Never divide by an unknown variable! Jyothi calls this the "vanishing root crime." In our high school cohorts, students chant the first-principles law: Set equal to zero and factor. Factoring preserves every branch of truth.'
+                }
             ]
         };
 
         let currentTier = '';
         let currentQuestionIndex = 0;
         let score = 0;
-        let incorrectAnswers = [];
+        let userAttempts = [];
+        let isAnswerChecked = false;
+
+        // KaTeX helper
+        function renderMath(target) {
+            const el = target || document.body;
+            if (window.renderMathInElement) {
+                window.renderMathInElement(el, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false},
+                        {left: '$', right: '$', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+
+        // Tier management
+        function resetToTiers() {
+            document.getElementById('question-view').classList.add('hidden');
+            document.getElementById('results-view').classList.add('hidden');
+            document.getElementById('tier-selection').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
         function startQuiz(tier) {
             currentTier = tier;
             currentQuestionIndex = 0;
             score = 0;
-            incorrectAnswers = [];
+            userAttempts = [];
 
             document.getElementById('tier-selection').classList.add('hidden');
+            document.getElementById('results-view').classList.add('hidden');
             document.getElementById('question-view').classList.remove('hidden');
-            document.getElementById('tier-badge').innerText = tier === 'high' ? 'High School / SAT' : tier.charAt(0).toUpperCase() + tier.slice(1);
+
+            const tierNames = {
+                elementary: 'Elementary & Pre-Algebra (Grades 4–6)',
+                middle: 'Middle School & Algebra I (Grades 7–9)',
+                high: 'High School & SAT 800 (Grades 9–12)'
+            };
+            document.getElementById('tier-badge').innerText = tierNames[tier] || tier;
 
             loadQuestion();
+            window.scrollTo({ top: 120, behavior: 'smooth' });
         }
 
         function loadQuestion() {
-            const questionData = quizData[currentTier][currentQuestionIndex];
-            document.getElementById('question-counter').innerText = `Question ${currentQuestionIndex + 1} of ${quizData[currentTier].length}`;
-            document.getElementById('question-text').innerText = questionData.q;
+            isAnswerChecked = false;
+            const tierQuestions = quizData[currentTier];
+            const qData = tierQuestions[currentQuestionIndex];
 
+            // Progress bar & counter
+            const progress = ((currentQuestionIndex + 1) / tierQuestions.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+            document.getElementById('question-counter').innerText = `Question ${currentQuestionIndex + 1} of ${tierQuestions.length}`;
+            document.getElementById('concept-tag').innerText = qData.conceptName;
+
+            // Question statement
+            const questionTextEl = document.getElementById('question-text');
+            questionTextEl.innerHTML = qData.q;
+
+            // Options
             const optionsContainer = document.getElementById('options-container');
             optionsContainer.innerHTML = '';
 
-            questionData.options.forEach((opt, index) => {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'relative';
+            qData.options.forEach((optText, idx) => {
+                const optItem = document.createElement('div');
+                optItem.className = 'option-item p-4 sm:p-5 rounded-xl flex items-center justify-between group';
+                optItem.id = `option-item-${idx}`;
+                optItem.onclick = () => selectOption(idx);
 
-                const input = document.createElement('input');
-                input.type = 'radio';
-                input.name = 'answer';
-                input.id = `opt${index}`;
-                input.value = index;
-                input.className = 'peer sr-only';
-                input.onchange = enableNext;
+                const leftCol = document.createElement('div');
+                leftCol.className = 'flex items-center space-x-3.5 pr-4 flex-grow';
 
-                const label = document.createElement('label');
-                label.htmlFor = `opt${index}`;
-                label.className = 'option-label block w-full p-5 border border-[#E5BE85]/20 rounded-xl text-[#E5BE85]/90 font-medium';
+                const letterBadge = document.createElement('span');
+                letterBadge.className = 'w-7 h-7 rounded-full border border-gold/40 text-gold font-mono font-bold text-xs flex items-center justify-center flex-shrink-0 group-hover:border-gold';
+                letterBadge.textContent = String.fromCharCode(65 + idx);
 
-                const span = document.createElement('span');
-                span.className = 'mr-3 font-bold text-[#E5BE85]';
-                span.textContent = `${String.fromCharCode(65 + index)}.`;
+                const contentSpan = document.createElement('div');
+                contentSpan.className = 'text-sm sm:text-base text-bone font-medium option-content';
+                contentSpan.innerHTML = optText;
 
-                label.appendChild(span);
-                label.appendChild(document.createTextNode(` ${opt}`));
+                leftCol.appendChild(letterBadge);
+                leftCol.appendChild(contentSpan);
 
-                wrapper.appendChild(input);
-                wrapper.appendChild(label);
-                optionsContainer.appendChild(wrapper);
+                const statusIndicator = document.createElement('span');
+                statusIndicator.id = `opt-status-${idx}`;
+                statusIndicator.className = 'text-xs font-mono font-bold flex-shrink-0 hidden';
+
+                optItem.appendChild(leftCol);
+                optItem.appendChild(statusIndicator);
+                optionsContainer.appendChild(optItem);
             });
 
-            const btn = document.getElementById('next-btn');
+            // Hide solution panel & reset action button
+            const solPanel = document.getElementById('solution-panel');
+            solPanel.classList.add('hidden');
+
+            const btn = document.getElementById('action-btn');
             btn.disabled = true;
-            btn.innerText = currentQuestionIndex === quizData[currentTier].length - 1 ? 'Submit Test' : 'Next Question';
+            btn.innerText = 'Check Foundation & Reveal Breakdown';
 
-            document.getElementById('question-text').focus();
-
-            // Re-trigger reveal animation for options
+            // Typeset KaTeX
             setTimeout(() => {
+                renderMath(questionTextEl);
+                renderMath(optionsContainer);
                 if (typeof window.updateRects === 'function') window.updateRects();
-            }, 100);
+            }, 30);
         }
 
-        function enableNext() {
-            const btn = document.getElementById('next-btn');
+        let selectedOptionIndex = null;
+
+        function selectOption(index) {
+            if (isAnswerChecked) return;
+            selectedOptionIndex = index;
+
+            // Visual update
+            const totalOptions = quizData[currentTier][currentQuestionIndex].options.length;
+            for (let i = 0; i < totalOptions; i++) {
+                const item = document.getElementById(`option-item-${i}`);
+                if (i === index) {
+                    item.classList.add('selected');
+                } else {
+                    item.classList.remove('selected');
+                }
+            }
+
+            const btn = document.getElementById('action-btn');
             btn.disabled = false;
-            btn.innerText = currentQuestionIndex === quizData[currentTier].length - 1 ? 'Submit Test' : 'Next Question';
+        }
+
+        function handleActionClick() {
+            if (!isAnswerChecked) {
+                checkAnswer();
+            } else {
+                nextQuestion();
+            }
+        }
+
+        function checkAnswer() {
+            if (selectedOptionIndex === null || isAnswerChecked) return;
+            isAnswerChecked = true;
+
+            const qData = quizData[currentTier][currentQuestionIndex];
+            const isCorrect = selectedOptionIndex === qData.answer;
+
+            if (isCorrect) {
+                score++;
+            }
+
+            // Save attempt record
+            userAttempts.push({
+                question: qData,
+                selectedIndex: selectedOptionIndex,
+                isCorrect: isCorrect
+            });
+
+            // Mark options visually
+            const chosenItem = document.getElementById(`option-item-${selectedOptionIndex}`);
+            const correctItem = document.getElementById(`option-item-${qData.answer}`);
+
+            if (isCorrect) {
+                chosenItem.classList.remove('selected');
+                chosenItem.classList.add('correct-reveal');
+                const status = document.getElementById(`opt-status-${selectedOptionIndex}`);
+                status.classList.remove('hidden');
+                status.className = 'text-xs font-mono font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-500/40 px-2.5 py-1 rounded-full';
+                status.innerText = '✓ Correct';
+            } else {
+                chosenItem.classList.remove('selected');
+                chosenItem.classList.add('wrong-reveal');
+                const wrongStatus = document.getElementById(`opt-status-${selectedOptionIndex}`);
+                wrongStatus.classList.remove('hidden');
+                wrongStatus.className = 'text-xs font-mono font-bold text-rose-400 bg-rose-950/60 border border-rose-500/40 px-2.5 py-1 rounded-full';
+                wrongStatus.innerText = '✗ Your Choice';
+
+                // Highlight correct option as ground truth
+                correctItem.classList.add('correct-reveal');
+                const correctStatus = document.getElementById(`opt-status-${qData.answer}`);
+                correctStatus.classList.remove('hidden');
+                correctStatus.className = 'text-xs font-mono font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-500/40 px-2.5 py-1 rounded-full';
+                correctStatus.innerText = '✓ Ground Truth';
+            }
+
+            // Populate Solution Panel
+            const verdictCard = document.getElementById('verdict-card');
+            const verdictIcon = document.getElementById('verdict-icon');
+            const verdictTitle = document.getElementById('verdict-title');
+            const verdictSubtitle = document.getElementById('verdict-subtitle');
+
+            if (isCorrect) {
+                verdictCard.className = 'p-6 sm:p-8 rounded-2xl border text-left backdrop-blur-xl bg-emerald-950/30 border-emerald-500/40 text-emerald-100 shadow-[0_0_30px_rgba(16,185,129,0.15)]';
+                verdictIcon.innerText = '✓';
+                verdictTitle.innerText = 'First-Principles Mastery Confirmed';
+                verdictSubtitle.innerText = 'You avoided the conventional trap and reasoned from core mathematical axioms.';
+            } else {
+                verdictCard.className = 'p-6 sm:p-8 rounded-2xl border text-left backdrop-blur-xl bg-rose-950/30 border-rose-500/40 text-rose-100 shadow-[0_0_30px_rgba(244,63,94,0.15)]';
+                verdictIcon.innerText = '⚠️';
+                verdictTitle.innerText = 'Hidden Conceptual Fracture Diagnosed';
+                verdictSubtitle.innerText = `Your answer reflected a classic school shortcut. Here is the exact early grade foundation that fractured.`;
+            }
+
+            document.getElementById('sol-trap').innerHTML = qData.surfaceTrap;
+            document.getElementById('sol-root-badge').innerText = `FOUNDATIONAL GAP: ${qData.gradeRoot}`;
+            document.getElementById('sol-root').innerHTML = qData.rootCause;
+            document.getElementById('sol-derivation').innerHTML = qData.derivation;
+            document.getElementById('sol-mentor').innerHTML = `"${qData.mentorPrescription}"`;
+
+            // Reveal panel
+            const solPanel = document.getElementById('solution-panel');
+            solPanel.classList.remove('hidden');
+
+            // Update Action Button
+            const isLast = currentQuestionIndex === quizData[currentTier].length - 1;
+            const nextText = isLast ? 'View Complete Diagnostic Portfolio →' : 'Continue to Next Question →';
+            const actionBtn = document.getElementById('action-btn');
+            actionBtn.innerText = nextText;
+            document.getElementById('continue-bottom-btn').innerText = nextText;
+
+            // Typeset KaTeX inside solution
+            renderMath(solPanel);
+
+            // Recompute spotlight card boundaries
+            if (typeof window.updateRects === 'function') {
+                setTimeout(window.updateRects, 100);
+            }
+
+            // Smooth scroll down to solution
+            setTimeout(() => {
+                solPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 150);
         }
 
         function nextQuestion() {
-            const selected = document.querySelector('input[name="answer"]:checked');
-            if (!selected) return;
-
-            const ansIndex = parseInt(selected.value);
-            const questionData = quizData[currentTier][currentQuestionIndex];
-
-            if (ansIndex === questionData.answer) {
-                score++;
-            } else {
-                incorrectAnswers.push({
-                    q: questionData.q,
-                    studentAns: questionData.options[ansIndex],
-                    correctAns: questionData.options[questionData.answer],
-                    breakdown: questionData.breakdown
-                });
-            }
-
             currentQuestionIndex++;
             if (currentQuestionIndex < quizData[currentTier].length) {
+                selectedOptionIndex = null;
                 loadQuestion();
+                window.scrollTo({ top: 120, behavior: 'smooth' });
             } else {
                 showResults();
             }
@@ -275,128 +1044,104 @@
             document.getElementById('question-view').classList.add('hidden');
             document.getElementById('results-view').classList.remove('hidden');
 
-            const percentage = Math.round((score / quizData[currentTier].length) * 100);
+            const total = quizData[currentTier].length;
+            const percentage = Math.round((score / total) * 100);
+
             document.getElementById('score-display').innerText = `${percentage}%`;
+            document.getElementById('score-fraction').innerText = `${score} of ${total} Core Principles Mastered`;
 
-            document.getElementById('results-heading').focus();
-
-            let message = '';
-            let ctaHTML = '';
-
-            const pricingLinks = {
-                elementary: 'pricing.html#group',
-                middle: 'pricing.html#group',
-                high: 'pricing.html#group' // Assuming SAT or High School cohort
-            };
-
-            if (percentage >= 80) {
-                message = "Excellent work! You have a strong foundational understanding.";
-                const ctaBtn = document.createElement('a');
-                ctaBtn.href = "contact.html";
-                ctaBtn.className = "inline-block bg-[#E5BE85]/10 border border-[#E5BE85]/40 text-[#E5BE85] font-bold py-3 px-8 rounded-xl hover:bg-[#E5BE85] hover:text-[#0B0B33] transition-all btn-glow shadow-md";
-                ctaBtn.textContent = "Join an Advanced Cohort";
-                document.getElementById('cta-container').innerHTML = '';
-                document.getElementById('cta-container').appendChild(ctaBtn);
+            let evalText = '';
+            if (percentage === 100) {
+                evalText = 'Exceptional structural rigor. Your child demonstrated pristine first-principles reasoning across all five conceptual traps, showing resilience against rote algorithms.';
+            } else if (percentage >= 60) {
+                evalText = 'High natural capability with isolated foundational cracks. Your child grasped the core mechanics, but fell into 1 or 2 classic middle school traps. These are easily and permanently repaired with targeted mentoring.';
             } else {
-                message = "We identified some key areas where you can improve your understanding.";
-                const wrapper = document.createElement('div');
-                wrapper.className = "mt-6 border-t border-[#E5BE85]/20 pt-6";
-
-                const label = document.createElement('p');
-                label.className = "text-xs uppercase tracking-widest text-[#E5BE85]/60 mb-4 font-bold";
-                label.textContent = "Recommended Action";
-
-                const ctaBtn = document.createElement('a');
-                ctaBtn.href = pricingLinks[currentTier];
-                ctaBtn.className = "inline-block bg-gradient-to-r from-[#E5BE85] to-[#c79a55] text-[#0B0B33] font-black uppercase tracking-wider py-4 px-10 rounded-xl btn-glow shadow-[0_0_20px_rgba(229,190,133,0.4)]";
-                ctaBtn.textContent = `Enroll in our ${currentTier.charAt(0).toUpperCase() + currentTier.slice(1)} Program`;
-
-                wrapper.appendChild(label);
-                wrapper.appendChild(ctaBtn);
-                document.getElementById('cta-container').innerHTML = '';
-                document.getElementById('cta-container').appendChild(wrapper);
+                evalText = 'Critical conceptual fractures detected. Your child is working hard, but relying on brittle school mnemonics that collapse under non-routine problems. Rebuilding these middle school roots will transform their academic confidence.';
             }
+            document.getElementById('score-evaluation').innerText = evalText;
 
-            document.getElementById('score-message').innerText = message;
-
-            const breakdownContainer = document.getElementById('breakdown-container');
+            // Render Itemized Breakdown List
+            const breakdownContainer = document.getElementById('breakdown-items-container');
             breakdownContainer.innerHTML = '';
 
-            if (incorrectAnswers.length > 0) {
-                const header = document.createElement('h3');
-                header.className = 'text-2xl font-bold text-[#E5BE85] mb-6 tracking-wide drop-shadow-md text-center mt-12';
-                header.innerText = 'Conceptual Breakdown';
-                breakdownContainer.appendChild(header);
+            userAttempts.forEach((attempt, idx) => {
+                const itemCard = document.createElement('div');
+                itemCard.className = `spotlight-card p-6 sm:p-8 rounded-2xl border text-left transition-all ${attempt.isCorrect ? 'border-emerald-500/30' : 'border-rose-500/30'}`;
 
-                incorrectAnswers.forEach(item => {
-                    const card = document.createElement('div');
-                    card.className = 'spotlight-card p-8 text-left border-[#E5BE85]/20';
+                const topBar = document.createElement('div');
+                topBar.className = 'flex flex-wrap items-center justify-between gap-2 mb-3';
 
-                    const inner = document.createElement('div');
-                    inner.className = 'transform translateZ(20px)';
+                const leftBadge = document.createElement('span');
+                leftBadge.className = 'text-xs font-mono font-bold text-gold uppercase tracking-wider';
+                leftBadge.textContent = `Question ${idx + 1}: ${attempt.question.conceptName}`;
 
-                    const questionP = document.createElement('p');
-                    questionP.className = 'font-bold text-white mb-4';
-                    questionP.textContent = item.q;
-
-                    const flexDiv = document.createElement('div');
-                    flexDiv.className = 'flex flex-col sm:flex-row gap-4 mb-4 text-sm';
-
-                    const createAnsBox = (title, content, bgColorClass, borderClass, textClass) => {
-                        const box = document.createElement('div');
-                        box.className = `${bgColorClass} border ${borderClass} px-4 py-2 rounded-lg ${textClass}`;
-                        const boxTitle = document.createElement('span');
-                        boxTitle.className = 'font-bold block text-[10px] uppercase tracking-widest opacity-70 mb-1';
-                        boxTitle.textContent = title;
-                        box.appendChild(boxTitle);
-                        box.appendChild(document.createTextNode(content));
-                        return box;
-                    };
-
-                    const studentAnsBox = createAnsBox('Your Answer', item.studentAns, 'bg-red-900/30', 'border-red-500/30', 'text-red-200');
-                    const correctAnsBox = createAnsBox('Correct Answer', item.correctAns, 'bg-green-900/30', 'border-green-500/30', 'text-green-200');
-
-                    flexDiv.appendChild(studentAnsBox);
-                    flexDiv.appendChild(correctAnsBox);
-
-                    const explanationP = document.createElement('p');
-                    explanationP.className = 'text-[#E5BE85]/90 leading-relaxed font-light mt-4 pt-4 border-t border-[#E5BE85]/10';
-                    const expTitle = document.createElement('span');
-                    expTitle.className = 'font-bold uppercase tracking-widest text-[10px] block mb-2 text-[#E5BE85]/50';
-                    expTitle.textContent = 'Explanation';
-                    explanationP.appendChild(expTitle);
-                    explanationP.appendChild(document.createTextNode(item.breakdown));
-
-                    inner.appendChild(questionP);
-                    inner.appendChild(flexDiv);
-                    inner.appendChild(explanationP);
-                    card.appendChild(inner);
-                    breakdownContainer.appendChild(card);
-                });
-            }
-
-            // Re-bind mouse events to new spotlight cards
-            setTimeout(() => {
-                if (typeof window.updateRects === 'function') {
-                    const newCards = Array.from(document.querySelectorAll("#results-view .spotlight-card"));
-                    newCards.forEach(card => {
-                        if(!window.cards.includes(card)) {
-                            window.cards.push(card);
-                            window.resizeObserver.observe(card);
-                            card.addEventListener('mousemove', e => {
-                                const rect = card._cachedRect;
-                                if (!rect) return;
-                                const x = e.clientX - rect.left;
-                                const y = e.clientY - rect.top;
-                                card.style.setProperty("--mouse-x", `${x}px`);
-                                card.style.setProperty("--mouse-y", `${y}px`);
-                            }, { passive: true });
-                        }
-                    });
-                    window.updateRects();
+                const statusBadge = document.createElement('span');
+                if (attempt.isCorrect) {
+                    statusBadge.className = 'text-[11px] font-mono font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-500/40 px-3 py-1 rounded-full';
+                    statusBadge.textContent = '✓ Foundation Solid';
+                } else {
+                    statusBadge.className = 'text-[11px] font-mono font-bold text-rose-400 bg-rose-950/60 border border-rose-500/40 px-3 py-1 rounded-full';
+                    statusBadge.textContent = '⚠️ Conceptual Fracture';
                 }
-            }, 100);
+
+                topBar.appendChild(leftBadge);
+                topBar.appendChild(statusBadge);
+
+                // Prompt
+                const promptDiv = document.createElement('div');
+                promptDiv.className = 'text-base font-medium text-bone mb-4';
+                promptDiv.innerHTML = attempt.question.q;
+
+                // Answer Compare Grid
+                const compareGrid = document.createElement('div');
+                compareGrid.className = 'grid sm:grid-cols-2 gap-3 text-xs font-mono mb-4';
+
+                const userBox = document.createElement('div');
+                userBox.className = `p-3 rounded-lg border ${attempt.isCorrect ? 'bg-emerald-950/20 border-emerald-500/30 text-emerald-200' : 'bg-rose-950/20 border-rose-500/30 text-rose-200'}`;
+                userBox.innerHTML = `<span class="block text-[10px] uppercase tracking-widest opacity-70 mb-1">Your Answer:</span> ${attempt.question.options[attempt.selectedIndex]}`;
+
+                const correctBox = document.createElement('div');
+                correctBox.className = 'p-3 rounded-lg border bg-emerald-950/20 border-emerald-500/30 text-emerald-200';
+                correctBox.innerHTML = `<span class="block text-[10px] uppercase tracking-widest opacity-70 mb-1">Ground Truth:</span> ${attempt.question.options[attempt.question.answer]}`;
+
+                compareGrid.appendChild(userBox);
+                compareGrid.appendChild(correctBox);
+
+                // Root Cause Callout
+                const rootCallout = document.createElement('div');
+                rootCallout.className = 'p-4 rounded-xl bg-midnight-surface/80 border border-gold/20 text-xs text-bone/85 space-y-1.5';
+                rootCallout.innerHTML = `
+                    <div class="font-mono text-gold font-bold uppercase tracking-wider text-[11px]">Root Cause (${attempt.question.gradeRoot}):</div>
+                    <div class="font-light leading-relaxed">${attempt.question.rootCause}</div>
+                `;
+
+                // Jyothi prescription
+                const mentorNote = document.createElement('div');
+                mentorNote.className = 'mt-3 text-xs font-serif italic text-gold/90 pl-3 border-l-2 border-gold/40';
+                mentorNote.innerHTML = `Jyothi's Note: "${attempt.question.mentorPrescription}"`;
+
+                itemCard.appendChild(topBar);
+                itemCard.appendChild(promptDiv);
+                itemCard.appendChild(compareGrid);
+                itemCard.appendChild(rootCallout);
+                itemCard.appendChild(mentorNote);
+
+                breakdownContainer.appendChild(itemCard);
+            });
+
+            // Typeset KaTeX
+            setTimeout(() => {
+                renderMath(document.getElementById('results-view'));
+                if (typeof window.updateRects === 'function') window.updateRects();
+            }, 50);
+
+            window.scrollTo({ top: 100, behavior: 'smooth' });
         }
+
+        // Initialize KaTeX on window load
+        window.addEventListener('load', () => {
+            renderMath(document.body);
+        });
     </script>
 </body>
 </html>
