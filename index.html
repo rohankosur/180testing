@@ -89,29 +89,32 @@
                 linear-gradient(to right, rgba(229, 190, 133, 0.035) 1px, transparent 1px),
                 linear-gradient(to bottom, rgba(229, 190, 133, 0.035) 1px, transparent 1px);
             background-size: 55px 55px;
-            transform: translateY(calc(var(--scroll) * 0.12));
+            will-change: transform;
             pointer-events: none;
         }
         
-        /* Cosmic Deep Royal Blue Ambient Glows */
+        /* Cosmic Deep Royal Blue Ambient Atmosphere */
         .cosmic-light {
             position: fixed;
-            top: -10vh;
-            left: 20vw;
-            width: 60vw;
-            height: 70vh;
-            background: radial-gradient(circle at center, rgba(38, 50, 160, 0.28) 0%, rgba(11, 11, 51, 0) 70%);
+            top: -15vh;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100vw;
+            max-width: 1400px;
+            height: 85vh;
+            background: radial-gradient(ellipse 85% 65% at 50% 30%, rgba(32, 42, 130, 0.32) 0%, rgba(20, 22, 80, 0.16) 50%, transparent 85%);
             z-index: -2;
             pointer-events: none;
         }
         .hero-glow {
             position: absolute;
-            top: 15%;
+            top: 25%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 650px;
-            height: 450px;
-            background: radial-gradient(circle, rgba(38, 55, 175, 0.35) 0%, rgba(229, 190, 133, 0.08) 50%, transparent 75%);
+            width: 100%;
+            max-width: 620px;
+            height: 380px;
+            background: radial-gradient(ellipse at center, rgba(229, 190, 133, 0.14) 0%, rgba(38, 48, 140, 0.22) 45%, transparent 75%);
             z-index: 0;
             pointer-events: none;
         }
@@ -330,24 +333,23 @@
     <canvas id="celestial-canvas" class="fixed inset-0 z-[-1] pointer-events-none"></canvas>
     <canvas id="math-physics" class="fixed inset-0 z-[-1] pointer-events-none opacity-85"></canvas>
 
-    <!-- Mobile Experience Prompt Banner (Safari / Chrome on phone) -->
-    <aside aria-label="Mobile View Switcher" id="mobile-prompt-banner" class="hidden bg-gradient-to-r from-[#101144] via-[#1F1950] to-[#101144] border-b border-gold/40 px-4 py-2.5 text-xs font-mono text-bone z-[60] relative">
-        <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
-            <div class="flex items-center space-x-2 min-w-0">
-                <span class="text-gold text-sm shrink-0">📱</span>
-                <span class="truncate text-[11px] text-bone/90">Browsing on your phone? Try our dedicated <strong class="text-gold">Mobile Edition</strong></span>
+    <!-- Navigation Header with Integrated Mobile Prompt Banner -->
+    <header id="main-nav" class="fixed top-0 left-0 right-0 z-50 bg-[#0B0B33]/90 backdrop-blur-2xl border-b border-[#E5BE85]/15 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+        <!-- Mobile Experience Prompt Banner (Safari / Chrome on phone) -->
+        <aside aria-label="Mobile View Switcher" id="mobile-prompt-banner" class="hidden bg-gradient-to-r from-[#101144] via-[#1F1950] to-[#101144] border-b border-gold/30 px-4 py-2 text-xs font-mono text-bone">
+            <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+                <div class="flex items-center space-x-2 min-w-0">
+                    <span class="text-gold text-sm shrink-0">📱</span>
+                    <span class="truncate text-[11px] text-bone/90">Browsing on your phone? Try our dedicated <strong class="text-gold">Mobile Edition</strong></span>
+                </div>
+                <div class="flex items-center space-x-2 shrink-0">
+                    <a href="mobile.html" class="px-3 py-1 rounded-full bg-gold text-midnight font-bold text-[10px] uppercase tracking-wider hover:bg-gold-light transition-colors">
+                        Switch ↗
+                    </a>
+                    <button id="close-mobile-banner" class="text-muted hover:text-white px-1.5 py-0.5 text-xs" aria-label="Dismiss banner">✕</button>
+                </div>
             </div>
-            <div class="flex items-center space-x-2 shrink-0">
-                <a href="mobile.html" class="px-3 py-1 rounded-full bg-gold text-midnight font-bold text-[10px] uppercase tracking-wider hover:bg-gold-light transition-colors">
-                    Switch ↗
-                </a>
-                <button id="close-mobile-banner" class="text-muted hover:text-white px-1.5 py-0.5 text-xs" aria-label="Dismiss banner">✕</button>
-            </div>
-        </div>
-    </aside>
-
-    <!-- Navigation Header with Separate Page Sections -->
-    <header id="main-nav" class="fixed top-0 left-0 right-0 z-50 bg-[#0B0B33]/85 backdrop-blur-2xl border-b border-[#E5BE85]/15 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+        </aside>
         <!-- Scroll Reading Progress Line -->
         <div id="scroll-progress" class="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-gold/30 via-gold to-white origin-left scale-x-0 pointer-events-none"></div>
         <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
@@ -408,7 +410,7 @@
         </div>
     </header>
 
-    <main id="top" class="pt-20 max-w-7xl mx-auto px-6 overflow-x-hidden">
+    <main id="top" class="pt-24 sm:pt-28 max-w-7xl mx-auto px-6 overflow-x-hidden">
 
         <!-- Hero Section with Iconic Logo Centerpiece -->
         <section class="pt-6 pb-20 border-b border-midnight-border relative overflow-hidden">
@@ -425,7 +427,7 @@
             <!-- Logo Centerpiece & Official Tagline Banner -->
             <div class="flex flex-col items-center text-center relative z-10 mb-8 reveal-scale">
                 <div class="relative inline-block animate-float">
-                    <img src="logo.png" alt="180 Math Logo Banner" class="w-full max-w-sm sm:max-w-md md:max-w-lg object-contain drop-shadow-[0_20px_45px_rgba(0,0,0,0.8)] filter brightness-105" style="mix-blend-mode: lighten;">
+                    <img src="logo.png" alt="180 Math Logo Banner" class="w-full max-w-sm sm:max-w-md md:max-w-lg object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.65)] filter brightness-105">
                 </div>
                 <div class="flex flex-wrap justify-center items-center gap-3 font-mono text-[11px] text-muted mt-2">
                     <span class="text-gold">01 — FIRST PRINCIPLES</span>

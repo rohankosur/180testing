@@ -19,7 +19,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!ticking) {
             window.requestAnimationFrame(() => {
                 const currentScrollY = window.scrollY || 0;
-                document.documentElement.style.setProperty('--scroll', currentScrollY + 'px');
+                const bgGrid = document.querySelector('.bg-grid');
+                if (bgGrid) {
+                    bgGrid.style.transform = `translate3d(0, ${Math.round(currentScrollY * 0.12)}px, 0)`;
+                }
 
                 // A. Reading progress bar pinned to navbar
                 if (scrollProgress) {
@@ -51,13 +54,15 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 }
 
-                // D. Scroll Parallax Elements
-                const parallaxEls = document.querySelectorAll('[data-parallax]');
-                parallaxEls.forEach(el => {
-                    const speed = parseFloat(el.dataset.parallax) || 0.08;
-                    const offset = Math.round(currentScrollY * speed);
-                    el.style.transform = `translate3d(0, ${offset}px, 0)`;
-                });
+                // D. Scroll Parallax Elements (desktop only to eliminate mobile scroll stutter)
+                if (window.innerWidth >= 768) {
+                    const parallaxEls = document.querySelectorAll('[data-parallax]');
+                    parallaxEls.forEach(el => {
+                        const speed = parseFloat(el.dataset.parallax) || 0.08;
+                        const offset = Math.round(currentScrollY * speed);
+                        el.style.transform = `translate3d(0, ${offset}px, 0)`;
+                    });
+                }
 
                 lastScrollY = currentScrollY;
                 ticking = false;
@@ -218,7 +223,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }, { passive: true });
 
     // Typed Arrays (Data-Oriented Design)
-    let MAX_PARTICLES = window.innerWidth < 768 ? 75 : 150;
+    const isMobile = window.innerWidth < 768;
+    let MAX_PARTICLES = isMobile ? 20 : 140;
     const PARTICLE_STRIDE = 12;
     const particleData = new Float32Array(MAX_PARTICLES * PARTICLE_STRIDE);
     const symbols = ['∫','∑','√','∆','∞','≈','π','θ','Ω','α','β','γ','λ','μ','ρ','σ','φ','ω', 'x', 'y', '='];
@@ -339,11 +345,13 @@ document.addEventListener("DOMContentLoaded", () => {
             y += vy;
             rot += rotSpeed;
 
-            handleCollision(x, y, vx, vy, size, elasticity, baseVy, isBouncing);
-            y = collisionResult.y;
-            vx = collisionResult.vx;
-            vy = collisionResult.vy;
-            isBouncing = collisionResult.isBouncing;
+            if (!isMobile) {
+                handleCollision(x, y, vx, vy, size, elasticity, baseVy, isBouncing);
+                y = collisionResult.y;
+                vx = collisionResult.vx;
+                vy = collisionResult.vy;
+                isBouncing = collisionResult.isBouncing;
+            }
 
             if (isParticleOutOfBounds(x, y, width, height, window.scrollY)) {
                 spawnParticle(i, false);
@@ -413,7 +421,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let stars = [];
 
         function initTwinkleStars() {
-            const count = window.innerWidth < 768 ? 90 : 190;
+            const count = window.innerWidth < 768 ? 40 : 180;
             stars = [];
             for (let i = 0; i < count; i++) {
                 stars.push({
