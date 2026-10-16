@@ -167,6 +167,10 @@
         ::-webkit-scrollbar-track { background: #0B0B33; }
         ::-webkit-scrollbar-thumb { background: rgba(229, 190, 133, 0.25); border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: rgba(229, 190, 133, 0.5); }
+
+        /* Navigation link hover glow */
+        .link-hover { transition: color .2s ease, text-shadow .2s ease; }
+        .link-hover:hover { color: #ffffff; text-shadow: 0 0 12px rgba(229, 190, 133, 0.6); }
     </style>
 </head>
 <body class="selection:bg-gold/25 selection:text-gold relative overflow-x-hidden min-h-screen">
@@ -176,50 +180,58 @@
     <div class="cosmic-light"></div>
     <canvas id="math-physics" class="fixed inset-0 z-[-1] pointer-events-none opacity-85"></canvas>
 
-    <!-- Navigation Header -->
-    <header class="fixed top-0 left-0 right-0 z-50 bg-[#0B0B33]/90 backdrop-blur-2xl border-b border-midnight-border shadow-[0_10px_30px_rgba(0,0,0,0.6)]">
-        <div class="max-w-7xl mx-auto px-6 h-18 py-3 flex items-center justify-between font-mono text-xs tracking-wider">
-            <!-- Brand with Iconic 180 Math Logo Emblem -->
-            <a href="#top" class="flex items-center space-x-3 text-gold hover:text-bone transition-colors group">
-                <img src="logo.png" alt="180 Math Logo" class="h-10 w-auto drop-shadow-md group-hover:scale-105 transition-transform">
-                <div class="flex flex-col">
-                    <span class="font-display font-black text-lg tracking-tight text-bone group-hover:text-gold transition-colors leading-none">180 MATH</span>
+    <!-- Navigation Header with Separate Page Sections -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-[#0B0B33]/85 backdrop-blur-2xl border-b border-[#E5BE85]/15 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+        <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+            <!-- Brand Emblem -->
+            <a href="index.html" class="flex items-center space-x-3 group">
+                <img src="logo.png" alt="180 Math Logo" class="h-11 md:h-12 w-auto drop-shadow-md group-hover:scale-105 transition-transform">
+                <div class="hidden sm:flex flex-col">
+                    <span class="font-display font-black text-base md:text-lg tracking-tight text-bone group-hover:text-gold transition-colors leading-none">180 MATH</span>
                     <span class="text-[9px] text-gold/70 tracking-[0.2em] font-sans font-semibold">ONE DEGREE AT A TIME</span>
                 </div>
             </a>
 
-            <!-- Nav Links -->
-            <nav class="hidden md:flex items-center space-x-7 text-muted uppercase">
-                <a href="#philosophy" class="hover:text-gold transition-colors">001 / Philosophy</a>
-                <a href="#curriculum" class="hover:text-gold transition-colors">002 / Curriculum</a>
-                <a href="#proof" class="hover:text-gold transition-colors">003 / Proof</a>
-                <a href="#challenge" class="hover:text-gold transition-colors">004 / Challenge</a>
-                <a href="test.html" class="text-gold border border-gold/40 px-3.5 py-1.5 rounded-full hover:bg-gold hover:text-midnight transition-all">Diagnostic Test ↗</a>
+            <!-- Nav Links matching the original bar -->
+            <nav class="hidden md:flex items-center space-x-5 lg:space-x-8 text-xs font-bold uppercase tracking-widest text-[#E5BE85]/80">
+                <a href="index.html" class="link-hover text-bone focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E5BE85]/50 rounded-sm">Home</a>
+                <a href="about.html" class="link-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E5BE85]/50 rounded-sm">About</a>
+                <a href="program.html" class="link-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E5BE85]/50 rounded-sm">Program</a>
+                <a href="pricing.html" class="link-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E5BE85]/50 rounded-sm">Pricing</a>
+                <a href="testimonials.html" class="link-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E5BE85]/50 rounded-sm">Testimonials</a>
+                <a href="schedule.html" class="link-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E5BE85]/50 rounded-sm">Schedule</a>
+                <a href="faq.html" class="link-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E5BE85]/50 rounded-sm">FAQs</a>
+                <a href="contact.html" class="link-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E5BE85]/50 rounded-sm">Contact</a>
             </nav>
 
-            <!-- Real-Time Info Pill -->
+            <!-- Actions / Clock / Mobile Toggle -->
             <div class="flex items-center space-x-4">
-                <div class="hidden sm:flex items-center space-x-2 text-muted">
-                    <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span class="text-[11px] text-emerald-300">FALL '26 OPEN</span>
-                </div>
-                <div id="clock" class="text-gold font-mono text-[11px] px-3 py-1 bg-[#101144]/80 border border-midnight-border rounded-full shadow-inner">
+                <a href="test.html" class="hidden xl:inline-flex items-center text-xs font-mono font-semibold text-gold border border-gold/40 px-3.5 py-1.5 rounded-full hover:bg-gold hover:text-midnight transition-all">
+                    Diagnostic Test ↗
+                </a>
+                <div id="clock" class="hidden sm:block text-gold font-mono text-[11px] px-3 py-1 bg-[#101144]/80 border border-midnight-border rounded-full shadow-inner">
                     BOS --:--:--
                 </div>
-                <button aria-label="Toggle menu" class="md:hidden text-gold p-1" onclick="document.getElementById('mobile-drawer').classList.toggle('hidden')">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                <button aria-label="Toggle navigation menu" class="md:hidden text-[#E5BE85] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E5BE85]/50 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center p-2" onclick="document.getElementById('mobile-drawer').classList.toggle('hidden')">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
                 </button>
             </div>
         </div>
 
         <!-- Mobile Drawer -->
-        <div id="mobile-drawer" class="hidden md:hidden bg-[#0A0A2E] border-b border-midnight-border px-6 py-6 font-mono text-xs flex flex-col space-y-4 shadow-2xl">
-            <a href="#philosophy" class="text-muted hover:text-gold" onclick="document.getElementById('mobile-drawer').classList.add('hidden')">001 / Philosophy</a>
-            <a href="#curriculum" class="text-muted hover:text-gold" onclick="document.getElementById('mobile-drawer').classList.add('hidden')">002 / Curriculum</a>
-            <a href="#proof" class="text-muted hover:text-gold" onclick="document.getElementById('mobile-drawer').classList.add('hidden')">003 / Proof</a>
-            <a href="#challenge" class="text-muted hover:text-gold" onclick="document.getElementById('mobile-drawer').classList.add('hidden')">004 / Challenge</a>
-            <a href="test.html" class="text-gold">Diagnostic Test ↗</a>
-            <a href="contact.html" class="text-muted hover:text-gold">Book Consultation ↗</a>
+        <div id="mobile-drawer" class="hidden md:hidden bg-[#0B0B33]/98 backdrop-blur-3xl border-t border-[#E5BE85]/15 px-6 py-6 font-mono text-xs flex flex-col space-y-4 shadow-2xl">
+            <a href="index.html" class="text-gold font-bold uppercase tracking-widest text-sm py-1 border-b border-midnight-border/40" onclick="document.getElementById('mobile-drawer').classList.add('hidden')">Home</a>
+            <a href="about.html" class="text-[#E5BE85]/80 hover:text-white uppercase tracking-widest text-sm py-1 border-b border-midnight-border/40" onclick="document.getElementById('mobile-drawer').classList.add('hidden')">About</a>
+            <a href="program.html" class="text-[#E5BE85]/80 hover:text-white uppercase tracking-widest text-sm py-1 border-b border-midnight-border/40" onclick="document.getElementById('mobile-drawer').classList.add('hidden')">Program</a>
+            <a href="pricing.html" class="text-[#E5BE85]/80 hover:text-white uppercase tracking-widest text-sm py-1 border-b border-midnight-border/40" onclick="document.getElementById('mobile-drawer').classList.add('hidden')">Pricing</a>
+            <a href="testimonials.html" class="text-[#E5BE85]/80 hover:text-white uppercase tracking-widest text-sm py-1 border-b border-midnight-border/40" onclick="document.getElementById('mobile-drawer').classList.add('hidden')">Testimonials</a>
+            <a href="schedule.html" class="text-[#E5BE85]/80 hover:text-white uppercase tracking-widest text-sm py-1 border-b border-midnight-border/40" onclick="document.getElementById('mobile-drawer').classList.add('hidden')">Schedule</a>
+            <a href="faq.html" class="text-[#E5BE85]/80 hover:text-white uppercase tracking-widest text-sm py-1 border-b border-midnight-border/40" onclick="document.getElementById('mobile-drawer').classList.add('hidden')">FAQs</a>
+            <a href="contact.html" class="text-[#E5BE85]/80 hover:text-white uppercase tracking-widest text-sm py-1 border-b border-midnight-border/40" onclick="document.getElementById('mobile-drawer').classList.add('hidden')">Contact</a>
+            <a href="test.html" class="text-gold uppercase tracking-widest text-sm py-1 font-bold flex items-center justify-between" onclick="document.getElementById('mobile-drawer').classList.add('hidden')">
+                <span>Diagnostic Test</span>
+                <span>↗</span>
+            </a>
         </div>
     </header>
 
