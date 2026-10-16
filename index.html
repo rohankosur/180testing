@@ -1,126 +1,740 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>180 Math | Premier Math Tutoring</title>
-    <link rel="icon" href="favicon.ico" sizes="any">
-<link rel="icon" href="favicon.png" type="image/png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>180 Math — Premier Mathematics Mentorship & Diagnostic Engine</title>
+    <meta name="description" content="180 Math: First-principles mathematics mentorship, diagnostic test engines, and AP/AMC curriculum. Building deep mathematical intuition.">
+    <meta name="theme-color" content="#0D0B08">
+    
+    <!-- Editorial & Architectural Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Spline+Sans+Mono:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        :root { --scroll: 0px; }
-        html { scroll-behavior: smooth; background-color: #0B0B33; color: #E5BE85; }
-        body { background-color: #0B0B33; }
-
-        .cinematic-noise { position: fixed; inset: 0; z-index: 9999; pointer-events: none; opacity: 0.05; mix-blend-mode: overlay; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
-        .global-light { position: fixed; top: -20vh; left: -20vw; width: 80vw; height: 80vh; background: radial-gradient(circle at center, rgba(229, 190, 133, 0.08) 0%, transparent 70%); z-index: -3; pointer-events: none; }
-        .bg-grid { position: fixed; inset: -50vh -50vw; z-index: -4; background-color: #0B0B33; background-image: linear-gradient(to right, rgba(229, 190, 133, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(229, 190, 133, 0.03) 1px, transparent 1px); background-size: 50px 50px; transform: translateY(calc(var(--scroll) * 0.15)); }
-        
-        .perspective-container { perspective: 1200px; }
-        .spotlight-card { will-change: transform; position: relative; background: linear-gradient(135deg, rgba(11, 11, 51, 0.9) 0%, rgba(11, 11, 51, 0.6) 100%); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-top: 1px solid rgba(229, 190, 133, 0.15); border-left: 1px solid rgba(229, 190, 133, 0.1); border-bottom: 1px solid rgba(0, 0, 0, 0.5); border-right: 1px solid rgba(0, 0, 0, 0.5); box-shadow: 20px 30px 60px rgba(0, 0, 0, 0.4), -5px -5px 20px rgba(229, 190, 133, 0.03); transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease; transform-style: preserve-3d; border-radius: 1.5rem; }
-        .spotlight-card > * { transform: translateZ(30px); }
-        .spotlight-card::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(229, 190, 133, 0.15), transparent 40%); transition: opacity 0.3s; opacity: 0; border-radius: inherit; }
-        .spotlight-card:hover::after { opacity: 1; }
-        .spotlight-card:hover { box-shadow: 30px 40px 70px rgba(0, 0, 0, 0.6), -5px -5px 25px rgba(229, 190, 133, 0.15); z-index: 20; }
-
-        .btn-glow { position: relative; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 10px 20px rgba(0,0,0,0.4); transform: translateZ(50px); }
-        .btn-glow:hover { box-shadow: 0 15px 30px rgba(229, 190, 133, 0.4), 0 5px 15px rgba(0,0,0,0.5); transform: translateY(-8px) translateZ(50px); }
-        .link-hover { transition: color .2s ease, text-shadow .2s ease; }
-        .link-hover:hover { color: #ffffff; text-shadow: 0 0 12px rgba(229,190,133,.6); }
-
-        .reveal { will-change: transform, opacity; opacity: 0; transform: translateY(40px) translateZ(-50px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0) translateZ(0); }
-        .delay-100 { transition-delay: 100ms; }
-
-        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-            .spotlight-card { border-width: 0.5px !important; }
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['"Bricolage Grotesque"', 'sans-serif'],
+                        serif: ['"Newsreader"', 'serif'],
+                        mono: ['"Spline Sans Mono"', 'monospace'],
+                    },
+                    colors: {
+                        obsidian: '#0D0B08',
+                        'obsidian-card': '#14120E',
+                        'obsidian-border': 'rgba(229, 190, 133, 0.15)',
+                        gold: '#E5BE85',
+                        'gold-light': '#F5DFC0',
+                        'gold-dim': '#C49A58',
+                        bone: '#FAF5E8',
+                        muted: '#9E9789'
+                    }
+                }
+            }
         }
+    </script>
+    
+    <style>
+        :root {
+            --scroll: 0px;
+        }
+        body {
+            background-color: #0D0B08;
+            color: #FAF5E8;
+            font-family: 'Newsreader', serif;
+        }
+        
+        /* Subtle noise texture */
+        .cinematic-noise {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0.035;
+            mix-blend-mode: overlay;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+        
+        /* Architectural Gridlines */
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background-image: 
+                linear-gradient(to right, rgba(229, 190, 133, 0.035) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(229, 190, 133, 0.035) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+        
+        /* Ambient Warm Light */
+        .ambient-glow {
+            position: fixed;
+            top: -20vh;
+            left: 10vw;
+            width: 70vw;
+            height: 70vh;
+            background: radial-gradient(circle at center, rgba(229, 190, 133, 0.06) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Marquee Glider */
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            display: flex;
+            width: 200%;
+            animation: marquee 32s linear infinite;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
+        }
+
+        /* Rotating Stamp */
+        @keyframes spin-slow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spin-slow 22s linear infinite;
+        }
+
+        /* Architectural Hairline Cards */
+        .editorial-card {
+            background: linear-gradient(145deg, rgba(20, 18, 14, 0.85) 0%, rgba(13, 11, 8, 0.95) 100%);
+            border: 1px solid rgba(229, 190, 133, 0.12);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .editorial-card:hover {
+            border-color: rgba(229, 190, 133, 0.35);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.8), 0 0 20px -5px rgba(229, 190, 133, 0.05);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0D0B08; }
+        ::-webkit-scrollbar-thumb { background: rgba(229, 190, 133, 0.2); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(229, 190, 133, 0.4); }
     </style>
-
 </head>
-<body class="font-[system-ui] relative overflow-x-hidden">
+<body class="selection:bg-gold/20 selection:text-gold relative overflow-x-hidden min-h-screen">
 
-
-
-    <canvas id="math-physics" class="fixed inset-0 z-[0] pointer-events-none opacity-90"></canvas>
     <div class="cinematic-noise"></div>
-    <div class="global-light"></div>
     <div class="bg-grid"></div>
+    <div class="ambient-glow"></div>
+    <canvas id="math-physics" class="fixed inset-0 z-[-1] pointer-events-none opacity-40"></canvas>
 
-    <nav class="bg-[#0B0B33]/80 backdrop-blur-2xl shadow-[0_10px_30px_rgba(0,0,0,0.5)] fixed w-full z-50 top-0 border-b border-[#E5BE85]/10">
-        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center transform translateZ(0)">
-            <a href="#" class="flex items-center"><img src="logo.png" alt="180 Math Logo" class="h-12 w-auto drop-shadow-md"></a>
-            <div class="hidden md:flex space-x-8 text-xs font-bold uppercase tracking-widest text-[#E5BE85]/80">
-                <a href="index.html" class="link-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E5BE85]/50 rounded-sm">Home</a>
+    <!-- Navigation Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-obsidian/85 backdrop-blur-xl border-b border-obsidian-border">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between font-mono text-xs tracking-wider">
+            <!-- Brand -->
+            <a href="#top" class="flex items-center space-x-3 text-gold hover:text-bone transition-colors group">
+                <span class="font-display font-black text-lg tracking-tight text-bone group-hover:text-gold transition-colors">180 MATH</span>
+                <span class="inline-block w-1.5 h-1.5 rounded-full bg-gold animate-pulse"></span>
+            </a>
 
-                <a href="about.html" class="link-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E5BE85]/50 rounded-sm">About</a>
-                <a href="program.html" class="link-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E5BE85]/50 rounded-sm">Program</a>
-                <a href="pricing.html" class="link-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E5BE85]/50 rounded-sm">Pricing</a>
-                <a href="testimonials.html" class="link-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E5BE85]/50 rounded-sm">Testimonials</a>
-                <a href="schedule.html" class="link-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E5BE85]/50 rounded-sm">Schedule</a>
-                <a href="faq.html" class="link-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E5BE85]/50 rounded-sm">FAQs</a>
-                <a href="contact.html" class="link-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E5BE85]/50 rounded-sm">Contact</a>
+            <!-- Nav Links -->
+            <nav class="hidden md:flex items-center space-x-7 text-muted uppercase">
+                <a href="#philosophy" class="hover:text-gold transition-colors">001 / Philosophy</a>
+                <a href="#curriculum" class="hover:text-gold transition-colors">002 / Curriculum</a>
+                <a href="#proof" class="hover:text-gold transition-colors">003 / Proof</a>
+                <a href="#challenge" class="hover:text-gold transition-colors">004 / Challenge</a>
+                <a href="test.html" class="text-gold border border-gold/30 px-3 py-1.5 rounded hover:bg-gold hover:text-obsidian transition-all">Diagnostic Test ↗</a>
+            </nav>
+
+            <!-- Real-Time Info -->
+            <div class="flex items-center space-x-4">
+                <div class="hidden sm:flex items-center space-x-2 text-muted">
+                    <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span class="text-[11px]">FALL '26 OPEN</span>
+                </div>
+                <div id="clock" class="text-gold font-mono text-[11px] px-2.5 py-1 bg-obsidian-card border border-obsidian-border rounded">
+                    BOS --:--:--
+                </div>
+                <button aria-label="Toggle menu" class="md:hidden text-gold p-1" onclick="document.getElementById('mobile-drawer').classList.toggle('hidden')">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer -->
+        <div id="mobile-drawer" class="hidden md:hidden bg-obsidian-card border-b border-obsidian-border px-6 py-6 font-mono text-xs flex flex-col space-y-4">
+            <a href="#philosophy" class="text-muted hover:text-gold" onclick="document.getElementById('mobile-drawer').classList.add('hidden')">001 / Philosophy</a>
+            <a href="#curriculum" class="text-muted hover:text-gold" onclick="document.getElementById('mobile-drawer').classList.add('hidden')">002 / Curriculum</a>
+            <a href="#proof" class="text-muted hover:text-gold" onclick="document.getElementById('mobile-drawer').classList.add('hidden')">003 / Proof</a>
+            <a href="#challenge" class="text-muted hover:text-gold" onclick="document.getElementById('mobile-drawer').classList.add('hidden')">004 / Challenge</a>
+            <a href="test.html" class="text-gold">Diagnostic Test ↗</a>
+            <a href="contact.html" class="text-muted hover:text-gold">Book Consultation ↗</a>
+        </div>
+    </header>
+
+    <main id="top" class="pt-24 max-w-7xl mx-auto px-6">
+
+        <!-- Hero Section -->
+        <section class="pt-12 pb-20 border-b border-obsidian-border relative">
+            <!-- Metadata Top Row -->
+            <div class="flex flex-wrap items-center justify-between text-muted font-mono text-xs tracking-wider mb-10 pb-4 border-b border-obsidian-border/50">
+                <span class="text-gold">©26 / EDITION 2.4</span>
+                <span>MATHEMATICS MENTORSHIP & DIAGNOSTIC ENGINE</span>
+                <span class="hidden sm:inline">BOSTON, MA · 42.36°N / 71.06°W</span>
             </div>
 
-   
-        <button aria-label="Toggle navigation menu" class="md:hidden text-[#E5BE85] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E5BE85]/50 rounded-lg min-h-[48px] flex items-center justify-center p-2" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-            </button>
+            <!-- Massive Kinetic Title -->
+            <div class="mb-10">
+                <h1 class="font-display font-extrabold text-5xl sm:text-7xl md:text-8xl lg:text-9xl tracking-tighter text-bone leading-none uppercase">
+                    180 <span class="text-transparent bg-clip-text bg-gradient-to-r from-gold via-gold-light to-gold-dim">MATH</span>
+                </h1>
+                <div class="flex flex-wrap items-center gap-3 font-mono text-xs text-muted mt-4">
+                    <span class="text-gold">01 — FIRST PRINCIPLES</span>
+                    <span class="text-obsidian-border">/</span>
+                    <span>02 — DIAGNOSTIC MAPPING</span>
+                    <span class="text-obsidian-border">/</span>
+                    <span>03 — UNCOMPROMISING MASTERY</span>
+                </div>
+            </div>
+
+            <!-- Two-Column Editorial Row -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-end">
+                <div class="lg:col-span-8">
+                    <p class="font-serif text-2xl sm:text-3xl md:text-4xl text-bone/90 leading-snug font-light">
+                        Comprehensive tutoring designed to build deep mathematical <em class="font-serif italic text-gold font-normal">intuition</em> — turning grades and contest rankings around from foundational algebra to multivariable calculus.
+                    </p>
+                    <div class="mt-8 flex flex-wrap items-center gap-4 font-mono text-xs">
+                        <a href="test.html" class="bg-gold text-obsidian px-6 py-3.5 rounded font-bold hover:bg-gold-light transition-colors uppercase tracking-wider flex items-center space-x-2">
+                            <span>Take Diagnostic Test</span>
+                            <span>→</span>
+                        </a>
+                        <a href="#curriculum" class="border border-obsidian-border text-bone px-6 py-3.5 rounded hover:border-gold/50 transition-colors uppercase tracking-wider">
+                            Explore Curriculum
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Circular Rotating Badge -->
+                <div class="lg:col-span-4 flex justify-start lg:justify-end">
+                    <a href="#philosophy" class="relative w-36 h-36 flex items-center justify-center group cursor-pointer">
+                        <svg class="absolute inset-0 w-full h-full animate-spin-slow text-gold/60 group-hover:text-gold transition-colors" viewBox="0 0 100 100">
+                            <path id="circlePath" fill="none" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" />
+                            <text font-family="'Spline Sans Mono'" font-size="8.8" font-weight="bold" letter-spacing="2.2" fill="currentColor">
+                                <textPath href="#circlePath">
+                                    DIAGNOSTIC · MASTERY · INTUITION · RESULTS ·
+                                </textPath>
+                            </text>
+                        </svg>
+                        <div class="w-10 h-10 rounded-full border border-gold/40 flex items-center justify-center text-gold group-hover:scale-110 transition-transform">
+                            ↓
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Real-Time Activity Bar -->
+            <div class="mt-14 pt-6 border-t border-obsidian-border/50 flex flex-wrap items-center justify-between text-xs font-mono text-muted gap-4">
+                <div>
+                    <span class="text-gold font-bold">Currently:</span> Enrolling Fall & Spring Cohorts · 1-on-1 & Small Group Seminars
+                </div>
+                <div class="text-right">
+                    <span class="text-gold font-bold">Track Record:</span> 94.2% Scored 5 on AP Exams · +180 Avg SAT Math Boost
+                </div>
+            </div>
+        </section>
+
+        <!-- Gliding Infinite Ticker Tape -->
+        <div class="py-6 border-b border-obsidian-border overflow-hidden whitespace-nowrap -mx-6 px-6 bg-obsidian-card/40">
+            <div class="animate-marquee font-mono text-xs tracking-widest uppercase text-muted">
+                <span class="mx-4 flex items-center space-x-3"><span>1-on-1 Mentorship</span> <span class="text-gold">✺</span></span>
+                <span class="mx-4 flex items-center space-x-3"><span class="font-serif italic text-gold font-normal">Diagnostic-First Engine</span> <span class="text-gold">✺</span></span>
+                <span class="mx-4 flex items-center space-x-3"><span>AP Calculus AB & BC</span> <span class="text-gold">✺</span></span>
+                <span class="mx-4 flex items-center space-x-3"><span class="font-serif italic text-gold font-normal">AMC 10/12 & AIME Prep</span> <span class="text-gold">✺</span></span>
+                <span class="mx-4 flex items-center space-x-3"><span>SAT/ACT 800 Strategies</span> <span class="text-gold">✺</span></span>
+                <span class="mx-4 flex items-center space-x-3"><span>First-Principles Intuition</span> <span class="text-gold">✺</span></span>
+                <span class="mx-4 flex items-center space-x-3"><span>Linear Algebra</span> <span class="text-gold">✺</span></span>
+                <!-- Duplicate for seamless loop -->
+                <span class="mx-4 flex items-center space-x-3"><span>1-on-1 Mentorship</span> <span class="text-gold">✺</span></span>
+                <span class="mx-4 flex items-center space-x-3"><span class="font-serif italic text-gold font-normal">Diagnostic-First Engine</span> <span class="text-gold">✺</span></span>
+                <span class="mx-4 flex items-center space-x-3"><span>AP Calculus AB & BC</span> <span class="text-gold">✺</span></span>
+                <span class="mx-4 flex items-center space-x-3"><span class="font-serif italic text-gold font-normal">AMC 10/12 & AIME Prep</span> <span class="text-gold">✺</span></span>
+                <span class="mx-4 flex items-center space-x-3"><span>SAT/ACT 800 Strategies</span> <span class="text-gold">✺</span></span>
+                <span class="mx-4 flex items-center space-x-3"><span>First-Principles Intuition</span> <span class="text-gold">✺</span></span>
+                <span class="mx-4 flex items-center space-x-3"><span>Linear Algebra</span> <span class="text-gold">✺</span></span>
+            </div>
         </div>
-        <!-- Mobile Menu -->
-          <div id="mobile-menu" class="hidden z-50 md:hidden bg-[#0B0B33]/95 backdrop-blur-3xl border-t border-[#E5BE85]/10 absolute w-full flex flex-col items-center py-6 space-y-6 shadow-2xl">
-            <a href="index.html" class="text-[#E5BE85]/80 text-lg uppercase tracking-widest font-bold min-h-[48px] flex items-center justify-center w-full" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Home</a>
 
-            <a href="about.html" class="text-[#E5BE85]/80 text-lg uppercase tracking-widest font-bold min-h-[48px] flex items-center justify-center w-full" onclick="document.getElementById('mobile-menu').classList.add('hidden')">About</a>
-            <a href="program.html" class="text-[#E5BE85]/80 text-lg uppercase tracking-widest font-bold min-h-[48px] flex items-center justify-center w-full" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Program</a>
-            <a href="pricing.html" class="text-[#E5BE85]/80 text-lg uppercase tracking-widest font-bold min-h-[48px] flex items-center justify-center w-full" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Pricing</a>
-            <a href="testimonials.html" class="text-[#E5BE85]/80 text-lg uppercase tracking-widest font-bold min-h-[48px] flex items-center justify-center w-full" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Testimonials</a>
-            <a href="schedule.html" class="text-[#E5BE85]/80 text-lg uppercase tracking-widest font-bold min-h-[48px] flex items-center justify-center w-full" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Schedule</a>
-            <a href="faq.html" class="text-[#E5BE85]/80 text-lg uppercase tracking-widest font-bold min-h-[48px] flex items-center justify-center w-full" onclick="document.getElementById('mobile-menu').classList.add('hidden')">FAQ</a>
-            <a href="contact.html" class="text-[#E5BE85]/80 text-lg uppercase tracking-widest font-bold min-h-[48px] flex items-center justify-center w-full"  onclick="document.getElementById('mobile-menu').classList.add('hidden')"> Contact</a>
-        </div>
-    </nav>
+        <!-- 001 / Philosophy Section -->
+        <section id="philosophy" class="py-24 border-b border-obsidian-border scroll-mt-20">
+            <div class="flex items-center justify-between font-mono text-xs text-muted mb-10">
+                <h2 class="text-gold font-bold uppercase tracking-wider">001 / Philosophy</h2>
+                <span>/first-principles</span>
+            </div>
 
-    <section id="home" class="scroll-mt-24 min-h-[100vh] flex flex-col justify-center items-center text-center px-4 relative pt-20 pb-24 perspective-container z-10" style="background: radial-gradient(circle at 50% 30%, #0B0B33 0%, transparent 80%);">
-        <div class="max-w-4xl w-full flex flex-col items-center z-10 reveal active">
-            <img src="logo.png" alt="180 Math Logo Banner" class="w-full max-w-lg md:max-w-2xl mb-12 object-contain">
-            <p class="text-xl md:text-2xl text-[#E5BE85]/90 max-w-2xl mx-auto leading-relaxed font-light tracking-wide decipher-text drop-shadow-lg">
-                Comprehensive tutoring designed to improve your math concepts and turn your grades around. From foundational algebra to AP pre-calculus, we build confidence and competence.
-            </p>
-        </div>
-        <div class="absolute bottom-16 w-full flex justify-center z-20 reveal delay-200 active perspective-container">
-            <a href="program.html" class="bg-gradient-to-r from-[#E5BE85] to-[#c79a55] text-[#0B0B33] px-12 py-5 rounded-full font-black uppercase tracking-wider text-sm min-h-[48px] flex items-center justify-center btn-glow backdrop-blur-md">Get Started</a>
-        </div>
-    </section>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                <div class="lg:col-span-7 space-y-6">
+                    <p class="font-serif text-3xl sm:text-4xl text-bone leading-tight font-light">
+                        Mastery is not memorization. It’s <em class="font-serif italic text-gold font-normal">intuition.</em>
+                    </p>
+                    <p class="font-serif text-lg text-bone/70 leading-relaxed">
+                        Standard tutoring teaches students to memorize steps and replicate templates. At 180 Math, we dismantle problems to their axiomatic foundations. A student who understands <em class="italic text-gold">why</em> a Taylor polynomial approximates a curve will never forget how to compute its coefficients.
+                    </p>
+                    <p class="font-serif text-lg text-bone/70 leading-relaxed">
+                        Through diagnostic isolation, targeted derivations, and timed challenge sprints, we turn math from an intimidating chore into a creative, confident intuition.
+                    </p>
+                </div>
 
+                <!-- Technical Specification Sheet -->
+                <div class="lg:col-span-5 bg-obsidian-card p-6 rounded border border-obsidian-border font-mono text-xs space-y-4">
+                    <div class="text-gold font-bold pb-3 border-b border-obsidian-border/50 uppercase tracking-wider">
+                        Methodology Architecture
+                    </div>
+                    <div class="flex justify-between py-2 border-b border-obsidian-border/30">
+                        <span class="text-muted">Pedagogy</span>
+                        <span class="text-bone">Socratic First-Principles</span>
+                    </div>
+                    <div class="flex justify-between py-2 border-b border-obsidian-border/30">
+                        <span class="text-muted">Diagnostic</span>
+                        <span class="text-bone">Automated Concept-Gap Mapping</span>
+                    </div>
+                    <div class="flex justify-between py-2 border-b border-obsidian-border/30">
+                        <span class="text-muted">Avg SAT Delta</span>
+                        <span class="text-gold font-bold">+180 Points</span>
+                    </div>
+                    <div class="flex justify-between py-2 border-b border-obsidian-border/30">
+                        <span class="text-muted">AP Exam Success</span>
+                        <span class="text-gold font-bold">94.2% Rate on Score 5</span>
+                    </div>
+                    <div class="flex justify-between py-2">
+                        <span class="text-muted">Studio</span>
+                        <span class="text-bone">Boston & Global Online</span>
+                    </div>
+                    <div class="pt-4 text-[10px] text-muted border-t border-obsidian-border/30">
+                        FIG. 01 — CONTINUOUS INTUITION FLYWHEEL
+                    </div>
+                </div>
+            </div>
+        </section>
 
+        <!-- 002 / Curriculum Matrix Section -->
+        <section id="curriculum" class="py-24 border-b border-obsidian-border scroll-mt-20">
+            <div class="flex flex-wrap items-baseline justify-between mb-12">
+                <div>
+                    <h2 class="font-display font-bold text-3xl sm:text-4xl text-bone uppercase tracking-tight">
+                        SelectedCurriculums <sup class="text-gold font-mono text-sm">(04)</sup>
+                    </h2>
+                    <p class="font-mono text-xs text-muted mt-2">002 / Curriculum · 2026 → 2027 Cohorts</p>
+                </div>
+                <a href="program.html" class="font-mono text-xs text-gold hover:underline mt-2 sm:mt-0">View full syllabus catalog ↗</a>
+            </div>
 
+            <!-- Curriculum Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Card 1 -->
+                <article class="editorial-card p-8 rounded flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center font-mono text-xs text-muted mb-4 pb-3 border-b border-obsidian-border/40">
+                            <span>01 / HIGH SCHOOL</span>
+                            <span class="text-emerald-400">● ENROLLING</span>
+                        </div>
+                        <h3 class="font-display font-bold text-2xl text-bone mb-3">
+                            Algebra, Geometry & Precalculus
+                        </h3>
+                        <p class="font-serif text-bone/70 text-base leading-relaxed mb-6">
+                            Bridging the critical gap between basic arithmetic and advanced analysis. Master polynomial factorization, coordinate geometry, trigonometric proofs, and exponential modeling.
+                        </p>
+                        
+                        <!-- Pipeline Badge -->
+                        <div class="bg-obsidian p-3 rounded border border-obsidian-border/60 font-mono text-[11px] text-gold mb-6">
+                            <span class="text-muted block text-[10px] uppercase mb-1">Pedagogical Pipeline</span>
+                            AXIOMS → VISUAL PROOFS → ALGEBRAIC FLUENCY → RETENTION
+                        </div>
 
+                        <!-- Topic Chips -->
+                        <div class="flex flex-wrap gap-2 font-mono text-xs text-muted">
+                            <span class="px-2 py-1 bg-obsidian rounded border border-obsidian-border">Polynomials</span>
+                            <span class="px-2 py-1 bg-obsidian rounded border border-obsidian-border">Trig Identities</span>
+                            <span class="px-2 py-1 bg-obsidian rounded border border-obsidian-border">Conics</span>
+                            <span class="px-2 py-1 bg-obsidian rounded border border-obsidian-border">Vectors</span>
+                        </div>
+                    </div>
 
+                    <div class="mt-8 pt-4 border-t border-obsidian-border/40 flex justify-between items-center font-mono text-xs">
+                        <span class="text-muted">Grades 8–11</span>
+                        <a href="program.html" class="text-gold hover:text-bone transition-colors flex items-center space-x-1">
+                            <span>Curriculum Breakdown</span>
+                            <span>↗</span>
+                        </a>
+                    </div>
+                </article>
 
+                <!-- Card 2 -->
+                <article class="editorial-card p-8 rounded flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center font-mono text-xs text-muted mb-4 pb-3 border-b border-obsidian-border/40">
+                            <span>02 / ADVANCED PLACEMENT</span>
+                            <span class="text-emerald-400">● ACTIVE COHORT</span>
+                        </div>
+                        <h3 class="font-display font-bold text-2xl text-bone mb-3">
+                            AP Calculus AB / BC & AP Statistics
+                        </h3>
+                        <p class="font-serif text-bone/70 text-base leading-relaxed mb-6">
+                            Rigorous college-level calculus and statistical inference. Deep intuition for limits, differentiation mechanics, integration techniques, Taylor series, and hypothesis tests.
+                        </p>
 
+                        <!-- Pipeline Badge -->
+                        <div class="bg-obsidian p-3 rounded border border-obsidian-border/60 font-mono text-[11px] text-gold mb-6">
+                            <span class="text-muted block text-[10px] uppercase mb-1">Pedagogical Pipeline</span>
+                            LIMITS → DERIVATIVES → INTEGRALS → TAYLOR SERIES
+                        </div>
 
+                        <!-- Topic Chips -->
+                        <div class="flex flex-wrap gap-2 font-mono text-xs text-muted">
+                            <span class="px-2 py-1 bg-obsidian rounded border border-obsidian-border">Epsilon-Delta</span>
+                            <span class="px-2 py-1 bg-obsidian rounded border border-obsidian-border">Series Convergence</span>
+                            <span class="px-2 py-1 bg-obsidian rounded border border-obsidian-border">Differential Eq</span>
+                            <span class="px-2 py-1 bg-obsidian rounded border border-obsidian-border">P-Values</span>
+                        </div>
+                    </div>
 
+                    <div class="mt-8 pt-4 border-t border-obsidian-border/40 flex justify-between items-center font-mono text-xs">
+                        <span class="text-muted">Target: AP 5</span>
+                        <a href="program.html" class="text-gold hover:text-bone transition-colors flex items-center space-x-1">
+                            <span>Curriculum Breakdown</span>
+                            <span>↗</span>
+                        </a>
+                    </div>
+                </article>
 
-<!---- Type About us here -->
+                <!-- Card 3 -->
+                <article class="editorial-card p-8 rounded flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center font-mono text-xs text-muted mb-4 pb-3 border-b border-obsidian-border/40">
+                            <span>03 / OLYMPIAD COMPETITION</span>
+                            <span class="text-amber-400">● LIMITED SLOTS</span>
+                        </div>
+                        <h3 class="font-display font-bold text-2xl text-bone mb-3">
+                            AMC 8/10/12 & AIME Qualifier
+                        </h3>
+                        <p class="font-serif text-bone/70 text-base leading-relaxed mb-6">
+                            Tailored for students targeting top 2.5% distinction and AIME qualification. Master non-routine number theory, modular arithmetic, combinatorics, and synthetic Euclidean proofs.
+                        </p>
 
+                        <!-- Pipeline Badge -->
+                        <div class="bg-obsidian p-3 rounded border border-obsidian-border/60 font-mono text-[11px] text-gold mb-6">
+                            <span class="text-muted block text-[10px] uppercase mb-1">Pedagogical Pipeline</span>
+                            NUMBER THEORY → COMBINATORICS → GEOMETRY → CONTEST SPRINT
+                        </div>
 
-<!---- Type About us here -->
-    
+                        <!-- Topic Chips -->
+                        <div class="flex flex-wrap gap-2 font-mono text-xs text-muted">
+                            <span class="px-2 py-1 bg-obsidian rounded border border-obsidian-border">Modular Math</span>
+                            <span class="px-2 py-1 bg-obsidian rounded border border-obsidian-border">Pigeonhole</span>
+                            <span class="px-2 py-1 bg-obsidian rounded border border-obsidian-border">Mass Points</span>
+                            <span class="px-2 py-1 bg-obsidian rounded border border-obsidian-border">Generating Func</span>
+                        </div>
+                    </div>
 
+                    <div class="mt-8 pt-4 border-t border-obsidian-border/40 flex justify-between items-center font-mono text-xs">
+                        <span class="text-muted">Competitive</span>
+                        <a href="program.html" class="text-gold hover:text-bone transition-colors flex items-center space-x-1">
+                            <span>Curriculum Breakdown</span>
+                            <span>↗</span>
+                        </a>
+                    </div>
+                </article>
 
+                <!-- Card 4 -->
+                <article class="editorial-card p-8 rounded flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center font-mono text-xs text-muted mb-4 pb-3 border-b border-obsidian-border/40">
+                            <span>04 / STANDARDIZED TEST</span>
+                            <span class="text-emerald-400">● ENROLLING</span>
+                        </div>
+                        <h3 class="font-display font-bold text-2xl text-bone mb-3">
+                            Digital SAT & ACT Math 800 Accelerator
+                        </h3>
+                        <p class="font-serif text-bone/70 text-base leading-relaxed mb-6">
+                            Targeting flawless section scores through rapid Desmos graphing calculator proficiency, hard-module trap recognition, and systematic pacing algorithms.
+                        </p>
 
-    
+                        <!-- Pipeline Badge -->
+                        <div class="bg-obsidian p-3 rounded border border-obsidian-border/60 font-mono text-[11px] text-gold mb-6">
+                            <span class="text-muted block text-[10px] uppercase mb-1">Pedagogical Pipeline</span>
+                            DIAGNOSTIC RADAR → DESMOS OPTIMIZATION → TRAP RECOGNITION → 800
+                        </div>
 
+                        <!-- Topic Chips -->
+                        <div class="flex flex-wrap gap-2 font-mono text-xs text-muted">
+                            <span class="px-2 py-1 bg-obsidian rounded border border-obsidian-border">Desmos Regression</span>
+                            <span class="px-2 py-1 bg-obsidian rounded border border-obsidian-border">Hard Module 2</span>
+                            <span class="px-2 py-1 bg-obsidian rounded border border-obsidian-border">Speed Hacks</span>
+                            <span class="px-2 py-1 bg-obsidian rounded border border-obsidian-border">Error Auditing</span>
+                        </div>
+                    </div>
 
-    <footer class="bg-[#04060e] text-[#E5BE85]/50 py-16 text-center border-t border-[#E5BE85]/10 relative z-10">
-        <div class="mb-8">
-           
-        </div>
-        <p class="tracking-widest uppercase text-xs font-bold">&copy; 2026 180 Math. All rights reserved.</p>
-    </footer>
+                    <div class="mt-8 pt-4 border-t border-obsidian-border/40 flex justify-between items-center font-mono text-xs">
+                        <span class="text-muted">Target: 750–800</span>
+                        <a href="program.html" class="text-gold hover:text-bone transition-colors flex items-center space-x-1">
+                            <span>Curriculum Breakdown</span>
+                            <span>↗</span>
+                        </a>
+                    </div>
+                </article>
+            </div>
+        </section>
 
+        <!-- 003 / Proof of Mastery Section -->
+        <section id="proof" class="py-24 border-b border-obsidian-border scroll-mt-20">
+            <div class="flex items-center justify-between font-mono text-xs text-muted mb-12">
+                <h2 class="text-gold font-bold uppercase tracking-wider">003 / Proof of Mastery</h2>
+                <span>empirical results</span>
+            </div>
+
+            <!-- Big Stat Grid -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+                <div class="editorial-card p-6 rounded text-center sm:text-left">
+                    <div class="font-display font-black text-4xl sm:text-5xl text-gold mb-2">+180</div>
+                    <div class="font-mono text-xs text-muted uppercase tracking-wider">Avg SAT Math Gain</div>
+                    <p class="font-serif text-xs text-bone/60 mt-2">Across 2024–2026 students completing 8+ weeks</p>
+                </div>
+                <div class="editorial-card p-6 rounded text-center sm:text-left">
+                    <div class="font-display font-black text-4xl sm:text-5xl text-bone mb-2">94.2%</div>
+                    <div class="font-mono text-xs text-muted uppercase tracking-wider">Score 5 on AP Exams</div>
+                    <p class="font-serif text-xs text-bone/60 mt-2">AP Calculus AB/BC & AP Statistics candidates</p>
+                </div>
+                <div class="editorial-card p-6 rounded text-center sm:text-left">
+                    <div class="font-display font-black text-4xl sm:text-5xl text-gold mb-2">14,200+</div>
+                    <div class="font-mono text-xs text-muted uppercase tracking-wider">Problems Solved</div>
+                    <p class="font-serif text-xs text-bone/60 mt-2">Logged in 180 Math diagnostic & practice engines</p>
+                </div>
+                <div class="editorial-card p-6 rounded text-center sm:text-left">
+                    <div class="font-display font-black text-4xl sm:text-5xl text-bone mb-2">100%</div>
+                    <div class="font-mono text-xs text-muted uppercase tracking-wider">STEM Admissions</div>
+                    <p class="font-serif text-xs text-bone/60 mt-2">Target college engineering & math programs</p>
+                </div>
+            </div>
+
+            <!-- Activity Heatmap Representation -->
+            <div class="editorial-card p-8 rounded">
+                <div class="flex flex-wrap justify-between items-center font-mono text-xs text-muted mb-6">
+                    <div>180math.com/cohorts · 52-week diagnostic activity</div>
+                    <div class="flex items-center space-x-2">
+                        <span>less</span>
+                        <span class="inline-block w-2.5 h-2.5 rounded-sm bg-obsidian border border-obsidian-border"></span>
+                        <span class="inline-block w-2.5 h-2.5 rounded-sm bg-gold/30"></span>
+                        <span class="inline-block w-2.5 h-2.5 rounded-sm bg-gold/60"></span>
+                        <span class="inline-block w-2.5 h-2.5 rounded-sm bg-gold"></span>
+                        <span>more</span>
+                    </div>
+                </div>
+
+                <!-- Heatmap Grid -->
+                <div class="grid grid-flow-col grid-rows-7 gap-1 overflow-x-auto pb-4">
+                    <!-- Script will populate 52 weeks x 7 days -->
+                    <div id="heatmap-cells" class="contents"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 004 / Courtside Math Section -->
+        <section id="challenge" class="py-24 border-b border-obsidian-border scroll-mt-20">
+            <div class="flex items-center justify-between font-mono text-xs text-muted mb-12">
+                <h2 class="text-gold font-bold uppercase tracking-wider">004 / Courtside Math</h2>
+                <span>problem of the week</span>
+            </div>
+
+            <div class="editorial-card p-8 sm:p-12 rounded border-gold/20">
+                <div class="flex flex-wrap items-center justify-between font-mono text-xs text-muted mb-6 gap-2">
+                    <span class="px-2.5 py-1 bg-gold/10 text-gold rounded border border-gold/30 font-bold uppercase">
+                        Challenge #42 · AMC 12 / AIME Level
+                    </span>
+                    <span>84 Students Solved · Current Week</span>
+                </div>
+
+                <h3 class="font-serif text-2xl sm:text-3xl text-bone font-light mb-6">
+                    Find the remainder when \( 2^{2026} + 3^{2026} \) is divided by \( 13 \).
+                </h3>
+
+                <p class="font-serif text-bone/70 text-base leading-relaxed mb-8 max-w-3xl">
+                    A test of modular arithmetic intuition. Notice that 13 is prime, so Fermat’s Little Theorem guarantees that \( a^{12} \equiv 1 \pmod{13} \) for any integer \( a \) coprime to 13.
+                </p>
+
+                <!-- Interactive Reveal Button -->
+                <button id="solution-toggle" onclick="toggleSolution()" class="font-mono text-xs uppercase tracking-wider text-gold border border-gold/40 px-5 py-2.5 rounded hover:bg-gold hover:text-obsidian transition-all flex items-center space-x-2">
+                    <span>Show Solution & Intuition Breakdown</span>
+                    <span id="solution-arrow">↓</span>
+                </button>
+
+                <!-- Hidden Solution Tray -->
+                <div id="solution-tray" class="hidden mt-8 pt-8 border-t border-obsidian-border/50 font-mono text-xs space-y-4 text-bone/90 bg-obsidian/70 p-6 rounded">
+                    <div class="text-gold font-bold uppercase tracking-wider">Step-by-Step First Principles Derivation:</div>
+                    <p>1. By Fermat's Little Theorem: \( a^{12} \equiv 1 \pmod{13} \).</p>
+                    <p>2. We divide the exponent \( 2026 \) by \( 12 \): \( 2026 = 12 \times 168 + 10 \). Hence, \( 2026 \equiv 10 \pmod{12} \).</p>
+                    <p>3. This reduces our problem to: \( 2^{10} + 3^{10} \pmod{13} \).</p>
+                    <p>4. Evaluate powers of 2: \( 2^4 = 16 \equiv 3 \pmod{13} \). Then \( 2^8 \equiv 9 \equiv -4 \pmod{13} \). Thus, \( 2^{10} = 2^8 \times 4 \equiv (-4) \times 4 = -16 \equiv 10 \pmod{13} \).</p>
+                    <p>5. Evaluate powers of 3: \( 3^3 = 27 \equiv 1 \pmod{13} \). Then \( 3^{10} = (3^3)^3 \times 3 \equiv 1^3 \times 3 \equiv 3 \pmod{13} \).</p>
+                    <p>6. Add the residues: \( 10 + 3 = 13 \equiv 0 \pmod{13} \).</p>
+                    <div class="pt-3 text-gold font-bold text-sm">
+                        Result: The remainder is precisely 0.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 005 / Behind the Chalkboard Section -->
+        <section class="py-24 border-b border-obsidian-border">
+            <div class="flex items-center justify-between font-mono text-xs text-muted mb-12">
+                <h2 class="text-gold font-bold uppercase tracking-wider">005 / Behind the Chalkboard</h2>
+                <span>moments in the studio</span>
+            </div>
+
+            <!-- Horizontal Scroll Strip -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 font-mono text-xs">
+                <div class="editorial-card p-6 rounded">
+                    <div class="text-gold mb-2 font-bold">01 / 06 · BOS_STUDIO</div>
+                    <div class="h-36 bg-obsidian rounded border border-obsidian-border flex items-center justify-center text-muted font-mono text-center p-4">
+                        [ Whiteboard Derivation · Cauchy-Schwarz in \(\mathbb{R}^n\) ]
+                    </div>
+                    <div class="mt-3 text-muted">First-principles visualization of vector projections.</div>
+                </div>
+                <div class="editorial-card p-6 rounded">
+                    <div class="text-gold mb-2 font-bold">02 / 06 · AP_CALC_BC</div>
+                    <div class="h-36 bg-obsidian rounded border border-obsidian-border flex items-center justify-center text-muted font-mono text-center p-4">
+                        [ Taylor Series Visualization Engine ]
+                    </div>
+                    <div class="mt-3 text-muted">Animated polynomial convergence around inflection points.</div>
+                </div>
+                <div class="editorial-card p-6 rounded">
+                    <div class="text-gold mb-2 font-bold">03 / 06 · AIME_SPRINT</div>
+                    <div class="h-36 bg-obsidian rounded border border-obsidian-border flex items-center justify-center text-muted font-mono text-center p-4">
+                        [ Diophantine Equations Breakdown ]
+                    </div>
+                    <div class="mt-3 text-muted">Speed drills for competition qualifier candidates.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 006 / Editorial Conversational Footer -->
+        <footer class="pt-24 pb-16">
+            <div class="font-mono text-xs text-gold uppercase tracking-wider mb-6">
+                006 / Contact & Booking
+            </div>
+
+            <div class="mb-16">
+                <h2 class="font-display font-extrabold text-4xl sm:text-6xl md:text-7xl text-bone tracking-tight leading-none mb-6">
+                    Ready to redefine your <br class="hidden sm:inline">
+                    <em class="font-serif italic text-gold font-normal">math intuition?</em>
+                </h2>
+                <p class="font-serif text-xl text-bone/70 max-w-2xl leading-relaxed mb-10">
+                    Whether you are targeting an 800 on the SAT, a 5 on AP Calculus, or preparing for the AMC, let’s diagnose your weak spots and build an exact roadmap.
+                </p>
+
+                <div class="flex flex-wrap items-center gap-6 font-mono text-xs">
+                    <a href="contact.html" class="bg-gold text-obsidian px-8 py-4 rounded font-bold hover:bg-gold-light transition-colors uppercase tracking-wider flex items-center space-x-2">
+                        <span>Book Diagnostic Consultation — it's free</span>
+                        <span>→</span>
+                    </a>
+                    <a href="mailto:rohan.kosur@gmail.com" class="text-bone hover:text-gold transition-colors">
+                        rohan.kosur@gmail.com ↗
+                    </a>
+                </div>
+            </div>
+
+            <!-- Directory Links -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-8 py-12 border-t border-b border-obsidian-border font-mono text-xs text-muted">
+                <div>
+                    <div class="text-gold font-bold uppercase mb-3">Programs</div>
+                    <ul class="space-y-2">
+                        <li><a href="program.html" class="hover:text-bone">High School Math</a></li>
+                        <li><a href="program.html" class="hover:text-bone">AP Calculus & Stats</a></li>
+                        <li><a href="program.html" class="hover:text-bone">AMC / AIME Prep</a></li>
+                        <li><a href="program.html" class="hover:text-bone">SAT/ACT Accelerator</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="text-gold font-bold uppercase mb-3">Diagnostic</div>
+                    <ul class="space-y-2">
+                        <li><a href="test.html" class="hover:text-bone">10-Min Diagnostic</a></li>
+                        <li><a href="pricing.html" class="hover:text-bone">Pricing Tiers</a></li>
+                        <li><a href="schedule.html" class="hover:text-bone">Calendar Availability</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="text-gold font-bold uppercase mb-3">Organization</div>
+                    <ul class="space-y-2">
+                        <li><a href="about.html" class="hover:text-bone">About Instructor</a></li>
+                        <li><a href="testimonials.html" class="hover:text-bone">Student Success</a></li>
+                        <li><a href="faq.html" class="hover:text-bone">Frequently Asked</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="text-gold font-bold uppercase mb-3">Location</div>
+                    <p class="text-bone/80">Boston, MA</p>
+                    <p>Worldwide Online</p>
+                    <p class="mt-2 text-gold">180math.com</p>
+                </div>
+            </div>
+
+            <!-- Bottom Subfooter -->
+            <div class="pt-8 flex flex-wrap justify-between items-center font-mono text-xs text-muted gap-4">
+                <div>© 2026 180 Math · All rights reserved</div>
+                <div class="flex items-center space-x-6">
+                    <span id="footer-clock">Local · --:--:--</span>
+                    <a href="#top" class="text-gold hover:text-bone transition-colors">Back to top ↑</a>
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // Live Clock
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('en-US', { hour12: false, timeZone: 'America/New_York' });
+            const clockEl = document.getElementById('clock');
+            const footerClockEl = document.getElementById('footer-clock');
+            if (clockEl) clockEl.innerText = `BOS ${timeStr} EST`;
+            if (footerClockEl) footerClockEl.innerText = `Boston · ${timeStr} EST`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Problem of the Week Toggle
+        function toggleSolution() {
+            const tray = document.getElementById('solution-tray');
+            const arrow = document.getElementById('solution-arrow');
+            if (tray.classList.contains('hidden')) {
+                tray.classList.remove('hidden');
+                arrow.innerText = '↑';
+            } else {
+                tray.classList.add('hidden');
+                arrow.innerText = '↓';
+            }
+        }
+
+        // Generate 52-week activity heatmap cells
+        const heatmapContainer = document.getElementById('heatmap-cells');
+        if (heatmapContainer) {
+            let html = '';
+            for (let week = 0; week < 52; week++) {
+                for (let day = 0; day < 7; day++) {
+                    const rand = Math.random();
+                    let color = 'bg-obsidian border border-obsidian-border/40';
+                    if (rand > 0.8) color = 'bg-gold';
+                    else if (rand > 0.6) color = 'bg-gold/60';
+                    else if (rand > 0.35) color = 'bg-gold/30';
+                    html += `<div class="w-2.5 h-2.5 rounded-sm ${color}"></div>`;
+                }
+            }
+            heatmapContainer.innerHTML = html;
+        }
+    </script>
     <script src="main.js"></script>
 </body>
 </html>
