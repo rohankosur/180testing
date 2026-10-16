@@ -7,6 +7,30 @@
     <meta name="description" content="180 Math: Master math, one degree at a time. First-principles mathematics mentorship, diagnostic test engines, and AP/AMC curriculum.">
     <meta name="theme-color" content="#0B0B33">
     <link rel="icon" href="logo.png" type="image/png">
+
+    <!-- Auto-Detect Device Viewport & Orientation (Mobile vs. Desktop) -->
+    <script>
+        (function() {
+            var params = new URLSearchParams(window.location.search);
+            var viewParam = params.get('view');
+            if (viewParam === 'desktop') {
+                sessionStorage.setItem('preferred_view', 'desktop');
+                return;
+            }
+            if (viewParam === 'mobile') {
+                sessionStorage.setItem('preferred_view', 'mobile');
+                window.location.replace('mobile.html');
+                return;
+            }
+            if (sessionStorage.getItem('preferred_view') === 'desktop') return;
+
+            var isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                (window.innerWidth <= 768 && ('ontouchstart' in window || navigator.maxTouchPoints > 0));
+            if (isMobileDevice) {
+                window.location.replace('mobile.html');
+            }
+        })();
+    </script>
     
     <!-- Editorial & Architectural Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -304,6 +328,21 @@
             transform: translateY(-3px);
             box-shadow: 0 22px 50px -10px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(229, 190, 133, 0.4), 0 0 55px -5px rgba(229, 190, 133, 0.3);
         }
+        /* Thermal Conversion Zone (#schedule) */
+        .thermal-conversion {
+            background: linear-gradient(180deg, rgba(14, 13, 44, 0.96) 0%, rgba(25, 19, 60, 0.97) 50%, rgba(13, 11, 40, 0.98) 100%) !important;
+            border: 1px solid rgba(229, 190, 133, 0.42) !important;
+            box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(229, 190, 133, 0.3), 0 0 60px -10px rgba(229, 190, 133, 0.18) !important;
+            position: relative;
+        }
+        .thermal-conversion::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 75% 50% at 50% 0%, rgba(229, 190, 133, 0.14) 0%, transparent 70%);
+            pointer-events-none;
+            border-radius: inherit;
+        }
         .clinical-problem-card {
             background: linear-gradient(145deg, rgba(10, 11, 40, 0.95) 0%, rgba(6, 6, 28, 0.98) 100%);
             border: 1px solid rgba(148, 163, 184, 0.18);
@@ -343,7 +382,7 @@
                     <span class="truncate text-[11px] text-bone/90">Browsing on your phone? Try our dedicated <strong class="text-gold">Mobile Edition</strong></span>
                 </div>
                 <div class="flex items-center space-x-2 shrink-0">
-                    <a href="mobile.html" class="px-3 py-1 rounded-full bg-gold text-midnight font-bold text-[10px] uppercase tracking-wider hover:bg-gold-light transition-colors">
+                    <a href="mobile.html?view=mobile" class="px-3 py-1 rounded-full bg-gold text-midnight font-bold text-[10px] uppercase tracking-wider hover:bg-gold-light transition-colors">
                         Switch ↗
                     </a>
                     <button id="close-mobile-banner" class="text-muted hover:text-white px-1.5 py-0.5 text-xs" aria-label="Dismiss banner">✕</button>
@@ -376,9 +415,9 @@
 
             <!-- Actions / Clock / Mobile Toggle -->
             <div class="flex items-center space-x-3">
-                <a href="test.html" class="hidden xl:inline-flex items-center justify-center h-8 px-3.5 text-[11px] font-mono font-semibold text-gold border border-gold/40 rounded-full hover:bg-gold hover:text-midnight transition-all">
+                <a href="#schedule" class="hidden xl:inline-flex items-center justify-center h-8 px-3.5 text-[11px] font-mono font-semibold text-gold border border-gold/40 rounded-full hover:bg-gold hover:text-midnight transition-all">
                     <span>See Your Child's True Potential</span>
-                    <span class="ml-1 text-[10px]">↗</span>
+                    <span class="ml-1 text-[10px]">↓</span>
                 </a>
                 <div id="clock" class="hidden sm:inline-flex items-center justify-center h-8 px-3.5 text-[11px] font-mono font-medium text-gold bg-[#101144]/80 border border-midnight-border rounded-full shadow-inner tabular-nums">
                     SW, CT --:--:--
@@ -399,11 +438,11 @@
             <a href="#schedule" class="text-[#E5BE85]/80 hover:text-white uppercase tracking-widest text-sm py-1 border-b border-midnight-border/40" onclick="document.getElementById('mobile-drawer').classList.add('hidden')">Schedule</a>
             <a href="#faqs" class="text-[#E5BE85]/80 hover:text-white uppercase tracking-widest text-sm py-1 border-b border-midnight-border/40" onclick="document.getElementById('mobile-drawer').classList.add('hidden')">FAQs</a>
             <a href="#contact" class="text-[#E5BE85]/80 hover:text-white uppercase tracking-widest text-sm py-1 border-b border-midnight-border/40" onclick="document.getElementById('mobile-drawer').classList.add('hidden')">Contact</a>
-            <a href="test.html" class="text-gold uppercase tracking-widest text-sm py-1 font-bold flex items-center justify-between" onclick="document.getElementById('mobile-drawer').classList.add('hidden')">
+            <a href="#schedule" class="text-gold uppercase tracking-widest text-sm py-1 font-bold flex items-center justify-between" onclick="document.getElementById('mobile-drawer').classList.add('hidden')">
                 <span>See Your Child's True Potential</span>
-                <span>↗</span>
+                <span>↓</span>
             </a>
-            <a href="mobile.html" class="p-2.5 rounded-xl bg-gold/15 border border-gold/40 text-gold font-bold flex items-center justify-between text-xs mt-1">
+            <a href="mobile.html?view=mobile" class="p-2.5 rounded-xl bg-gold/15 border border-gold/40 text-gold font-bold flex items-center justify-between text-xs mt-1">
                 <span>📱 Switch to Mobile Version</span>
                 <span>→</span>
             </a>
@@ -451,12 +490,12 @@
                         Watching your child study for hours—only to freeze on test day? Standard schooling rewards mechanical mimicry that collapses under exam pressure. At our South Windsor, CT studio, we diagnose the <strong class="text-gold font-semibold">one missing conceptual bottleneck</strong> holding your student back—turning kitchen-table homework stress into calm, lifelong mathematical confidence.
                     </p>
                     <div class="flex flex-wrap items-center gap-4 font-mono text-xs">
-                        <a href="test.html" class="btn-gold px-7 py-3.5 rounded-full font-black uppercase tracking-wider flex items-center space-x-2">
+                        <a href="#schedule" class="btn-gold px-7 py-3.5 rounded-full font-black uppercase tracking-wider flex items-center space-x-2 shadow-lg">
                             <span>See Your Child's True Potential</span>
-                            <span>→</span>
+                            <span>↓</span>
                         </a>
-                        <a href="#bottleneck" class="border border-gold/40 text-gold px-7 py-3.5 rounded-full hover:bg-gold/10 transition-colors uppercase tracking-wider font-semibold">
-                            Explore The Parent's Roadmap ↓
+                        <a href="test.html" class="border border-gold/40 text-gold px-6 py-3.5 rounded-full hover:bg-gold/10 transition-colors uppercase tracking-wider font-semibold">
+                            Take 10-Min Diagnostic First ↗
                         </a>
                     </div>
                 </div>
@@ -764,14 +803,254 @@
 
                 <div class="mt-10 pt-6 border-t border-midnight-border/40 flex flex-wrap justify-between items-center gap-4">
                     <span class="font-mono text-xs text-muted">Ready to eliminate kitchen-table math stress and discover where your child is stuck?</span>
-                    <a href="test.html" class="btn-gold px-6 py-3 rounded-full font-mono text-xs font-bold uppercase tracking-wider flex items-center space-x-2">
-                        <span>See Where Your Child Is Stuck — Free Parent Assessment →</span>
-                    </a>
+                    <div class="flex flex-wrap items-center gap-3">
+                        <a href="#schedule" class="btn-gold px-6 py-3 rounded-full font-mono text-xs font-bold uppercase tracking-wider flex items-center space-x-2">
+                            <span>Schedule Diagnostic Evaluation With Jyothi ↓</span>
+                        </a>
+                        <a href="test.html" class="px-5 py-3 rounded-full border border-gold/40 text-gold font-mono text-xs uppercase tracking-wider hover:bg-gold/10 transition-colors">
+                            10-Min Assessment ↗
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- 002 / Program Offerings Section -->
+        <!-- Terminal Anchor: High-Conversion Diagnostic & Placement Scheduling Section -->
+        <section id="schedule" class="py-20 sm:py-24 thermal-conversion rounded-3xl p-8 sm:p-12 my-14 scroll-mt-24 border border-gold/40 relative overflow-hidden reveal">
+            <span id="booking" class="scroll-mt-24"></span>
+            
+            <!-- Section Header / Trust Eyebrow -->
+            <div class="flex flex-wrap items-center justify-between font-mono text-xs text-muted mb-10 pb-4 border-b border-gold/20 gap-3">
+                <div class="flex items-center space-x-2">
+                    <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <h2 class="text-gold font-bold uppercase tracking-wider">002 / The Conversion Anchor · Direct Booking</h2>
+                </div>
+                <div class="flex items-center space-x-4 text-[11px]">
+                    <span class="text-bone/80">South Windsor Studio & Live Online</span>
+                    <span class="text-gold/60">●</span>
+                    <span class="text-gold font-semibold">Strictly Capped at 4–8 Cohorts</span>
+                </div>
+            </div>
+
+            <!-- Two-Column Logistical Interface Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+                
+                <!-- Left Column (The Hook) -->
+                <div class="lg:col-span-5 space-y-8">
+                    <div>
+                        <div class="inline-block px-3 py-1 rounded-full bg-gold/15 border border-gold/35 text-gold font-mono text-[10px] uppercase tracking-widest font-bold mb-3">
+                            Direct Placement Evaluation
+                        </div>
+                        <h3 class="font-display font-black text-3xl sm:text-4xl text-bone tracking-tight leading-tight uppercase">
+                            Secure Your Child's Spot
+                        </h3>
+                        <p class="font-serif text-lg text-gold/90 italic mt-2">
+                            Turn kitchen-table homework stress into calm mathematical composure.
+                        </p>
+                    </div>
+
+                    <!-- Value Proposition Triad -->
+                    <div class="space-y-4">
+                        <div class="p-4 rounded-xl bg-midnight-card/80 border border-gold/20 flex items-start space-x-3.5">
+                            <div class="w-8 h-8 rounded-lg bg-gold/20 border border-gold/30 text-gold font-mono font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+                                4–8
+                            </div>
+                            <div>
+                                <h4 class="font-display font-bold text-bone text-sm">Ultra-Small Cohorts (4–8 Students Max)</h4>
+                                <p class="font-serif text-xs text-bone/75 leading-relaxed mt-1">
+                                    Factory tutoring centers pack 20+ students into a noisy room. Jyothi keeps cohorts strictly capped so every child is actively observed, questioned, and understood every minute.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-midnight-card/80 border border-gold/20 flex items-start space-x-3.5">
+                            <div class="w-8 h-8 rounded-lg bg-gold/20 border border-gold/30 text-gold font-mono font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+                                1:1
+                            </div>
+                            <div>
+                                <h4 class="font-display font-bold text-bone text-sm">Targeted 1-on-1 Conceptual Focus</h4>
+                                <p class="font-serif text-xs text-bone/75 leading-relaxed mt-1">
+                                    Every student begins with a 45-minute diagnostic evaluation. We pinpoint the exact prior-grade bottleneck—often hiding 2 to 3 years back—and heal it before building forward.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-midnight-card/80 border border-gold/20 flex items-start space-x-3.5">
+                            <div class="w-8 h-8 rounded-lg bg-gold/20 border border-gold/30 text-gold font-mono font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+                                SW
+                            </div>
+                            <div>
+                                <h4 class="font-display font-bold text-bone text-sm">South Windsor Studio & Live Online</h4>
+                                <p class="font-serif text-xs text-bone/75 leading-relaxed mt-1">
+                                    Attend in-person at our South Windsor, CT studio or join via interactive live digital whiteboards for regional, out-of-district, and hybrid families.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Direct Studio Contact & Trust Box -->
+                    <div class="pt-4 border-t border-gold/20 flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-mono text-xs">
+                        <div>
+                            <span class="text-muted block text-[10px] uppercase tracking-wider">Studio Direct Helpline</span>
+                            <a href="tel:8609696284" class="text-gold font-bold hover:underline text-sm">(860) 969-MATH</a>
+                        </div>
+                        <div>
+                            <span class="text-muted block text-[10px] uppercase tracking-wider">Studio Location</span>
+                            <span class="text-bone">South Windsor, CT 06074</span>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-[#090928] border border-midnight-border/60 text-xs font-mono text-muted flex items-center justify-between">
+                        <span>Prefer instant diagnostic clarity first?</span>
+                        <a href="test.html" class="text-gold font-bold hover:underline ml-2">10-Min Free Test ↗</a>
+                    </div>
+                </div>
+
+                <!-- Right Column (The Action Engine) -->
+                <div class="lg:col-span-7">
+                    <div class="warmth-card p-6 sm:p-8 rounded-2xl relative shadow-2xl border-gold/40">
+                        <!-- Mode Switcher Tabs (Intake Form vs Calendly Embed) -->
+                        <div class="flex items-center justify-between pb-5 mb-6 border-b border-gold/20">
+                            <span class="font-display font-bold text-bone text-base sm:text-lg">
+                                Diagnostic Evaluation Booking
+                            </span>
+                            <div class="inline-flex p-1 rounded-xl bg-[#0a0a2f] border border-gold/25 font-mono text-[11px]" role="tablist">
+                                <button id="tab-btn-form" onclick="switchScheduleEngine('form')" class="px-3.5 py-1.5 rounded-lg font-bold transition-all bg-gold text-midnight shadow-md" role="tab" aria-selected="true">
+                                    Quick Intake Form
+                                </button>
+                                <button id="tab-btn-calendar" onclick="switchScheduleEngine('calendar')" class="px-3.5 py-1.5 rounded-lg text-gold/80 hover:text-white transition-all" role="tab" aria-selected="false">
+                                    Calendly Embed
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 1. Minimalist HTML Lead Form -->
+                        <div id="schedule-form-container">
+                            <form id="schedule-lead-form" class="space-y-4" onsubmit="handleScheduleBooking(event)">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="sched-parent-name" class="block font-mono text-[11px] text-gold/90 font-semibold mb-1 uppercase tracking-wider">Parent / Guardian Name *</label>
+                                        <input type="text" id="sched-parent-name" name="parent_name" required placeholder="e.g. Sarah Miller" class="w-full bg-[#090928] border border-midnight-border focus:border-gold rounded-xl px-3.5 py-2.5 text-bone font-mono text-xs placeholder:text-muted/50 focus:outline-none transition-colors">
+                                    </div>
+                                    <div>
+                                        <label for="sched-email" class="block font-mono text-[11px] text-gold/90 font-semibold mb-1 uppercase tracking-wider">Email Address *</label>
+                                        <input type="email" id="sched-email" name="email" required placeholder="sarah@example.com" class="w-full bg-[#090928] border border-midnight-border focus:border-gold rounded-xl px-3.5 py-2.5 text-bone font-mono text-xs placeholder:text-muted/50 focus:outline-none transition-colors">
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="sched-phone" class="block font-mono text-[11px] text-gold/90 font-semibold mb-1 uppercase tracking-wider">Phone / SMS (For Confirmation) *</label>
+                                        <input type="tel" id="sched-phone" name="phone" required placeholder="(860) 555-0199" class="w-full bg-[#090928] border border-midnight-border focus:border-gold rounded-xl px-3.5 py-2.5 text-bone font-mono text-xs placeholder:text-muted/50 focus:outline-none transition-colors">
+                                    </div>
+                                    <div>
+                                        <label for="sched-grade" class="block font-mono text-[11px] text-gold/90 font-semibold mb-1 uppercase tracking-wider">Student Grade Level *</label>
+                                        <select id="sched-grade" name="student_grade" required class="w-full bg-[#090928] border border-midnight-border focus:border-gold rounded-xl px-3.5 py-2.5 text-bone font-mono text-xs focus:outline-none transition-colors">
+                                            <option value="" disabled selected>Select Grade Level</option>
+                                            <option value="Grade 6–8 (Middle School Math)">Grade 6–8 (Middle School Math)</option>
+                                            <option value="Grade 9 (Algebra I / Geometry)">Grade 9 (Algebra I / Geometry)</option>
+                                            <option value="Grade 10–11 (Precalculus / Algebra II)">Grade 10–11 (Precalculus / Algebra II)</option>
+                                            <option value="Grade 11–12 (AP Calculus / SAT 800)">Grade 11–12 (AP Calculus / SAT 800)</option>
+                                            <option value="AMC 10/12 / AIME Competition">AMC 10/12 / AIME Competition</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="sched-subject" class="block font-mono text-[11px] text-gold/90 font-semibold mb-1 uppercase tracking-wider">Current Math Subject & Pain Point *</label>
+                                    <input type="text" id="sched-subject" name="math_subject" required placeholder="e.g. Algebra II — freezes on quadratic factoring and word problems" class="w-full bg-[#090928] border border-midnight-border focus:border-gold rounded-xl px-3.5 py-2.5 text-bone font-mono text-xs placeholder:text-muted/50 focus:outline-none transition-colors">
+                                </div>
+
+                                <div>
+                                    <label class="block font-mono text-[11px] text-gold/90 font-semibold mb-1.5 uppercase tracking-wider">Format Preference</label>
+                                    <div class="grid grid-cols-2 gap-3 font-mono text-xs">
+                                        <label class="flex items-center space-x-2 p-2.5 bg-[#090928] border border-midnight-border rounded-xl cursor-pointer hover:border-gold/50 transition-colors">
+                                            <input type="radio" name="format_pref" value="in-person" checked class="text-gold focus:ring-gold accent-[#E5BE85]">
+                                            <span class="text-bone text-[11px]">South Windsor Studio</span>
+                                        </label>
+                                        <label class="flex items-center space-x-2 p-2.5 bg-[#090928] border border-midnight-border rounded-xl cursor-pointer hover:border-gold/50 transition-colors">
+                                            <input type="radio" name="format_pref" value="online" class="text-gold focus:ring-gold accent-[#E5BE85]">
+                                            <span class="text-bone text-[11px]">Live Online Interactive</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="pt-2">
+                                    <button type="submit" id="sched-submit-btn" class="btn-gold w-full py-4 rounded-xl font-mono text-xs font-black uppercase tracking-wider flex items-center justify-center space-x-2 shadow-xl hover:scale-[1.01] transition-all">
+                                        <span>Schedule Diagnostic Evaluation</span>
+                                        <span class="text-sm">→</span>
+                                    </button>
+                                </div>
+
+                                <p class="text-[10px] font-mono text-muted text-center leading-normal pt-1">
+                                    Strict cohort caps (4–8) · No commitment · Evaluation conducted personally by Jyothi
+                                </p>
+                            </form>
+
+                            <!-- Instant Inline Confirmation Notification -->
+                            <div id="sched-success-banner" class="hidden p-6 rounded-2xl bg-emerald-950/40 border border-emerald-500/50 text-center space-y-3">
+                                <div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-300 font-mono font-bold text-xl flex items-center justify-center mx-auto shadow-inner">
+                                    ✓
+                                </div>
+                                <h4 class="font-display font-bold text-xl text-bone">Evaluation Request Confirmed</h4>
+                                <p class="font-serif text-sm text-bone/90 leading-relaxed max-w-md mx-auto">
+                                    Lead Mentor Jyothi has received your diagnostic request. She will personally review your student's background and contact you within 24 hours to schedule the 45-minute evaluation slot.
+                                </p>
+                                <div class="pt-2 font-mono text-xs text-gold flex items-center justify-center space-x-2">
+                                    <span>Studio Direct: (860) 969-MATH</span>
+                                    <span>·</span>
+                                    <button type="button" onclick="resetScheduleForm()" class="underline hover:text-white">Submit another request</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2. Calendly Styled Embed Container & Placeholder -->
+                        <div id="schedule-calendar-container" class="hidden space-y-4">
+                            <div class="p-4 rounded-xl bg-[#090928] border border-gold/25 font-mono text-xs text-gold flex items-center justify-between">
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                                    <span class="font-bold">Calendly 1-on-1 Engine</span>
+                                </div>
+                                <span class="text-muted text-[10px]">South Windsor / Zoom</span>
+                            </div>
+
+                            <!-- Calendly Inline Widget Placeholder -->
+                            <div class="calendly-inline-widget bg-[#070724] border border-gold/30 rounded-2xl p-6 sm:p-8 text-center flex flex-col justify-center items-center min-h-[480px] relative overflow-hidden" data-url="https://calendly.com/180math/diagnostic-evaluation" style="min-width:280px;">
+                                <div class="max-w-md space-y-4">
+                                    <div class="w-14 h-14 rounded-full bg-gold/15 border border-gold/30 text-gold flex items-center justify-center mx-auto text-2xl shadow-lg">
+                                        📅
+                                    </div>
+                                    <h4 class="font-display font-bold text-xl text-bone">
+                                        Schedule with Jyothi on Calendly
+                                    </h4>
+                                    <p class="font-serif text-xs text-bone/75 leading-relaxed">
+                                        Select an open 45-minute diagnostic evaluation slot in our real-time studio calendar. Sessions available weekdays 4:00 PM – 8:00 PM and weekends 9:00 AM – 3:00 PM EST.
+                                    </p>
+                                    
+                                    <div class="p-3 bg-[#090928] rounded-xl border border-midnight-border font-mono text-[10px] text-muted text-left">
+                                        <span class="text-gold block font-semibold mb-1">⚡ Embed Integration Code:</span>
+                                        <code>&lt;script src="https://assets.calendly.com/assets/external/widget.js" async&gt;&lt;/script&gt;</code>
+                                    </div>
+
+                                    <div class="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3 font-mono text-xs">
+                                        <a href="https://calendly.com" target="_blank" rel="noopener noreferrer" class="btn-gold w-full sm:w-auto px-6 py-3 rounded-xl font-bold uppercase tracking-wider shadow-lg flex items-center justify-center space-x-1.5">
+                                            <span>Open Live Calendly ↗</span>
+                                        </a>
+                                        <button type="button" onclick="switchScheduleEngine('form')" class="w-full sm:w-auto px-5 py-3 rounded-xl text-gold border border-gold/30 hover:bg-gold/10 transition-colors uppercase tracking-wider font-semibold">
+                                            Use Quick Form Instead
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 003 / Program Offerings Section -->
         <section id="program" class="py-24 border-b border-midnight-border scroll-mt-20">
             <span id="curriculum" class="scroll-mt-20"></span>
             <div class="flex flex-wrap items-baseline justify-between mb-12 reveal">
@@ -779,7 +1058,7 @@
                     <h2 class="font-display font-bold text-3xl sm:text-4xl text-bone uppercase tracking-tight">
                         Program Offerings <sup class="text-gold font-mono text-sm">(04 Tracks)</sup>
                     </h2>
-                    <p class="font-mono text-xs text-muted mt-2">002 / Program · 36-Week Curriculums · In-Person & Live Online</p>
+                    <p class="font-mono text-xs text-muted mt-2">003 / Program · 36-Week Curriculums · In-Person & Live Online</p>
                 </div>
                 <a href="#pricing" class="font-mono text-xs text-gold hover:underline mt-2 sm:mt-0">View tuition & pricing tiers ↓</a>
             </div>
@@ -963,8 +1242,8 @@
                     </p>
                 </div>
                 <div class="shrink-0 w-full lg:w-auto">
-                    <a href="test.html" class="btn-gold px-6 py-3.5 rounded-full font-mono text-xs font-bold uppercase tracking-wider whitespace-nowrap block text-center">
-                        Unlock Your Child's Confidence Today ↗
+                    <a href="#schedule" class="btn-gold px-6 py-3.5 rounded-full font-mono text-xs font-bold uppercase tracking-wider whitespace-nowrap block text-center">
+                        Schedule Diagnostic Evaluation with Jyothi ↓
                     </a>
                 </div>
             </div>
@@ -1085,7 +1364,7 @@
                     <span class="text-gold text-lg">ℹ</span>
                     <span>Fees due by 5th of each month · Prorated for scheduled SWPS school holiday weeks · All class notes & video recordings included.</span>
                 </div>
-                <a href="#schedule" class="text-gold hover:underline whitespace-nowrap">View Academic Schedule →</a>
+                <a href="#calendar" class="text-gold hover:underline whitespace-nowrap">View Academic Calendar →</a>
             </div>
         </section>
 
@@ -1310,14 +1589,15 @@
             </div>
         </section>
 
-        <!-- 006 / Academic Schedule & Calendar Section -->
-        <section id="schedule" class="py-24 border-b border-midnight-border scroll-mt-20">
+        <!-- 007 / Academic Schedule & Calendar Section -->
+        <section id="calendar" class="py-24 border-b border-midnight-border scroll-mt-20">
+            <span id="academic-calendar" class="scroll-mt-20"></span>
             <div class="flex flex-wrap items-baseline justify-between mb-12 reveal">
                 <div>
                     <h2 class="font-display font-bold text-3xl sm:text-4xl text-bone uppercase tracking-tight">
-                        Academic Schedule <sup class="text-gold font-mono text-sm">(2026–2027)</sup>
+                        Academic Calendar & Term Dates <sup class="text-gold font-mono text-sm">(2026–2027)</sup>
                     </h2>
-                    <p class="font-mono text-xs text-muted mt-2">006 / Schedule · Aligned with South Windsor Public Schools (SWPS)</p>
+                    <p class="font-mono text-xs text-muted mt-2">007 / Calendar · Aligned with South Windsor Public Schools (SWPS)</p>
                 </div>
                 <a href="https://files.smartsites.parentsquare.com/6874/2026-2027_google_doc_calendar_-_google_docspdf_1-28-2026_1.pdf" target="_blank" rel="noopener noreferrer" class="font-mono text-xs text-gold hover:underline mt-2 sm:mt-0">
                     Official SWPS Calendar PDF ↗
@@ -1475,7 +1755,7 @@
                         <span class="text-gold group-open:rotate-180 transition-transform font-mono text-sm">▼</span>
                     </summary>
                     <p class="font-serif text-bone/80 text-base leading-relaxed mt-4 pt-4 border-t border-midnight-border/40">
-                        You can begin immediately with our free online <a href="test.html" class="text-gold underline font-semibold">10-Minute Assessment to See Your Child's True Potential</a> or submit an inquiry form below to schedule a personalized placement evaluation with Jyothi.
+                        You can begin immediately by <a href="#schedule" class="text-gold underline font-semibold">Scheduling a Diagnostic Evaluation with Jyothi</a> or taking our free online <a href="test.html" class="text-gold underline font-semibold">10-Minute Assessment to See Your Child's True Potential ↗</a>.
                     </p>
                 </details>
             </div>
@@ -1533,8 +1813,8 @@
                     </div>
 
                     <div class="mt-8 pt-6 border-t border-midnight-border/40">
-                        <a href="test.html" class="border border-gold/40 text-gold hover:bg-gold hover:text-midnight transition-colors block text-center py-3 rounded-xl font-mono text-xs font-bold uppercase tracking-wider">
-                            See Your Child's True Potential (Free Evaluation) ↗
+                        <a href="#schedule" class="btn-gold text-midnight block text-center py-3 rounded-xl font-mono text-xs font-black uppercase tracking-wider shadow-lg">
+                            Schedule Diagnostic Evaluation With Jyothi ↓
                         </a>
                     </div>
                 </div>
@@ -1657,9 +1937,10 @@
                     <div class="text-gold font-bold uppercase mb-3">Tuition & Schedule</div>
                     <ul class="space-y-1">
                         <li><a href="#pricing" class="inline-block py-1 hover:text-bone focus:outline-none focus-visible:ring-1 focus-visible:ring-gold/50 rounded">Pricing Tiers</a></li>
-                        <li><a href="#schedule" class="inline-block py-1 hover:text-bone focus:outline-none focus-visible:ring-1 focus-visible:ring-gold/50 rounded">Academic Calendar</a></li>
-                        <li><a href="test.html" class="inline-block py-1 hover:text-bone focus:outline-none focus-visible:ring-1 focus-visible:ring-gold/50 rounded">See Potential (10-Min Diagnostic) ↗</a></li>
-                        <li><a href="#contact" class="inline-block py-1 hover:text-bone focus:outline-none focus-visible:ring-1 focus-visible:ring-gold/50 rounded">Consultation Booking</a></li>
+                        <li><a href="#calendar" class="inline-block py-1 hover:text-bone focus:outline-none focus-visible:ring-1 focus-visible:ring-gold/50 rounded">Academic Calendar</a></li>
+                        <li><a href="#schedule" class="inline-block py-1 hover:text-bone focus:outline-none focus-visible:ring-1 focus-visible:ring-gold/50 rounded">Schedule Placement Evaluation ↓</a></li>
+                        <li><a href="test.html" class="inline-block py-1 hover:text-bone focus:outline-none focus-visible:ring-1 focus-visible:ring-gold/50 rounded">10-Min Diagnostic Test ↗</a></li>
+                        <li><a href="#contact" class="inline-block py-1 hover:text-bone focus:outline-none focus-visible:ring-1 focus-visible:ring-gold/50 rounded">Direct Studio Inquiry</a></li>
                     </ul>
                 </div>
                 <div>
@@ -1687,7 +1968,7 @@
                     <span>© 2026 180 Math · All rights reserved</span>
                 </div>
                 <div class="flex items-center space-x-6">
-                    <a href="mobile.html" class="text-gold underline hover:text-white transition-colors">📱 Mobile Edition</a>
+                    <a href="mobile.html?view=mobile" class="text-gold underline hover:text-white transition-colors">📱 Mobile Edition</a>
                     <span id="footer-clock">Local · --:--:--</span>
                     <a href="#top" class="text-gold hover:text-bone transition-colors">Back to top ↑</a>
                 </div>
@@ -1790,6 +2071,59 @@
                 });
             }
         })();
+
+        // Schedule Engine Tab Switcher & Booking Handler
+        function switchScheduleEngine(mode) {
+            const formCont = document.getElementById('schedule-form-container');
+            const calCont = document.getElementById('schedule-calendar-container');
+            const tabForm = document.getElementById('tab-btn-form');
+            const tabCal = document.getElementById('tab-btn-calendar');
+
+            if (mode === 'calendar') {
+                if (formCont) formCont.classList.add('hidden');
+                if (calCont) calCont.classList.remove('hidden');
+                if (tabCal) {
+                    tabCal.className = 'px-3.5 py-1.5 rounded-lg font-bold transition-all bg-gold text-midnight shadow-md';
+                    tabCal.setAttribute('aria-selected', 'true');
+                }
+                if (tabForm) {
+                    tabForm.className = 'px-3.5 py-1.5 rounded-lg text-gold/80 hover:text-white transition-all';
+                    tabForm.setAttribute('aria-selected', 'false');
+                }
+            } else {
+                if (calCont) calCont.classList.add('hidden');
+                if (formCont) formCont.classList.remove('hidden');
+                if (tabForm) {
+                    tabForm.className = 'px-3.5 py-1.5 rounded-lg font-bold transition-all bg-gold text-midnight shadow-md';
+                    tabForm.setAttribute('aria-selected', 'true');
+                }
+                if (tabCal) {
+                    tabCal.className = 'px-3.5 py-1.5 rounded-lg text-gold/80 hover:text-white transition-all';
+                    tabCal.setAttribute('aria-selected', 'false');
+                }
+            }
+        }
+
+        function handleScheduleBooking(event) {
+            if (event) event.preventDefault();
+            const form = document.getElementById('schedule-lead-form');
+            const banner = document.getElementById('sched-success-banner');
+            if (form && banner) {
+                form.classList.add('hidden');
+                banner.classList.remove('hidden');
+                banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        function resetScheduleForm() {
+            const form = document.getElementById('schedule-lead-form');
+            const banner = document.getElementById('sched-success-banner');
+            if (form && banner) {
+                form.reset();
+                banner.classList.add('hidden');
+                form.classList.remove('hidden');
+            }
+        }
     </script>
     <script src="main.js?v=20261016"></script>
 </body>

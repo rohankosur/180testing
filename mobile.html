@@ -10,6 +10,29 @@
     <meta name="description" content="180 Math Mobile Edition: South Windsor, CT mathematics mentorship founded by Jyothi. Small cohorts (4–8 students), first-principles intuition, and diagnostic roadmap.">
     <link rel="canonical" href="https://rohankosur.github.io/180testing/mobile.html">
 
+    <!-- Auto-Detect Device Viewport & Orientation (Desktop vs. Mobile) -->
+    <script>
+        (function() {
+            var params = new URLSearchParams(window.location.search);
+            var viewParam = params.get('view');
+            if (viewParam === 'mobile') {
+                sessionStorage.setItem('preferred_view', 'mobile');
+                return;
+            }
+            if (viewParam === 'desktop') {
+                sessionStorage.setItem('preferred_view', 'desktop');
+                window.location.replace('index.html?view=desktop');
+                return;
+            }
+            if (sessionStorage.getItem('preferred_view') === 'mobile') return;
+
+            var isDesktopDevice = window.innerWidth > 1024 && !(/Android|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+            if (isDesktopDevice) {
+                window.location.replace('index.html');
+            }
+        })();
+    </script>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
