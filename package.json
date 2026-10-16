@@ -1,7 +1,7 @@
 {
-  "name": "180math",
+  "name": "180testing",
   "version": "1.0.0",
-  "description": "Interactive mathematics platform featuring diagnostic placement testing, responsive canvas animations, and accessible modern UI.",
+  "description": "Testing and prototype sandbox for 180math design iterations and interactive features.",
   "main": "main.js",
   "scripts": {
     "test": "jest --coverage",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rohankosur/180math.git"
+    "url": "git+https://github.com/rohankosur/180testing.git"
   },
   "keywords": [
     "education",
@@ -17,14 +17,15 @@
     "tutoring",
     "quiz-engine",
     "canvas-physics",
-    "tailwind"
+    "tailwind",
+    "testing-sandbox"
   ],
   "author": "Rohan Kosur",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/rohankosur/180math/issues"
+    "url": "https://github.com/rohankosur/180testing/issues"
   },
-  "homepage": "https://180math.com",
+  "homepage": "https://github.com/rohankosur/180testing#readme",
   "devDependencies": {
     "jest": "^30.3.0",
     "jest-environment-jsdom": "^30.4.1",
