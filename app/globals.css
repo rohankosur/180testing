@@ -1,0 +1,19 @@
+:root {
+  --background: #0B0B33;
+  --foreground: #FAF5E8;
+  --gold: #E5BE85;
+  --gold-light: #F5DFC0;
+  --midnight-card: #101144;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #0B0B33;
+  color: #FAF5E8;
+  font-family: 'Newsreader', Georgia, serif;
+  margin: 0;
+  padding: 0;
+}

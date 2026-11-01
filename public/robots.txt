@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+
+Sitemap: https://180math.com/sitemap.xml
+Host: https://180math.com
