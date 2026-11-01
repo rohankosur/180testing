@@ -4,6 +4,9 @@
   "description": "Testing and prototype sandbox for 180math design iterations and interactive features.",
   "main": "main.js",
   "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "test": "jest --coverage",
     "test:watch": "jest --watch"
   },

@@ -118,6 +118,225 @@
             </div>
         </div>
 
+        
+        <!-- Interactive SAT Score Estimator Utility -->
+        <div id="sat-estimator" class="rounded-3xl border border-[#E5BE85]/30 bg-[#0B0B33] p-6 sm:p-8 md:p-10 text-[#F8FAFC] shadow-2xl relative overflow-hidden mb-14">
+            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-[#E5BE85]/20 pb-5 mb-8">
+                <div>
+                    <div class="font-mono text-xs text-[#E5BE85] uppercase tracking-widest mb-1 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-[#E5BE85] animate-pulse"></span>
+                        Interactive Diagnostic Estimator
+                    </div>
+                    <h3 class="font-serif text-2xl sm:text-3xl font-bold text-[#FAF5E8]">
+                        Digital SAT Math Score Delta Engine
+                    </h3>
+                </div>
+                <div class="px-3 py-1 rounded-full border border-[#E5BE85]/30 bg-[#101144] font-mono text-xs text-[#E5BE85]">
+                    South Windsor Studio Model
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-[#101144]/80 p-5 rounded-2xl border border-[#E5BE85]/20">
+                    <div class="flex items-center justify-between mb-2">
+                        <label class="font-mono text-xs text-[#8E9AB0] uppercase">Baseline Score</label>
+                        <span id="sat-score-val" class="font-mono text-lg font-bold text-[#E5BE85]">580</span>
+                    </div>
+                    <input id="sat-slider" type="range" min="400" max="750" step="10" value="580" class="w-full h-2 bg-[#0B0B33] rounded-lg appearance-none cursor-pointer accent-[#E5BE85]">
+                    <div class="flex justify-between font-mono text-[10px] text-[#8E9AB0] mt-2">
+                        <span>400</span><span>550</span><span>700</span><span>750</span>
+                    </div>
+                </div>
+
+                <div class="bg-[#101144]/80 p-5 rounded-2xl border border-[#E5BE85]/20">
+                    <label class="block font-mono text-xs text-[#8E9AB0] uppercase mb-2">Weeks to Target Test</label>
+                    <div class="grid grid-cols-4 gap-2" id="sat-weeks-btns">
+                        <button type="button" data-weeks="4" class="sat-w-btn py-2 rounded-xl font-mono text-xs font-bold bg-[#0B0B33] text-[#E2E8F0] border border-[#E5BE85]/20">4w</button>
+                        <button type="button" data-weeks="8" class="sat-w-btn py-2 rounded-xl font-mono text-xs font-bold bg-[#0B0B33] text-[#E2E8F0] border border-[#E5BE85]/20">8w</button>
+                        <button type="button" data-weeks="12" class="sat-w-btn py-2 rounded-xl font-mono text-xs font-bold bg-[#E5BE85] text-[#0B0B33] shadow-md shadow-[#E5BE85]/20">12w</button>
+                        <button type="button" data-weeks="16" class="sat-w-btn py-2 rounded-xl font-mono text-xs font-bold bg-[#0B0B33] text-[#E2E8F0] border border-[#E5BE85]/20">16w</button>
+                    </div>
+                    <p id="sat-cadence-desc" class="font-mono text-[10px] text-[#8E9AB0] mt-2">Full conceptual mastery</p>
+                </div>
+
+                <div class="bg-[#101144]/80 p-5 rounded-2xl border border-[#E5BE85]/20">
+                    <label class="block font-mono text-xs text-[#8E9AB0] uppercase mb-2">School Math Track</label>
+                    <div class="grid grid-cols-3 gap-1.5" id="sat-track-btns">
+                        <button type="button" data-track="Algebra II" class="sat-t-btn py-2 px-1 rounded-xl font-mono text-[11px] font-bold bg-[#0B0B33] text-[#E2E8F0] border border-[#E5BE85]/20">Alg II</button>
+                        <button type="button" data-track="Pre-Calc" class="sat-t-btn py-2 px-1 rounded-xl font-mono text-[11px] font-bold bg-[#E5BE85] text-[#0B0B33] shadow-md shadow-[#E5BE85]/20">Pre-Calc</button>
+                        <button type="button" data-track="AP Calc" class="sat-t-btn py-2 px-1 rounded-xl font-mono text-[11px] font-bold bg-[#0B0B33] text-[#E2E8F0] border border-[#E5BE85]/20">AP Calc</button>
+                    </div>
+                    <p class="font-mono text-[10px] text-[#8E9AB0] mt-2">Calibrates algebraic depth</p>
+                </div>
+            </div>
+
+            <div class="p-6 rounded-2xl bg-gradient-to-r from-[#101144] to-[#17185C] border border-[#E5BE85]/40 mb-8">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center divide-y sm:divide-y-0 sm:divide-x divide-[#E5BE85]/20">
+                    <div class="sm:pr-4">
+                        <div class="font-mono text-xs text-[#8E9AB0] uppercase mb-1">Baseline Score</div>
+                        <div id="sat-out-base" class="font-serif text-3xl font-bold text-[#E2E8F0]">580</div>
+                    </div>
+                    <div class="pt-4 sm:pt-0 sm:px-4">
+                        <div class="font-mono text-xs text-[#8E9AB0] uppercase mb-1">Projected Gain</div>
+                        <div id="sat-out-gain" class="font-serif text-4xl font-extrabold text-[#E5BE85]">+140 <span class="text-sm font-sans font-normal text-[#E2E8F0]">pts</span></div>
+                    </div>
+                    <div class="pt-4 sm:pt-0 sm:pl-4">
+                        <div class="font-mono text-xs text-[#8E9AB0] uppercase mb-1">Estimated Target</div>
+                        <div id="sat-out-target" class="font-serif text-4xl font-extrabold text-[#FAF5E8]">720</div>
+                    </div>
+                </div>
+
+                <div class="mt-5 pt-4 border-t border-[#E5BE85]/20 flex flex-wrap items-center justify-between text-xs font-mono text-[#8E9AB0] gap-2">
+                    <span><strong class="text-[#E5BE85]">Recommended Cadence:</strong> <span id="sat-hours">4.0</span> hrs/wk (Studio Cohort + Adaptive Lab)</span>
+                    <span id="sat-trajectory" class="text-[#E5BE85] font-semibold">Target 700+ Advanced Mastery Pipeline</span>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <div class="font-mono text-xs text-[#E5BE85] uppercase tracking-wider mb-3">Surgical Focus Areas</div>
+                <div id="sat-focus-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-[#E5BE85]/20">
+                <div id="sat-lock-status" class="text-xs font-mono text-[#8E9AB0] text-center sm:text-left">
+                    Mentored directly by Jyothi Kosur • South Windsor Cohorts strictly limited to 4–8 students.
+                </div>
+                <a href="#schedule" id="sat-lock-btn" class="w-full sm:w-auto px-8 py-3.5 rounded-full bg-[#E5BE85] text-[#0B0B33] font-sans font-bold text-sm hover:bg-[#F5DFC0] transition-all shadow-lg shadow-[#E5BE85]/20 flex items-center justify-center gap-2">
+                    <span>Lock In Your Prep Plan</span>
+                    <span class="font-mono">→</span>
+                </a>
+            </div>
+        </div>
+
+        <script>
+        (function() {
+            let baseline = 580;
+            let weeks = 12;
+            let track = "Pre-Calc";
+
+            const slider = document.getElementById("sat-slider");
+            const scoreVal = document.getElementById("sat-score-val");
+            const outBase = document.getElementById("sat-out-base");
+            const outGain = document.getElementById("sat-out-gain");
+            const outTarget = document.getElementById("sat-out-target");
+            const outHours = document.getElementById("sat-hours");
+            const outTraj = document.getElementById("sat-trajectory");
+            const focusGrid = document.getElementById("sat-focus-grid");
+            const cadenceDesc = document.getElementById("sat-cadence-desc");
+            const lockBtn = document.getElementById("sat-lock-btn");
+            const lockStatus = document.getElementById("sat-lock-status");
+
+            const weekMap = {
+                4: { factor: 0.38, hours: "6.5", desc: "Sprint diagnostic (high intensity)" },
+                8: { factor: 0.62, hours: "5.0", desc: "Accelerated prep cycle" },
+                12: { factor: 0.78, hours: "4.0", desc: "Full conceptual mastery" },
+                16: { factor: 0.88, hours: "3.5", desc: "Sustained ceiling unlocking" }
+            };
+
+            const trackMap = { "Algebra II": 1.0, "Pre-Calc": 1.15, "AP Calc": 1.25 };
+
+            function calculate() {
+                const headroom = 800 - baseline;
+                const wData = weekMap[weeks] || weekMap[12];
+                const tMult = trackMap[track] || 1.15;
+
+                let raw = Math.round(headroom * wData.factor * (tMult * 0.85));
+                raw = Math.max(30, Math.min(headroom, raw));
+                const delta = Math.round(raw / 10) * 10;
+                const target = Math.min(800, baseline + delta);
+
+                if (scoreVal) scoreVal.innerText = baseline;
+                if (outBase) outBase.innerText = baseline;
+                if (outGain) outGain.innerHTML = "+" + delta + " <span class="text-sm font-sans font-normal text-[#E2E8F0]">pts</span>";
+                if (outTarget) outTarget.innerText = target;
+                if (outHours) outHours.innerText = wData.hours;
+                if (cadenceDesc) cadenceDesc.innerText = wData.desc;
+
+                let traj = "";
+                let topics = [];
+
+                if (baseline < 560) {
+                    traj = "Foundational Reconstruction & Acceleration";
+                    topics = [
+                        { name: "Problem Solving & Data Analysis", emp: "High Priority (40%)", desc: "Unit conversions, proportional reasoning, two-way tables, and statistical scatterplots." },
+                        { name: "Linear Algebra Foundations", emp: "Essential (35%)", desc: "Slope-intercept deconstruction, system intersections, and word-problem translation traps." },
+                        { name: "Quadratic & Function Basics", emp: "Reinforcement (25%)", desc: "Standard, vertex, and factored forms; quadratic formula and factoring shortcuts." }
+                    ];
+                } else if (baseline <= 680) {
+                    traj = "Target 700+ Advanced Mastery Pipeline";
+                    topics = [
+                        { name: "Advanced Math & Nonlinear Systems", emp: "Critical Focus (45%)", desc: "Rational expressions, extraneous roots, function transformations, and polynomial division." },
+                        { name: "Geometry, Circles & Radian Trig", emp: "High Yield (30%)", desc: "Circle equations (h, k), arc-length conversions, similar triangles, and special trig ratios." },
+                        { name: "Desmos Graphical Speed Techniques", emp: "Efficiency (25%)", desc: "Instant solutions for system intersections, table-based regressions, and slider parameters." }
+                    ];
+                } else {
+                    traj = "Target 770–800 Elite Perfection Protocol";
+                    topics = [
+                        { name: "Module 2 Hard-Tier Trap Neutralization", emp: "Perfection Focus (50%)", desc: "Constant-matching in polynomial identities, parameterized quadratic constraints, and edge cases." },
+                        { name: "Sub-45-Second Desmos Workflows", emp: "Time Bank (30%)", desc: "Banking 8+ minutes on Module 2 to exhaustively check questions #18–22 without time stress." },
+                        { name: "Error Pattern Root-Cause Log", emp: "Zero Margin (20%)", desc: "Systematic elimination of reading misinterpretations, sign omissions, and notation traps." }
+                    ];
+                }
+
+                if (outTraj) outTraj.innerText = traj;
+                if (focusGrid) {
+                    focusGrid.innerHTML = topics.map(t => `
+                        <div class="p-4 rounded-xl border border-[#E5BE85]/20 bg-[#101144]/60 text-xs">
+                            <div class="font-mono text-[10px] text-[#E5BE85] font-bold uppercase mb-1">${t.emp}</div>
+                            <div class="font-serif font-bold text-sm text-[#FAF5E8] mb-2">${t.name}</div>
+                            <div class="font-sans text-[#E2E8F0] leading-relaxed">${t.desc}</div>
+                        </div>
+                    `).join("");
+                }
+            }
+
+            if (slider) {
+                slider.addEventListener("input", function(e) {
+                    baseline = parseInt(e.target.value, 10);
+                    calculate();
+                });
+            }
+
+            document.querySelectorAll(".sat-w-btn").forEach(btn => {
+                btn.addEventListener("click", function() {
+                    weeks = parseInt(this.getAttribute("data-weeks"), 10);
+                    document.querySelectorAll(".sat-w-btn").forEach(b => {
+                        b.className = "sat-w-btn py-2 rounded-xl font-mono text-xs font-bold bg-[#0B0B33] text-[#E2E8F0] border border-[#E5BE85]/20";
+                    });
+                    this.className = "sat-w-btn py-2 rounded-xl font-mono text-xs font-bold bg-[#E5BE85] text-[#0B0B33] shadow-md shadow-[#E5BE85]/20 scale-105";
+                    calculate();
+                });
+            });
+
+            document.querySelectorAll(".sat-t-btn").forEach(btn => {
+                btn.addEventListener("click", function() {
+                    track = this.getAttribute("data-track");
+                    document.querySelectorAll(".sat-t-btn").forEach(b => {
+                        b.className = "sat-t-btn py-2 px-1 rounded-xl font-mono text-[11px] font-bold bg-[#0B0B33] text-[#E2E8F0] border border-[#E5BE85]/20";
+                    });
+                    this.className = "sat-t-btn py-2 px-1 rounded-xl font-mono text-[11px] font-bold bg-[#E5BE85] text-[#0B0B33] shadow-md shadow-[#E5BE85]/20";
+                    calculate();
+                });
+            });
+
+            if (lockBtn) {
+                lockBtn.addEventListener("click", function(e) {
+                    if (lockStatus) {
+                        lockStatus.innerHTML = "<span class="text-emerald-400 font-bold">✓ Plan locked! Baseline " + baseline + " → Target " + outTarget.innerText + " (" + weeks + " wks). Scroll down to confirm cohort.</span>";
+                    }
+                    const noteInputs = document.querySelectorAll("input[name="Current Grade & School"], input[placeholder*="Current Grade"]");
+                    noteInputs.forEach(inp => {
+                        inp.value = "[SAT Goal] Baseline: " + baseline + " → Target: " + outTarget.innerText + " (" + weeks + " wks, " + track + ")";
+                    });
+                });
+            }
+
+            calculate();
+        })();
+        </script>
+
         <!-- Highlights -->
         <div class="space-y-6 mb-16">
             <h2 class="text-2xl font-serif font-bold text-[#FAF5E8] mb-6">Curriculum Alignment & Key Objectives</h2>

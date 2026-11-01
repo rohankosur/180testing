@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { feederPrograms } from '@/data/programs';
 import JsonLdGraph, { BreadcrumbItem } from '@/components/seo/JsonLdGraph';
+import SatScoreEstimator from '@/components/tools/SatScoreEstimator';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -163,6 +164,13 @@ export default async function ProgramPage({ params }: PageProps) {
             <div className="font-semibold text-[#E5BE85]">{program.cohortDetails.location}</div>
           </div>
         </div>
+
+        {/* Interactive Utility: SAT Score Estimator (Digital SAT Route) */}
+        {program.slug === 'digital-sat-math-south-windsor' && (
+          <div className="mt-12">
+            <SatScoreEstimator />
+          </div>
+        )}
       </section>
 
       {/* Curriculum Breakdown */}

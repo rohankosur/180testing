@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import SatScoreEstimator from '@/components/tools/SatScoreEstimator';
 
 export default function HomePage() {
   return (
@@ -146,6 +147,11 @@ export default function HomePage() {
               Explore SAT Pathway →
             </span>
           </Link>
+        </div>
+
+        {/* Compact SAT Estimator Utility Preview */}
+        <div className="mt-16">
+          <SatScoreEstimator compact={true} />
         </div>
       </section>
 
