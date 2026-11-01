@@ -29,9 +29,10 @@ export const masterEntityGraph = {
             "founder": {
                 "@id": "https://180math.com/#jyothi-kosur"
             },
+            "telephone": "+1-860-969-6284",
             "address": {
                 "@type": "PostalAddress",
-                "streetAddress": "South Windsor Studio",
+                "streetAddress": "17 Longmeadow Dr",
                 "addressLocality": "South Windsor",
                 "addressRegion": "CT",
                 "postalCode": "06074",
@@ -118,6 +119,7 @@ export const masterEntityGraph = {
                 "Digital SAT Math"
             ],
             "description": "Lead instructor and founder of 180 Math with over a decade of mathematics mentorship in South Windsor, CT, specializing in first-principles conceptual mastery and diagnostic root-cause resolution.",
+            "telephone": "+1-860-969-6284",
             "homeLocation": {
                 "@type": "Place",
                 "name": "South Windsor, CT"

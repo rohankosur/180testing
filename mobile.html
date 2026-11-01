@@ -8,7 +8,12 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>180 Math Mobile | South Windsor, CT Mathematics Mentorship</title>
     <meta name="description" content="180 Math Mobile Edition: South Windsor, CT mathematics mentorship founded by Jyothi Kosur. Small cohorts (4–8 students), first-principles intuition, and diagnostic roadmap.">
-    <link rel="canonical" href="https://180math.com/mobile.html">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="canonical" href="https://180math.com/" />
+    <script>
+        // Deprecated: Mobile users are served responsive HTML directly from root
+        window.location.replace("index.html");
+    </script>
 
     <!-- OpenGraph & Social Cards -->
     <meta property="og:type" content="website">
@@ -1010,19 +1015,32 @@
                 });
             }
 
+            let isMobileStarActive = typeof document !== 'undefined' ? !document.hidden : true;
+
             function draw() {
+                if (!isMobileStarActive) return;
                 ctx.clearRect(0, 0, w, h);
+                ctx.fillStyle = '#E5BE85';
                 for (let i = 0; i < stars.length; i++) {
                     const s = stars[i];
                     s.alpha += s.speed * s.dir;
                     if (s.alpha > 0.85) s.dir = -1;
                     else if (s.alpha < 0.15) s.dir = 1;
 
-                    ctx.fillStyle = `rgba(229, 190, 133, ${s.alpha.toFixed(2)})`;
+                    ctx.globalAlpha = s.alpha;
                     ctx.fillRect(Math.floor(s.x), Math.floor(s.y), Math.ceil(s.r), Math.ceil(s.r));
                 }
+                ctx.globalAlpha = 1;
                 requestAnimationFrame(draw);
             }
+
+            document.addEventListener('visibilitychange', () => {
+                isMobileStarActive = !document.hidden;
+                if (isMobileStarActive) {
+                    requestAnimationFrame(draw);
+                }
+            }, { passive: true });
+
             requestAnimationFrame(draw);
         });
     </script>

@@ -54,14 +54,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 }
 
-                // D. Scroll Parallax Elements (desktop only to eliminate mobile scroll stutter)
-                if (window.innerWidth >= 768) {
-                    const parallaxEls = document.querySelectorAll('[data-parallax]');
-                    parallaxEls.forEach(el => {
-                        const speed = parseFloat(el.dataset.parallax) || 0.08;
-                        const offset = Math.round(currentScrollY * speed);
-                        el.style.transform = `translate3d(0, ${offset}px, 0)`;
-                    });
+                // D. Scroll Parallax Elements (desktop only, using pre-cached node references)
+                if (window.innerWidth >= 768 && cachedParallaxEls.length > 0) {
+                    for (let pIdx = 0; pIdx < cachedParallaxEls.length; pIdx++) {
+                        const item = cachedParallaxEls[pIdx];
+                        const offset = Math.round(currentScrollY * item.speed);
+                        item.el.style.transform = `translate3d(0, ${offset}px, 0)`;
+                    }
                 }
 
                 lastScrollY = currentScrollY;
@@ -70,6 +69,12 @@ document.addEventListener("DOMContentLoaded", () => {
             ticking = true;
         }
     }, { passive: true });
+
+    // Pre-cache parallax elements once to eliminate DOM querying on scroll frames
+    const cachedParallaxEls = Array.from(document.querySelectorAll('[data-parallax]')).map(el => ({
+        el,
+        speed: parseFloat(el.dataset.parallax) || 0.08
+    }));
 
     // 2. Scramble Text Effect
     const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789∫∑√∆∞≈";
@@ -164,13 +169,19 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    let resizeTimer = null;
     window.resizeObserver = new ResizeObserver(() => {
-        window.updateRects();
-        if (typeof resizeCanvas === 'function') resizeCanvas();
+        if (resizeTimer) cancelAnimationFrame(resizeTimer);
+        resizeTimer = requestAnimationFrame(() => {
+            if (typeof resizeCanvas === 'function') {
+                resizeCanvas();
+            } else {
+                window.updateRects();
+            }
+        });
     });
 
     window.cards.forEach(card => window.resizeObserver.observe(card));
-    window.resizeObserver.observe(document.body);
 
     window.cards.forEach(card => {
         if(card.classList.contains('spotlight-card')) {
@@ -394,13 +405,32 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    let isAnimationActive = typeof document !== 'undefined' ? !document.hidden : true;
+    let resumeCelestial = null;
+
     function animate() {
+        if (!isAnimationActive) return;
         updateParticles();
         renderParticles();
         requestAnimationFrame(animate);
     }
 
-    requestAnimationFrame(animate);
+    if (isAnimationActive) {
+        requestAnimationFrame(animate);
+    }
+
+    // Visibility-aware CPU conservation: Pause animations when tab is hidden
+    if (typeof document !== 'undefined') {
+        document.addEventListener('visibilitychange', () => {
+            isAnimationActive = !document.hidden;
+            if (isAnimationActive) {
+                requestAnimationFrame(animate);
+                if (typeof resumeCelestial === 'function') {
+                    resumeCelestial();
+                }
+            }
+        }, { passive: true });
+    }
 
     // ========================================================
     // 5.5 Handmade Pixelated Starfield & Slow Shooting Stars Engine
@@ -424,6 +454,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const count = window.innerWidth < 768 ? 40 : 180;
             stars = [];
             for (let i = 0; i < count; i++) {
+                const isGold = Math.random() < 0.55;
+                const isBone = !isGold && Math.random() < 0.73;
                 stars.push({
                     x: Math.random() * sWidth,
                     y: Math.random() * sHeight,
@@ -433,7 +465,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     // 0: 2x2 square, 1: 3x3 cross, 2: 5x5 diamond star, 3: 7x7 vintage cross
                     type: Math.random() < 0.45 ? 0 : (Math.random() < 0.75 ? 1 : (Math.random() < 0.92 ? 2 : 3)),
                     // Warm gold (#E5BE85), Radiant Bone (#FFFDF8), Diamond Ice (#D8E5F8)
-                    color: Math.random() < 0.55 ? '229, 190, 133' : (Math.random() < 0.88 ? '255, 252, 244' : '210, 225, 250'),
+                    color: isGold ? '229, 190, 133' : (isBone ? '255, 252, 244' : '210, 225, 250'),
+                    hex: isGold ? '#E5BE85' : (isBone ? '#FFFCF4' : '#D2E1FA'),
                     parallax: 0.05 + Math.random() * 0.09
                 });
             }
@@ -455,6 +488,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Spawn from upper-left quadrant
             const startX = Math.random() * (sWidth * 0.45) - 80;
             const startY = Math.random() * (sHeight * 0.35) - 30;
+            const isGold = Math.random() > 0.35;
 
             shootingStars.push({
                 x: startX,
@@ -468,7 +502,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 state: 'fade-in',
                 distanceTraveled: 0,
                 maxDistance: sWidth * 0.75 + Math.random() * (sWidth * 0.4),
-                color: Math.random() > 0.35 ? '229, 190, 133' : '255, 250, 240',
+                color: isGold ? '229, 190, 133' : '255, 250, 240',
+                hexColor: isGold ? '#E5BE85' : '#FFFDF8',
                 lastSparkDist: 0
             });
         }
@@ -484,7 +519,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const scrollY = window.scrollY || 0;
 
-            // 1. Draw Pixelated Twinkling Stars
+            // 1. Draw Pixelated Twinkling Stars (Zero Garbage-Collection Numeric Path)
             for (let i = 0; i < stars.length; i++) {
                 const star = stars[i];
                 const alphaMod = (Math.sin(now * 0.001 * star.twinkleSpeed + star.twinklePhase) + 1) * 0.5;
@@ -495,7 +530,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 let drawY = Math.floor((star.y - scrollY * star.parallax) % sHeight);
                 if (drawY < 0) drawY += sHeight;
 
-                sCtx.fillStyle = `rgba(${star.color}, ${alpha.toFixed(3)})`;
+                sCtx.fillStyle = star.hex || '#E5BE85';
+                sCtx.globalAlpha = alpha;
 
                 if (star.type === 0) {
                     // 2x2 crisp pixel square
@@ -504,7 +540,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     // 3x3 handmade cross
                     const arm = alphaMod > 0.65 ? 2 : 1;
                     sCtx.fillRect(drawX, drawY, 2, 2);
-                    sCtx.fillStyle = `rgba(${star.color}, ${(alpha * 0.7).toFixed(3)})`;
+                    sCtx.globalAlpha = alpha * 0.7;
                     sCtx.fillRect(drawX, drawY - arm, 2, arm);
                     sCtx.fillRect(drawX, drawY + 2, 2, arm);
                     sCtx.fillRect(drawX - arm, drawY, arm, 2);
@@ -512,7 +548,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 } else if (star.type === 2) {
                     // 5x5 diamond star
                     sCtx.fillRect(drawX, drawY, 3, 3);
-                    sCtx.fillStyle = `rgba(${star.color}, ${(alpha * 0.6).toFixed(3)})`;
+                    sCtx.globalAlpha = alpha * 0.6;
                     sCtx.fillRect(drawX + 1, drawY - 2, 1, 2);
                     sCtx.fillRect(drawX + 1, drawY + 3, 1, 2);
                     sCtx.fillRect(drawX - 2, drawY + 1, 2, 1);
@@ -521,7 +557,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     // 7x7 vintage pixel cross sparkle
                     const flare = alphaMod > 0.5 ? 3 : 2;
                     sCtx.fillRect(drawX, drawY, 3, 3);
-                    sCtx.fillStyle = `rgba(${star.color}, ${(alpha * 0.65).toFixed(3)})`;
+                    sCtx.globalAlpha = alpha * 0.65;
                     sCtx.fillRect(drawX + 1, drawY - flare, 1, flare);
                     sCtx.fillRect(drawX + 1, drawY + 3, 1, flare);
                     sCtx.fillRect(drawX - flare, drawY + 1, flare, 1);
@@ -576,6 +612,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         life: 1.8 + Math.random() * 1.2,
                         maxLife: 1.8 + Math.random() * 1.2,
                         color: s.color,
+                        hexColor: s.hexColor || '#E5BE85',
                         size: Math.random() > 0.4 ? 2 : 3
                     });
                 }
@@ -586,6 +623,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const normVx = s.vx / speedMag;
                 const normVy = s.vy / speedMag;
 
+                sCtx.fillStyle = s.hexColor || '#E5BE85';
                 for (let seg = segments; seg >= 0; seg--) {
                     const t = seg / segments; // 1 at head, 0 at tail tip
                     const segDist = (1 - t) * s.length;
@@ -594,7 +632,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     const segAlpha = s.alpha * Math.pow(t, 1.8) * 0.9;
                     const segThickness = Math.max(1, Math.round(s.thickness * Math.pow(t, 0.7)));
 
-                    sCtx.fillStyle = `rgba(${s.color}, ${segAlpha.toFixed(3)})`;
+                    sCtx.globalAlpha = segAlpha;
                     sCtx.fillRect(px, py, segThickness, segThickness);
                 }
 
@@ -602,11 +640,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 const hx = Math.floor(s.x);
                 const hy = Math.floor(s.y);
                 // Outer pixel halo
-                sCtx.fillStyle = `rgba(229, 190, 133, ${(s.alpha * 0.75).toFixed(3)})`;
+                sCtx.fillStyle = '#E5BE85';
+                sCtx.globalAlpha = s.alpha * 0.75;
                 sCtx.fillRect(hx - 2, hy, 7, 3);
                 sCtx.fillRect(hx, hy - 2, 3, 7);
                 // Core white-hot star
-                sCtx.fillStyle = `rgba(255, 255, 250, ${s.alpha.toFixed(3)})`;
+                sCtx.fillStyle = '#FFFFFA';
+                sCtx.globalAlpha = s.alpha;
                 sCtx.fillRect(hx, hy, 3, 3);
             }
 
@@ -621,12 +661,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 const progress = sp.life / sp.maxLife;
                 const curAlpha = sp.alpha * progress;
 
-                sCtx.fillStyle = `rgba(${sp.color}, ${curAlpha.toFixed(3)})`;
+                sCtx.fillStyle = sp.hexColor || '#E5BE85';
+                sCtx.globalAlpha = curAlpha;
                 sCtx.fillRect(Math.floor(sp.x), Math.floor(sp.y), sp.size, sp.size);
             }
 
-            requestAnimationFrame(renderCelestial);
+            sCtx.globalAlpha = 1;
+            if (isAnimationActive) {
+                requestAnimationFrame(renderCelestial);
+            }
         }
+
+        resumeCelestial = () => {
+            lastFrameTime = performance.now();
+            requestAnimationFrame(renderCelestial);
+        };
 
         resizeStarCanvas();
         requestAnimationFrame(renderCelestial);

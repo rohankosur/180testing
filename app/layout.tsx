@@ -5,7 +5,7 @@ import JsonLdGraph from '@/components/seo/JsonLdGraph';
 export const metadata: Metadata = {
   metadataBase: new URL('https://180math.com'),
   title: {
-    default: '180 Math — Premier Mathematics Mentorship & Diagnostic Engine',
+    default: '180 Math | Expert Math & SAT Tutoring in South Windsor',
     template: '%s | 180 Math',
   },
   description:
@@ -23,20 +23,20 @@ export const metadata: Metadata = {
   creator: 'Jyothi Kosur',
   publisher: '180 Math',
   alternates: {
-    canonical: 'https://180math.com',
+    canonical: 'https://180math.com/',
   },
   openGraph: {
-    title: '180 Math — Premier Mathematics Mentorship & Diagnostic Engine',
+    title: '180 Math | Expert Math & SAT Tutoring in South Windsor',
     description:
       'Personalized math mentorship & diagnostic evaluation engine in South Windsor, CT led by Jyothi Kosur. Small cohorts, deep conceptual intuition.',
-    url: 'https://180math.com',
+    url: 'https://180math.com/',
     siteName: '180 Math',
     images: [
       {
         url: 'https://180math.com/opengraph-image.png',
         width: 1200,
         height: 630,
-        alt: '180 Math — Premier Mathematics Mentorship & Diagnostic Engine',
+        alt: '180 Math | Expert Math & SAT Tutoring in South Windsor',
       },
     ],
     locale: 'en_US',
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '180 Math — Premier Mathematics Mentorship & Diagnostic Engine',
+    title: '180 Math | Expert Math & SAT Tutoring in South Windsor',
     description:
       'Personalized math mentorship & diagnostic evaluation engine in South Windsor, CT led by Jyothi Kosur.',
     images: ['https://180math.com/opengraph-image.png'],
